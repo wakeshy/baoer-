@@ -16,12 +16,15 @@
   const msg=document.getElementById('msg'),err=document.getElementById('err');
   try{
     if(typeof DecompressionStream==='undefined') throw new Error('当前浏览器版本过旧，不支持最新版页面解压。请使用最新版 Safari、Chrome 或 Edge。');
-    const version='20260908-nav-v1';
+    const version='20260908-nav-v2';
     const names=Array.from({length:12},(_,i)=>'app.part'+String(i+1).padStart(2,'0')+'.txt?v='+version);
     const parts=await Promise.all(names.map(async(n,idx)=>{
       const r=await fetch(n,{cache:'no-store'});
       if(!r.ok) throw new Error('载入第 '+(idx+1)+' 个页面组件失败（'+r.status+'）');
-      const t=(await r.text()).trim();
+      let t=(await r.text()).trim();
+      const expected=idx<11?14869:14865;
+      if(t.length<expected) throw new Error('第 '+(idx+1)+' 个页面组件不完整');
+      if(t.length>expected) t=t.slice(0,expected);
       msg.textContent='已载入 '+(idx+1)+'/12 个页面组件';
       return t;
     }));
