@@ -3,6 +3,9 @@
 <head data-page-node-id="3AZoInQoc1uZVEVNUaJ2UB">
 <meta charset="UTF-8" data-page-node-id="iwbobQ7p8jd7QzPVCjLlkg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" data-page-node-id="FD3VcVkoxoqJvzzlLM5gjd">
+<meta name="theme-color" content="#0369a1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="潍坊市中医院日结交账与财务审核演示工作台；支持低内存手机拍照、图库上传、加密暂存与财务复核。">
 <meta name="referrer" content="no-referrer" data-page-node-id="qlNYYg46PxrviDkSIyVkiZ">
 <title>潍坊市中医院 · 日结交账与财务审核中心 · 工号密码登录演示版</title>
 <style>
@@ -1883,6 +1886,34 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
   .prepay-group img { width:78px; height:78px; }
 }
 
+/* 可访问性与低性能设备：状态可读、动效可关闭、审核影像失败时不再只剩黑屏 */
+.audit-report-empty {
+  display:none; position:absolute; inset:52px 12px 12px; z-index:3;
+  align-items:center; justify-content:center; text-align:center; padding:24px;
+  color:#cbd5e1; font-size:13px; line-height:1.7; pointer-events:none;
+}
+#finance-receipt-box.report-unavailable .audit-report-empty { display:flex; }
+#finance-receipt-box.report-unavailable #aud-pane-left .audit-pane-zoom,
+#finance-receipt-box.report-unavailable #aud-pane-left .audit-pane-wheel-tip { display:none; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important;
+  }
+}
+@media (max-width:700px) {
+  .header-actions { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .header-actions > button { min-width:0 !important; }
+  .report-upload-actions { display:grid !important; grid-template-columns:1fr 1fr; width:100%; gap:8px !important; }
+  .report-upload-actions .btn-cta-primary,
+  .report-upload-actions .btn-cta-secondary { width:100%; min-height:50px; padding:12px 8px; font-size:14px; border-radius:12px; }
+}
+@media (max-width:390px) {
+  .header-actions { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .header-actions > button:nth-child(1) { display:inline-flex !important; }
+  .header-actions > button { padding:7px 3px !important; font-size:10.5px !important; }
+}
+
 </style>
 </head>
 <body data-page-node-id="BbzJ9Hir8FJsowBDFaY9EJ">
@@ -1903,7 +1934,7 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
         <span data-page-node-id="Jt4MUeSxtEcvgerOE84gOX">本部总院</span> • <span id="hdr-context" data-page-node-id="Z7E25fqToU7j43J9wbfGpn">门诊收费 1 号窗</span> •
         <span data-page-node-id="JDQUuz86Cps8ZwddxRsmGc">当前操作员：<b id="hdr-actor" data-page-node-id="ykjmV9xABei9kXPHbc4cUT">--</b></span> •
         <span data-page-node-id="a98HPoDfJjAaNi5v1fsS3H">会话 <b id="idle-timer" data-page-node-id="72P3VHye8oqKprbTxtL14E">10:00</b> 后锁定</span> •
-        <span id="save-status" data-page-node-id="wbSaveStatus" style="color:#64748b;">暂存待命</span>
+        <span id="save-status" role="status" aria-live="polite" data-page-node-id="wbSaveStatus" style="color:#64748b;">暂存待命</span>
       </div>
     </div>
   </div>
@@ -2019,7 +2050,7 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
           </button>
           <button class="btn-cta-secondary" onclick="pickReportImage('album')">从图库选择</button>
         </div>
-        <div class="report-upload-tip">✓ 支持 JPG / PNG / HEIC · 上传后可缩放、旋转、查看原图</div>
+        <div class="report-upload-tip">✓ 支持 JPG / PNG / HEIC / HEIF · 上传后可缩放、旋转、查看原图</div>
       </div>
       <div id="img-display" style="display:none;width:100%;height:100%;flex-direction:column;" data-page-node-id="deVCyWv4u8sEHSqCD488aE">
         <div class="img-toolbar" data-page-node-id="JxvSoCYsO30zBukIqZiY6R">
@@ -2365,6 +2396,7 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
         <div class="pane" id="aud-pane-left">
           <span class="pane-label left">日结报表</span>
           <img id="aud-img" alt="日结报表原件" data-page-node-id="UpA2Uu2unPvDj4mIJZxuD8">
+          <div class="audit-report-empty" id="aud-img-empty" role="status" aria-live="polite">暂未读取到日结报表影像。<br>请返回收款员交账单确认报表已上传；若扫描整理图不可用，系统会自动尝试完整原图。</div>
           <span class="audit-pane-wheel-tip">滚轮缩放报表</span>
           <div class="audit-pane-zoom" aria-label="日结报表缩放">
             <button type="button" title="缩小报表" onclick="event.stopPropagation();zoomAud(-0.15)">−</button>
@@ -2688,7 +2720,7 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
         <small>收款员：<code>ZY-8042</code>　财务：<code>CW-1021</code>　演示密码统一：<code>123456</code></small>
       </div>
 
-      <div id="lock-msg" class="login-message" data-page-node-id="YNdgtBkFIeKQrNvhZSgtxw"></div>
+      <div id="lock-msg" class="login-message" role="status" aria-live="polite" data-page-node-id="YNdgtBkFIeKQrNvhZSgtxw"></div>
 
       <div class="login-security-foot" data-page-node-id="fhsDSXw2sjklVX6Om3G5ac">
         <span class="crypto-state"><i></i><span id="crypto-flag" data-page-node-id="VgVxvF8hD2urRmKF4RpEuO">检测加密能力...</span></span>
@@ -2774,6 +2806,9 @@ var state = {
   voidInvoiceBatch: { expected:0, groupSize:4, noBusiness:false, seq:0 },
   prepaymentBatch: { expected:0, groupSize:4, noBusiness:false, groups:[], seq:0, physicalReceived:false, physicalReceivedCount:0, physicalReceivedAt:'', physicalReceivedBy:'' },
 };
+/* 异步图片任务代次：清除单据/锁定会话后，旧压缩回调不得把影像重新写回页面。 */
+var MEDIA_EPOCH = 0;
+var REPORT_EPOCH = 0;
 var voidSeq = 0;
 /* 发票号码位数：输满这么多位就自动跳到下一张（号码选填，填了才有这效果） */
 var VOID_NO_LEN = 8;
@@ -2828,9 +2863,9 @@ function draftTotalCents(d) {
 }
 function captureCurrentDraft(lite) {
   var d={submitted:!!state.submitted,approved:!!state.approved,imageData:lite?'':(state.imageData||''),rawImageData:lite?'':(state.rawImageData||''),scanMeta:state.scanMeta?JSON.parse(JSON.stringify(state.scanMeta)):null,docNo:state.docNo||'',stampTime:state.stampTime||'',step:state.step||1,bizDate:state.bizDate||'',createdAt:state.createdAt||'',rejectReason:state.rejectReason||'',bizType:state.bizType||'outpatient',cashierId:state.cashierId||'',cashierName:state.cashierName||'',cashierContext:state.cashierContext||'',checks:JSON.parse(JSON.stringify(state.checks||{})),deductSeq:state.deductSeq||0};
-  d.cashDeductions=(state.cashDeductions||[]).map(function(x){var fs=deductFiles(x);return {id:x.id,amount:x.amount,reason:x.reason,files:lite?[]:fs.map(function(f){var r=attachmentReview(f);return {data:f.data||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};}),data:lite?'':(fs[0]&&fs[0].data||''),name:lite?'':(fs[0]&&fs[0].name||''),size:lite?'':(fs[0]&&fs[0].size||'')};});
-  d.supportAttachments={voidInvoice:lite?[]:supportFiles('voidInvoice').map(function(f){var r=attachmentReview(f);return {data:f.data||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};}),other:lite?[]:supportFiles('other').map(function(f){var r=attachmentReview(f);return {data:f.data||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};})};
-  var pp=ensurePrepayBatch(); d.prepaymentBatch={expected:Number(pp.expected||0),groupSize:Number(pp.groupSize||4),noBusiness:!!pp.noBusiness,seq:Number(pp.seq||0),physicalReceived:!!pp.physicalReceived,physicalReceivedCount:Number(pp.physicalReceivedCount||0),physicalReceivedAt:pp.physicalReceivedAt||'',physicalReceivedBy:pp.physicalReceivedBy||'',groups:(pp.groups||[]).map(function(g){var r=attachmentReview(g);return {id:g.id||'',data:lite?'':(g.data||''),name:g.name||'',size:g.size||'',status:g.status||'ready',receiptCount:Number(g.receiptCount||0),auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};})};
+  d.cashDeductions=(state.cashDeductions||[]).map(function(x){var fs=deductFiles(x);return {id:x.id,amount:x.amount,reason:x.reason,files:lite?[]:fs.map(function(f){var r=attachmentReview(f);return {data:f.data||'',thumb:f.thumb||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};}),data:lite?'':(fs[0]&&fs[0].data||''),name:lite?'':(fs[0]&&fs[0].name||''),size:lite?'':(fs[0]&&fs[0].size||'')};});
+  d.supportAttachments={voidInvoice:lite?[]:supportFiles('voidInvoice').map(function(f){var r=attachmentReview(f);return {data:f.data||'',thumb:f.thumb||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};}),other:lite?[]:supportFiles('other').map(function(f){var r=attachmentReview(f);return {data:f.data||'',thumb:f.thumb||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};})};
+  var pp=ensurePrepayBatch(); d.prepaymentBatch={expected:Number(pp.expected||0),groupSize:Number(pp.groupSize||4),noBusiness:!!pp.noBusiness,seq:Number(pp.seq||0),physicalReceived:!!pp.physicalReceived,physicalReceivedCount:Number(pp.physicalReceivedCount||0),physicalReceivedAt:pp.physicalReceivedAt||'',physicalReceivedBy:pp.physicalReceivedBy||'',groups:(pp.groups||[]).map(function(g){var r=attachmentReview(g);return {id:g.id||'',data:lite?'':(g.data||''),thumb:lite?'':(g.thumb||''),name:g.name||'',size:g.size||'',status:g.status||'ready',receiptCount:Number(g.receiptCount||0),auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};})};
   for(var i=0;i<FIELDS.length;i++) d[FIELDS[i]]=$(FIELDS[i]).value;
   return d;
 }
@@ -2874,7 +2909,7 @@ function renderBizCard(type,prefix) {
 }
 function renderCashierHome() {
   var home=$('cashier-home'); if (!home) return;
-  var cpHead=selectedPersonnel('cashier'), heroSub=home.querySelector('.ch-sub');
+  var cpHead=selectedPersonnel('cashier'), heroSub=typeof home.querySelector==='function'?home.querySelector('.ch-sub'):null;
   if(heroSub&&cpHead) heroSub.innerText=cpHead.name+' · '+cpHead.context+'｜同一天门诊、住院分别建单，分别审核，互不覆盖。';
   var today=todayYMD(); $('ch-today-date').innerText=cnDate(today);
   renderBizCard('outpatient','ch-op'); renderBizCard('inpatient','ch-ip');
@@ -2926,12 +2961,12 @@ function applyDailyDraft(d) {
   if(!d)return; purgeSensitiveDOM();
   for(var i=0;i<FIELDS.length;i++) $(FIELDS[i]).value=d[FIELDS[i]]||'';
   state.submitted=!!d.submitted; state.approved=!!d.approved; state.docNo=d.docNo||''; state.stampTime=d.stampTime||''; state.step=d.step||1; state.bizDate=d.bizDate||todayYMD(); state.createdAt=d.createdAt||''; state.rejectReason=d.rejectReason||''; state.bizType=d.bizType||'outpatient'; state.cashierId=d.cashierId||''; state.cashierName=d.cashierName||''; state.cashierContext=d.cashierContext||''; state.checks=d.checks||{}; state.deductSeq=d.deductSeq||0;
-  state.cashDeductions=(d.cashDeductions||[]).map(function(x){var rec={id:x.id,amount:x.amount||'',reason:x.reason||CASH_DEDUCT_REASONS[0],files:(x.files||[]).map(function(f){return {data:f.data||'',name:f.name||'附件',size:f.size||'',status:f.status||'ready',auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};}),data:x.data||'',name:x.name||'',size:x.size||''};syncDeductHead(rec);return rec;});
-  var sa=d.supportAttachments||{}; state.supportAttachments={voidInvoice:(sa.voidInvoice||[]).map(function(f){return {data:f.data||'',name:f.name||'作废发票原件',size:f.size||'',status:f.status||'ready',auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};}),other:(sa.other||[]).map(function(f){return {data:f.data||'',name:f.name||'其他附件',size:f.size||'',status:f.status||'ready',auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};})};
+  state.cashDeductions=(d.cashDeductions||[]).map(function(x){var rec={id:x.id,amount:x.amount||'',reason:x.reason||CASH_DEDUCT_REASONS[0],files:(x.files||[]).map(function(f){return {data:f.data||'',thumb:f.thumb||'',name:f.name||'附件',size:f.size||'',status:f.status||'ready',auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};}),data:x.data||'',name:x.name||'',size:x.size||''};syncDeductHead(rec);return rec;});
+  var sa=d.supportAttachments||{}; state.supportAttachments={voidInvoice:(sa.voidInvoice||[]).map(function(f){return {data:f.data||'',thumb:f.thumb||'',name:f.name||'作废发票原件',size:f.size||'',status:f.status||'ready',auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};}),other:(sa.other||[]).map(function(f){return {data:f.data||'',thumb:f.thumb||'',name:f.name||'其他附件',size:f.size||'',status:f.status||'ready',auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};})};
   var vm=d.voidInvoiceBatch||{}; state.voidInvoiceBatch={expected:Number(vm.expected||0),groupSize:Number(vm.groupSize||4)||4,noBusiness:!!vm.noBusiness,seq:Number(vm.seq||0)};
-  var pp=d.prepaymentBatch||{}; state.prepaymentBatch={expected:Number(pp.expected||0),groupSize:Number(pp.groupSize||4)||4,noBusiness:!!pp.noBusiness,seq:Number(pp.seq||0),physicalReceived:!!pp.physicalReceived,physicalReceivedCount:Number(pp.physicalReceivedCount||0),physicalReceivedAt:pp.physicalReceivedAt||'',physicalReceivedBy:pp.physicalReceivedBy||'',groups:(pp.groups||[]).map(function(g){return {id:g.id||'',data:g.data||'',name:g.name||'预交金批量照片',size:g.size||'',status:g.data?'ready':(g.status||'processing'),receiptCount:Number(g.receiptCount||0),auditReview:g.auditReview||{status:'pending',reason:'',at:'',by:''}};})};
+  var pp=d.prepaymentBatch||{}; state.prepaymentBatch={expected:Number(pp.expected||0),groupSize:Number(pp.groupSize||4)||4,noBusiness:!!pp.noBusiness,seq:Number(pp.seq||0),physicalReceived:!!pp.physicalReceived,physicalReceivedCount:Number(pp.physicalReceivedCount||0),physicalReceivedAt:pp.physicalReceivedAt||'',physicalReceivedBy:pp.physicalReceivedBy||'',groups:(pp.groups||[]).map(function(g){return {id:g.id||'',data:g.data||'',thumb:g.thumb||'',name:g.name||'预交金批量照片',size:g.size||'',status:g.data?'ready':(g.status||'processing'),receiptCount:Number(g.receiptCount||0),auditReview:g.auditReview||{status:'pending',reason:'',at:'',by:''}};})};
   state.rawImageData=d.rawImageData||d.imageData||''; state.imageData=d.imageData||d.rawImageData||''; state.scanMeta=d.scanMeta||null; state.hasImage=!!state.imageData;
-  if(state.hasImage){$('preview-img').src=state.imageData;$('aud-img').src=state.imageData;$('upload-placeholder').style.display='none';$('img-display').style.display='flex';$('receipt-box').classList.remove('empty');setReportPreview(false);} else {$('preview-img').removeAttribute('src');$('aud-img').removeAttribute('src');$('upload-placeholder').style.display='block';$('img-display').style.display='none';$('receipt-box').classList.add('empty');}
+  if(state.hasImage){$('preview-img').src=state.imageData;syncFinanceReportImage();$('upload-placeholder').style.display='none';$('img-display').style.display='flex';$('receipt-box').classList.remove('empty');setReportPreview(false);} else {$('preview-img').removeAttribute('src');syncFinanceReportImage();$('upload-placeholder').style.display='block';$('img-display').style.display='none';$('receipt-box').classList.add('empty');}
   var br=$('banner-reject'); if(state.rejectReason){br.className='banner banner-warn show';br.innerText='⛔ 财务已退回：'+state.rejectReason;} else {br.className='banner banner-warn';br.innerText='';}
   setDocStatus(state.submitted?'待财务审核':(state.rejectReason?'已退回待修正':((BIZ_PROFILE[state.bizType]||BIZ_PROFILE.outpatient).label+'草稿')), state.rejectReason?'#fef2f2':(state.submitted?'#fef3c7':'#e0f2fe'), state.rejectReason?'#b91c1c':(state.submitted?'#b45309':'#0369a1'));
   calcTotalsSilent(); renderCashDeductions(); renderSupportAttachments(); renderPrepayBatch(); renderAudPrepay(); renderAudSupportAttachments(); renderAuditTable(); updateSteps(); updateBusinessFormIdentity(); hydratePrepayDraftMedia();
@@ -2988,7 +3023,7 @@ function handlePrepayFiles(files,src){
     var file=files[i];if(!isVoidImage(file)){skipped++;continue;}p.seq++;var used=(p.groups||[]).reduce(function(n,g){return n+Number(g.receiptCount||0);},0),remain=Math.max(0,Number(p.expected||0)-used),cnt=remain?Math.min(Number(p.groupSize||4),remain):Number(p.groupSize||4);
     var rec={id:'PP'+Date.now()+'_'+p.seq,data:'',name:file.name||('预交金第'+(p.groups.length+1)+'组'),size:(file.size/1024).toFixed(0)+' KB',status:'processing',receiptCount:Math.max(1,cnt),auditReview:{status:'pending',reason:'',at:'',by:''}};p.groups.push(rec);accepted++;
     addAudit(src+'上传预交金批量照片','第 '+p.groups.length+' 组','',rec.receiptCount+' 张纸质单据 · '+rec.size);
-    compressToDataURL(file,2000,.82,(function(rec){return function(data){rec.data=data||'';rec.status=data?'ready':'failed';if(data)histMediaPut(prepayDraftMediaKey(rec.id),data);else floatToast('这组照片处理失败，请重拍。','预交金照片处理失败','#fef2f2','#b91c1c','#fecaca');renderPrepayBatch();renderAudPrepay();renderAudSupportAttachments();renderFinanceAttachmentControls();updateSteps();queueSave();};})(rec));
+    compressToDataURL(file,1600,.76,(function(rec){return function(data,meta){rec.data=data||'';rec.thumb=(meta&&meta.thumb)||'';rec.status=data?'ready':'failed';if(data)histMediaPut(prepayDraftMediaKey(rec.id),data);else floatToast('这组照片处理失败，请重拍。','预交金照片处理失败','#fef2f2','#b91c1c','#fecaca');renderPrepayBatch();renderAudPrepay();renderAudSupportAttachments();renderFinanceAttachmentControls();updateSteps();queueSave();};})(rec));
   }
   renderPrepayBatch();renderAudPrepay();renderAudSupportAttachments();renderFinanceAttachmentControls();updateSteps();queueSave();if(accepted>1)floatToast('已加入 '+accepted+' 组预交金照片'+(skipped?'，跳过 '+skipped+' 个非图片文件。':'。'),'批量照片已加入','#ecfdf5','#166534','#86efac');
 }
@@ -3004,7 +3039,7 @@ function renderPrepayBatch(){
   var st=$('prepay-state');if(st){st.innerText=p.noBusiness?'无单据':(issues.ok?'数量一致':(ready?'拍摄中':'待登记'));st.className='prepay-state '+(issues.ok?'ok':(ready?'warn':''));}
   var shoot=$('prepay-shoot'),album=$('prepay-album');if(shoot){var rem=Math.max(0,expected-shot),next=expected?Math.min(p.groupSize,rem):p.groupSize;shoot.innerText=rem>0?('📷 拍下一组（'+next+' 张）'):(issues.ok?'✓ 已拍齐':'📷 拍下一组');shoot.disabled=state.submitted||p.noBusiness||!expected||rem<=0;}if(album)album.disabled=state.submitted||p.noBusiness||!expected;
   var box=$('prepay-groups');if(!box)return;if(!p.groups.length){box.innerHTML='<div class="prepay-empty">'+(p.noBusiness?'今日已确认无预交金单据。':'还没有批量照片。填应回收张数后，按 4 张一组平铺拍摄即可。')+'</div>';return;}
-  var html='',start=1;p.groups.forEach(function(g,i){var cnt=Math.max(1,Number(g.receiptCount||0)),end=start+cnt-1,opts='';for(var n=1;n<=p.groupSize;n++)opts+='<option value="'+n+'"'+(n===cnt?' selected':'')+'>'+n+' 张</option>';html+='<div class="prepay-group '+(g.status||'')+'"><div>'+(g.data?'<img src="'+esc(g.data)+'" alt="预交金第'+(i+1)+'组" onclick="viewPrepayGroup('+i+')">':'<div style="width:72px;height:72px;border-radius:8px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#64748b;">'+(g.status==='failed'?'处理失败':'处理中…')+'</div>')+'</div><div class="prepay-group-main"><div class="prepay-group-name">第 '+(i+1)+' 组 · 单据 '+start+'–'+end+'</div><div class="prepay-group-meta">'+esc(g.name||'批量照片')+' · '+esc(g.size||'')+'</div><div class="prepay-group-count"><span>本组：</span><select '+(state.submitted?'disabled':'')+' onchange="setPrepayGroupCount('+i+',this.value)">'+opts+'</select></div><div class="prepay-group-tools">'+(g.data?'<button onclick="viewPrepayGroup('+i+')">查看放大</button>':'')+(!state.submitted?'<button class="danger" onclick="removePrepayGroup('+i+')">删除</button>':'')+'</div></div></div>';start=end+1;});box.innerHTML=html;
+  var html='',start=1;p.groups.forEach(function(g,i){var cnt=Math.max(1,Number(g.receiptCount||0)),end=start+cnt-1,opts='';for(var n=1;n<=p.groupSize;n++)opts+='<option value="'+n+'"'+(n===cnt?' selected':'')+'>'+n+' 张</option>';html+='<div class="prepay-group '+(g.status||'')+'"><div>'+(g.data?'<img src="'+esc(safeThumbData(g))+'" alt="预交金第'+(i+1)+'组" onclick="viewPrepayGroup('+i+')">':'<div style="width:72px;height:72px;border-radius:8px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#64748b;">'+(g.status==='failed'?'处理失败':'处理中…')+'</div>')+'</div><div class="prepay-group-main"><div class="prepay-group-name">第 '+(i+1)+' 组 · 单据 '+start+'–'+end+'</div><div class="prepay-group-meta">'+esc(g.name||'批量照片')+' · '+esc(g.size||'')+'</div><div class="prepay-group-count"><span>本组：</span><select '+(state.submitted?'disabled':'')+' onchange="setPrepayGroupCount('+i+',this.value)">'+opts+'</select></div><div class="prepay-group-tools">'+(g.data?'<button onclick="viewPrepayGroup('+i+')">查看放大</button>':'')+(!state.submitted?'<button class="danger" onclick="removePrepayGroup('+i+')">删除</button>':'')+'</div></div></div>';start=end+1;});box.innerHTML=html;
 }
 function renderAudPrepay(){
   var sec=$('aud-prepay-sec');if(!sec)return;var p=ensurePrepayBatch();if(state.bizType!=='inpatient'||p.noBusiness){sec.style.display='none';return;}var has=Number(p.expected||0)>0||(p.groups||[]).length;if(!has){sec.style.display='none';return;}sec.style.display='block';var shot=prepayShotCount(),issue=prepayIssues();
@@ -3181,7 +3216,7 @@ function lockSession(reason) {
 }
 /* 会话里是否还有实质数据（判断"锁定是否会丢东西"） */
 function sessionHasLiveData() {
-  if (state.hasImage || state.rawImageData) return true;
+  if (state.hasImage || state.rawImageData || (state.scanMeta && state.scanMeta.status === 'processing')) return true;
   for (var i = 0; i < FIELDS.length; i++) {
     if (String($(FIELDS[i]).value || '').trim() !== '') return true;
   }
@@ -3192,8 +3227,17 @@ function sessionHasLiveData() {
   return false;
 }
 function purgeSensitiveDOM() {
-  $('preview-img').removeAttribute('src');
-  $('aud-img').removeAttribute('src');
+  MEDIA_EPOCH++; REPORT_EPOCH++;
+  if (typeof PHOTO_PIPE !== 'undefined' && PHOTO_PIPE) PHOTO_PIPE.queue = [];
+  if (currentObjectURL) { try { URL.revokeObjectURL(currentObjectURL); } catch (_) {} currentObjectURL = ''; }
+  ['preview-img','aud-img','aud-img-compare','cc-report-img','cc-att-img','void-viewer-img','void-corner-img'].forEach(function(id){
+    var img=$(id); if(!img)return; try{img.removeAttribute('src');}catch(_){}
+  });
+  var cashierCompare=$('cashier-compare'); if(cashierCompare)cashierCompare.classList.remove('open','has-multi');
+  var receiptBox=$('receipt-box'); if(receiptBox)receiptBox.classList.remove('cashier-compare-open');
+  var financeBox=$('finance-receipt-box'); if(financeBox)financeBox.classList.remove('compare-mode','has-multi-attachment');
+  var voidViewer=$('void-viewer'); if(voidViewer)voidViewer.className='';
+  var voidCorner=$('void-corner'); if(voidCorner)voidCorner.className='';
   for (var i = 0; i < FIELDS.length; i++) $(FIELDS[i]).value = '';
   state.hasImage = false; state.imageData = ''; state.rawImageData = ''; state.scanMeta = null;
   state.checks = {};
@@ -3699,7 +3743,7 @@ function renderSecurity() {
   var body = $('drawer-body');
   body.innerHTML =
     '<div class="sec-card" style="margin-bottom:12px;"><div class="sec-title">本机已启用的措施</div><ul class="sec-list">' +
-    '<li>票据影像与金额默认只在内存中，不落盘</li>' +
+    '<li>手机拍照启用低内存模式：逐张压缩、缩略图展示，降低 iPhone / 低配安卓内存占用</li><li>票据影像与金额默认只在内存中，不落盘</li>' +
     (SEC.cryptoOK ? '<li>「暂存」走 AES-256-GCM，登录密码经 PBKDF2 15 万次派生，密钥不落盘</li>' : '<li class="wait">当前环境不支持 Web Crypto，暂存已禁用（仅内存）</li>') +
     '<li>操作留痕采用链式哈希，改任意一条即能被检出</li>' +
     '<li>10 分钟无操作自动锁定并清空内存数据</li>' +
@@ -3838,13 +3882,19 @@ function resetAudCompareZoom() { audCompareScale = 1; audCompareRot = 0; applyAu
 function syncFinanceReportImage() {
   var ai = $('aud-img');
   if (!ai) return;
+  var box = $('finance-receipt-box');
   var preferred = state.imageData || state.rawImageData || '';
-  if (!preferred) { try { ai.removeAttribute('src'); } catch (_) {} ai.src = ''; return; }
+  function markUnavailable(on) { if (box) box.classList.toggle('report-unavailable', !!on); }
+  if (!preferred) { try { ai.removeAttribute('src'); } catch (_) {} ai.src = ''; ai.dataset.source = ''; markUnavailable(true); return; }
+  markUnavailable(false);
+  ai.onload = function () { markUnavailable(false); };
   ai.onerror = function () {
     // 扫描版异常时，审核端仍必须能查看完整原图。
     if (state.rawImageData && ai.dataset.source !== 'raw') {
       ai.dataset.source = 'raw';
       ai.src = state.rawImageData;
+    } else {
+      markUnavailable(true);
     }
   };
   ai.dataset.source = preferred === state.rawImageData && !state.imageData ? 'raw' : 'scan';
@@ -3875,137 +3925,232 @@ function pickReportImage(source) {
 }
 function rescanCurrentReport() {
   if (!state.rawImageData) return;
+  var reportEpoch = ++REPORT_EPOCH;
+  var receiptBox = $('receipt-box'); if (receiptBox) receiptBox.setAttribute('aria-busy','true');
   state.scanMeta = { status: 'processing' }; showingOriginalReport = false; setReportPreview(false);
   setTimeout(function () {
     scanReportImage(state.rawImageData, function (scanData, meta) {
+      if (reportEpoch !== REPORT_EPOCH || !SEC.unlocked) return;
       state.imageData = scanData || state.rawImageData;
       state.scanMeta = meta || { status: 'ready', mode: 'original-fallback' };
-      $('aud-img').src = state.imageData;
-      setReportPreview(false); queueSave();
+      state.hasImage = !!(state.imageData || state.rawImageData);
+      if (receiptBox) receiptBox.setAttribute('aria-busy','false');
+      syncFinanceReportImage();
+      setReportPreview(false); updateSteps(); queueSave();
     });
   }, 20);
 }
 function handleFileSelect(e) {
   var file = e.target.files && e.target.files[0];
   if (!file) return;
-  if (!/^image\//.test(file.type)) { alert('请选择图片文件（JPG/PNG）'); return; }
-  if (currentObjectURL) URL.revokeObjectURL(currentObjectURL);
-  currentObjectURL = URL.createObjectURL(file);
-  $('preview-img').src = currentObjectURL;
+  if (!isVoidImage(file)) { alert('请选择图片文件（JPG/PNG/HEIC/HEIF）'); e.target.value = ''; return; }
+  var reportEpoch = ++REPORT_EPOCH;
+  // 手机低内存策略：不把原始相机照片直接塞进 <img> 预览。
+  // 原图一旦直接解码，iPhone / 低配安卓会在“压缩之前”先吃掉几十到几百 MB 内存。
+  if (currentObjectURL) { try { URL.revokeObjectURL(currentObjectURL); } catch (_) {} currentObjectURL = ''; }
+  try { $('preview-img').removeAttribute('src'); } catch (_) {}
   $('upload-placeholder').style.display = 'none';
   $('img-display').style.display = 'flex';
   $('receipt-box').classList.remove('empty');
-  state.hasImage = true;
+  state.hasImage = false;
   state.imageData = ''; state.rawImageData = ''; state.scanMeta = { status: 'processing' };
+  $('receipt-box').setAttribute('aria-busy','true');
   showingOriginalReport = false;
   setReportPreview(false);
   resetZoom(); audScale = 1; audRot = 0; applyAudTransform();
-  // 保留未扫描版，同时限制分辨率，避免本机加密暂存因超大原片失效。
-  compressToDataURL(file, 2000, 0.84, function (rawData) {
+  var title=$('img-title'); if(title) title.innerText='⏳ 正在优化照片，手机请稍候…';
+  // 先走低内存管线，完成后页面只接触已经缩小的图片。
+  compressToDataURL(file, 1700, 0.80, function (rawData) {
+    if (reportEpoch !== REPORT_EPOCH || !SEC.unlocked) return;
     state.rawImageData = rawData || '';
     if (!rawData) {
-      state.imageData = currentObjectURL || '';
-      state.scanMeta = { status: 'ready', mode: 'original-fallback' };
-      $('aud-img').src = state.imageData;
-      setReportPreview(false); queueSave();
-      return;
+      state.hasImage = false; state.imageData=''; state.rawImageData='';
+      state.scanMeta = { status: 'failed', mode: 'low-memory-retry' };
+      $('receipt-box').setAttribute('aria-busy','false');
+      try { $('preview-img').removeAttribute('src'); $('aud-img').removeAttribute('src'); } catch (_) {}
+      $('upload-placeholder').style.display = 'flex'; $('img-display').style.display = 'none'; $('receipt-box').classList.add('empty');
+      floatToast('这张照片没有安全处理成功。请重新拍摄；若手机开启了 48MP / ProRAW / 超高像素，请切到普通照片后再拍。', '照片处理失败', '#fff7ed', '#9a3412', '#fdba74');
+      queueSave(); return;
     }
-    queueSave();
+    state.hasImage = true;
+    $('receipt-box').setAttribute('aria-busy','false');
+    setReportPreview(false); syncFinanceReportImage(); updateSteps(); queueSave();
     setTimeout(function () {
       scanReportImage(rawData, function (scanData, meta) {
+        if (reportEpoch !== REPORT_EPOCH || !SEC.unlocked) return;
         state.imageData = scanData || rawData;
         state.scanMeta = meta || { status: 'ready', mode: 'original-fallback' };
-        $('aud-img').src = state.imageData;
-        setReportPreview(false); queueSave();
+        syncFinanceReportImage();
+        setReportPreview(false); updateSteps(); queueSave();
       });
-    }, 20);
+    }, 60);
   });
   addAudit('上传日结报表原件', file.name, '', (file.size / 1024).toFixed(0) + ' KB 影像');
   updateSteps();
   if (state.guided) gotoStep(2);
   e.target.value = '';
 }
-function compressToDataURL(file, maxSide, quality, cb) {
-  var done = false;
-  var timer = setTimeout(function () { finish(''); }, 60000);
-  function finish(v) { if (done) return; done = true; clearTimeout(timer); cb(v); }
-  if (!file) { finish(''); return; }
-  // 超大手机原图不再直接拒绝：优先用 createImageBitmap 直接解码 Blob，避免先转成超大的 base64。
-  // 仅对极端异常文件做上限保护，正常手机照片（包括十几/几十 MB）都进入自动压缩。
-  if (file.size && file.size > 80 * 1024 * 1024) {
-    floatToast('这张原图超过 80MB，手机浏览器处理可能不稳定。请用相机重新拍摄或从相册导出较小版本。', '原图过大', '#fff7ed', '#9a3412', '#fdba74');
-    finish(''); return;
-  }
 
-  maxSide = Math.max(1200, Number(maxSide || 1800));
-  quality = Math.min(.92, Math.max(.68, Number(quality || .82)));
-  var targetBytes = maxSide >= 1900 ? 1500 * 1024 : 1050 * 1024;
-
-  function approxBytes(dataUrl) {
-    if (!dataUrl) return 0;
-    var comma = dataUrl.indexOf(',');
-    var len = comma >= 0 ? dataUrl.length - comma - 1 : dataUrl.length;
-    return Math.round(len * 0.75);
-  }
-
-  function encodeSource(source, sw, sh, cleanup) {
-    try {
-      if (!sw || !sh) { if (cleanup) cleanup(); finish(''); return; }
-      var side = maxSide, q = quality, out = '';
-      for (var pass = 0; pass < 5; pass++) {
-        var ratio = Math.min(1, side / Math.max(sw, sh));
-        out = renderToJpeg(source, sw, sh, ratio, q);
-        if (!out) break;
-        if (approxBytes(out) <= targetBytes) break;
-        // 先适度降质量，再降尺寸；单据文字优先保持可读性。
-        if (q > .72) q = Math.max(.72, q - .07);
-        else side = Math.max(1400, Math.round(side * .86));
-      }
-      if (cleanup) cleanup();
-      finish(out || '');
-    } catch (err) {
-      try { if (cleanup) cleanup(); } catch (_) {}
-      finish('');
-    }
-  }
-
-  function fallbackFileReader() {
-    var reader = new FileReader();
-    reader.onload = function () {
-      var img = new Image();
-      img.onload = function () { encodeSource(img, img.naturalWidth || img.width, img.naturalHeight || img.height); };
-      img.onerror = function () { finish(''); };
-      img.src = reader.result;
-    };
-    reader.onerror = function () { finish(''); };
-    reader.readAsDataURL(file);
-  }
-
-  if (typeof createImageBitmap === 'function') {
-    createImageBitmap(file, { imageOrientation: 'from-image' }).then(function (bmp) {
-      encodeSource(bmp, bmp.width, bmp.height, function () { try { bmp.close(); } catch (_) {} });
-    }).catch(function () { fallbackFileReader(); });
-  } else {
-    fallbackFileReader();
-  }
+/* ================= 手机低内存图片引擎 =================
+   目标：iPhone Safari、2~4GB 安卓机也能连续拍票据。
+   关键策略：
+   1) 一次只压 1 张；2) 尽量按目标尺寸解码；3) canvas.toBlob 避免超大 base64 峰值；
+   4) 生成 240px 小缩略图，列表不再解码每张高清图；5) 每张完成后主动释放 Bitmap / Canvas / ObjectURL。 */
+var PHOTO_PIPE = { queue: [], busy: false, warned: false };
+function imageRuntimeProfile() {
+  var ua = navigator.userAgent || '';
+  var ios = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var android = /Android/i.test(ua);
+  var mobile = ios || android || /Mobile/i.test(ua);
+  var mem = Number(navigator.deviceMemory || 0);
+  var cores = Number(navigator.hardwareConcurrency || 0);
+  var veryLow = !!(android && ((mem && mem <= 2) || (cores && cores <= 4)));
+  var low = !!(ios || veryLow || (android && mem && mem <= 4));
+  return {
+    ios: ios, android: android, mobile: mobile, low: low, veryLow: veryLow,
+    capSide: veryLow ? 1280 : (low ? 1400 : (mobile ? 1600 : 2000)),
+    scanSide: veryLow ? 1100 : (low ? 1250 : (mobile ? 1400 : 1600)),
+    qualityCap: veryLow ? 0.72 : (low ? 0.76 : (mobile ? 0.80 : 0.86)),
+    targetBytes: veryLow ? 480*1024 : (low ? 620*1024 : (mobile ? 820*1024 : 1100*1024))
+  };
 }
-
-function renderToJpeg(img, w, h, ratio, quality) {
+var LOWMEM_THUMB_PLACEHOLDER = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="180" viewBox="0 0 240 180"><rect width="240" height="180" rx="18" fill="#eef2f7"/><path d="M72 64h96a12 12 0 0 1 12 12v54a12 12 0 0 1-12 12H72a12 12 0 0 1-12-12V76a12 12 0 0 1 12-12Z" fill="#dbeafe" stroke="#94a3b8" stroke-width="3"/><circle cx="92" cy="88" r="10" fill="#94a3b8"/><path d="m72 126 34-28 24 20 18-14 32 22" fill="none" stroke="#64748b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><text x="120" y="164" text-anchor="middle" font-size="18" font-family="Arial, sans-serif" fill="#475569">点击查看</text></svg>');
+function safeThumbData(rec) {
+  if (rec && rec.thumb) return rec.thumb;
+  var p=imageRuntimeProfile();
+  // 旧记录没有缩略图：低内存手机宁可显示占位图，也不要在列表同时解码几十张高清票据。
+  if (rec && rec.data && !p.low) return rec.data;
+  return LOWMEM_THUMB_PLACEHOLDER;
+}
+function compressToDataURL(file, maxSide, quality, cb) {
+  PHOTO_PIPE.queue.push({file:file,maxSide:maxSide,quality:quality,cb:cb,epoch:MEDIA_EPOCH});
+  runPhotoCompressQueue();
+}
+function runPhotoCompressQueue() {
+  if (PHOTO_PIPE.busy || !PHOTO_PIPE.queue.length) return;
+  PHOTO_PIPE.busy = true;
+  var job = PHOTO_PIPE.queue.shift();
+  if (!PHOTO_PIPE.warned && imageRuntimeProfile().mobile) {
+    PHOTO_PIPE.warned = true;
+    floatToast('已启用低内存拍照模式：照片会逐张处理并自动缩小，避免 iPhone / 低配安卓因原图过大闪退。', '低内存优化已开启', '#eff6ff', '#1d4ed8', '#bfdbfe');
+  }
+  compressToDataURLNow(job.file, job.maxSide, job.quality, function(data,meta){
+    if (job.epoch === MEDIA_EPOCH) { try { job.cb && job.cb(data,meta||{}); } catch (_) {} }
+    PHOTO_PIPE.busy = false;
+    // 给 Safari / Android WebView 一点时间回收上一张图的解码内存。
+    setTimeout(runPhotoCompressQueue, imageRuntimeProfile().low ? 120 : 40);
+  });
+}
+function readImageHead(file, cb) {
   try {
-    var cv = document.createElement('canvas');
-    cv.width = Math.max(1, Math.round(w * ratio)); cv.height = Math.max(1, Math.round(h * ratio));
-    var ctx = cv.getContext('2d');
-    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
-    ctx.drawImage(img, 0, 0, cv.width, cv.height);
-    return cv.toDataURL('image/jpeg', quality);
-  } catch (err) { return ''; }
+    var part=file.slice(0, Math.min(file.size || 0, 512*1024)), fr=new FileReader();
+    fr.onload=function(){cb(fr.result||null);}; fr.onerror=function(){cb(null);}; fr.readAsArrayBuffer(part);
+  } catch (_) { cb(null); }
+}
+function parseImageHead(buf, type) {
+  if(!buf) return null;
+  try {
+    var b=new Uint8Array(buf), dv=new DataView(buf), t=String(type||'').toLowerCase();
+    if((t.indexOf('png')>=0 || (b[0]===137&&b[1]===80&&b[2]===78&&b[3]===71)) && b.length>=24){return {w:dv.getUint32(16,false),h:dv.getUint32(20,false),orientation:1};}
+    if((t.indexOf('jpeg')>=0 || t.indexOf('jpg')>=0 || (b[0]===255&&b[1]===216)) && b.length>12){
+      var off=2, orientation=1, w=0,h=0;
+      while(off+4<b.length){
+        if(b[off]!==255){off++;continue;} var marker=b[off+1]; off+=2;
+        if(marker===216 || marker===1) continue; if(marker===217 || marker===218) break;
+        if(off+2>b.length) break; var len=(b[off]<<8)+b[off+1]; if(len<2 || off+len>b.length) break;
+        var dataStart=off+2;
+        if(marker===225 && len>10 && b[dataStart]===69&&b[dataStart+1]===120&&b[dataStart+2]===105&&b[dataStart+3]===102){
+          try{
+            var tiff=dataStart+6, le=(b[tiff]===73&&b[tiff+1]===73), g16=function(p){return dv.getUint16(p,le);}, g32=function(p){return dv.getUint32(p,le);};
+            if(g16(tiff+2)===42){var ifd=tiff+g32(tiff+4), n=g16(ifd); for(var ei=0;ei<n;ei++){var ep=ifd+2+ei*12;if(ep+12>b.length)break;if(g16(ep)===274){orientation=g16(ep+8)||1;break;}}}
+          }catch(_){orientation=1;}
+        }
+        if([192,193,194,195,197,198,199,201,202,203,205,206,207].indexOf(marker)>=0 && len>=7){h=(b[dataStart+1]<<8)+b[dataStart+2];w=(b[dataStart+3]<<8)+b[dataStart+4];}
+        off+=len;
+        if(w&&h) break;
+      }
+      if(w&&h){if(orientation>=5&&orientation<=8){var tmp=w;w=h;h=tmp;}return {w:w,h:h,orientation:orientation};}
+    }
+  }catch(_){}
+  return null;
+}
+function targetImageSize(dim, side) {
+  side=Math.max(900,Number(side||1400));
+  if(!dim||!dim.w||!dim.h) return {w:side,h:0};
+  var r=Math.min(1,side/Math.max(dim.w,dim.h)); return {w:Math.max(1,Math.round(dim.w*r)),h:Math.max(1,Math.round(dim.h*r))};
+}
+function blobToDataURL(blob, cb) {
+  if(!blob){cb('');return;} var fr=new FileReader(); fr.onload=function(){cb(fr.result||'');}; fr.onerror=function(){cb('');}; fr.readAsDataURL(blob);
+}
+function makeSmallThumb(canvas) {
+  try {
+    var side=240, r=Math.min(1,side/Math.max(canvas.width,canvas.height)), tw=Math.max(1,Math.round(canvas.width*r)), th=Math.max(1,Math.round(canvas.height*r));
+    var tc=document.createElement('canvas');tc.width=tw;tc.height=th;var tx=tc.getContext('2d',{alpha:false});tx.fillStyle='#fff';tx.fillRect(0,0,tw,th);tx.drawImage(canvas,0,0,tw,th);
+    var d=tc.toDataURL('image/jpeg',0.56);tc.width=1;tc.height=1;return d||LOWMEM_THUMB_PLACEHOLDER;
+  }catch(_){return LOWMEM_THUMB_PLACEHOLDER;}
+}
+function encodeSourceLowMemory(source, sw, sh, maxSide, quality, targetBytes, cleanup, cb, pass) {
+  pass=pass||0;
+  try {
+    var r=Math.min(1,maxSide/Math.max(sw,sh)), w=Math.max(1,Math.round(sw*r)), h=Math.max(1,Math.round(sh*r));
+    var cv=document.createElement('canvas');cv.width=w;cv.height=h;
+    var ctx=cv.getContext('2d',{alpha:false,desynchronized:true}) || cv.getContext('2d');
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(source,0,0,w,h);
+    var finishBlob=function(blob){
+      if(blob && blob.size>targetBytes && pass<2){
+        cv.width=1;cv.height=1; encodeSourceLowMemory(source,sw,sh,Math.max(1000,Math.round(maxSide*0.84)),Math.max(0.64,quality-0.07),targetBytes,cleanup,cb,pass+1); return;
+      }
+      var thumb=makeSmallThumb(cv), meta={thumb:thumb,width:w,height:h,bytes:blob?blob.size:0,profile:imageRuntimeProfile()};
+      cv.width=1;cv.height=1;
+      if(!blob){try{cleanup&&cleanup();}catch(_){} cb('',meta);return;}
+      blobToDataURL(blob,function(data){try{cleanup&&cleanup();}catch(_){} cb(data||'',meta);});
+    };
+    if(cv.toBlob) cv.toBlob(finishBlob,'image/jpeg',quality);
+    else {
+      var d=cv.toDataURL('image/jpeg',quality), approx=Math.round((d.length-(d.indexOf(',')+1))*0.75), th=makeSmallThumb(cv), meta={thumb:th,width:w,height:h,bytes:approx,profile:imageRuntimeProfile()};
+      cv.width=1;cv.height=1;try{cleanup&&cleanup();}catch(_){} cb(d||'',meta);
+    }
+  }catch(err){try{cleanup&&cleanup();}catch(_){} cb('',{});}
+}
+function compressToDataURLNow(file, requestedSide, requestedQuality, cb) {
+  if(!file){cb('',{});return;}
+  var p=imageRuntimeProfile();
+  var maxSide=Math.min(Math.max(1000,Number(requestedSide||1600)),p.capSide);
+  var quality=Math.min(Number(requestedQuality||0.78),p.qualityCap);
+  var targetBytes=p.targetBytes;
+  if(file.size && file.size>60*1024*1024){floatToast('这张原图超过 60MB，当前手机不适合直接处理。请改用普通照片模式重新拍摄。','原图过大','#fff7ed','#9a3412','#fdba74');cb('',{});return;}
+  readImageHead(file,function(head){
+    var dim=parseImageHead(head,file.type), target=targetImageSize(dim,maxSide);
+    function fallbackObjectURL(){
+      // 低内存机遇到超高像素且浏览器无法按目标尺寸解码时，宁可提示重拍，也不要强行全尺寸解码导致页面被系统杀掉。
+      if(p.low && dim && Math.max(dim.w,dim.h)>6500){floatToast('检测到超高像素照片（约 '+dim.w+'×'+dim.h+'）。这台手机无法安全降采样，请关闭 48MP/高像素模式后重拍。','避免内存不足','#fff7ed','#9a3412','#fdba74');cb('',{});return;}
+      var url='';try{url=URL.createObjectURL(file);}catch(_){cb('',{});return;}
+      var img=new Image();
+      img.onload=function(){var sw=img.naturalWidth||img.width,sh=img.naturalHeight||img.height;encodeSourceLowMemory(img,sw,sh,maxSide,quality,targetBytes,function(){try{img.src='';URL.revokeObjectURL(url);}catch(_){}},cb,0);};
+      img.onerror=function(){try{URL.revokeObjectURL(url);}catch(_){} cb('',{});}; img.src=url;
+    }
+    if(typeof createImageBitmap==='function'){
+      var opts={resizeQuality:'medium'};
+      if(target.w&&target.h){opts.resizeWidth=target.w;opts.resizeHeight=target.h;} else if(target.w){opts.resizeWidth=target.w;}
+      try{opts.imageOrientation='from-image';}catch(_){}
+      var attempt=function(o,second){
+        createImageBitmap(file,o).then(function(bmp){
+          // 有些旧浏览器会忽略 resize 选项。低内存模式下如果仍返回巨幅 Bitmap，立即缩小后释放。
+          encodeSourceLowMemory(bmp,bmp.width,bmp.height,maxSide,quality,targetBytes,function(){try{bmp.close();}catch(_){}},cb,0);
+        }).catch(function(){
+          if(!second){var o2={};if(target.w&&target.h){o2.resizeWidth=target.w;o2.resizeHeight=target.h;}else if(target.w)o2.resizeWidth=target.w;attempt(o2,true);}else fallbackObjectURL();
+        });
+      };
+      attempt(opts,false);
+    } else fallbackObjectURL();
+  });
 }
 /* 保守的前端扫描：仅在识别到足够大的浅色纸张区域时才裁边/拉正；否则只轻度增强。 */
 function scanReportImage(rawData, cb) {
   var img = new Image();
   img.onload = function () {
     try {
-      var ratio = Math.min(1, 1600 / Math.max(img.width, img.height));
+      var ratio = Math.min(1, imageRuntimeProfile().scanSide / Math.max(img.width, img.height));
       var src = document.createElement('canvas');
       src.width = Math.max(1, Math.round(img.width * ratio)); src.height = Math.max(1, Math.round(img.height * ratio));
       var sctx = src.getContext('2d'); sctx.fillStyle = '#fff'; sctx.fillRect(0, 0, src.width, src.height);
@@ -4105,15 +4250,17 @@ function enhanceReportPixels(imageData, ctx) {
   ctx.putImageData(imageData, 0, 0);
 }
 function clearReceipt() {
-  if (!state.hasImage && !state.imageData) return;
+  if (!state.hasImage && !state.imageData && !state.rawImageData && !(state.scanMeta && state.scanMeta.status === 'processing')) return;
   if (!confirm('确定清除已上传的日结报表影像吗？\n\n清除后需重新拍照 / 上传；已填报的金额不会丢失。')) return;
+  REPORT_EPOCH++;
   if (currentObjectURL) { URL.revokeObjectURL(currentObjectURL); currentObjectURL = ''; }
   $('preview-img').removeAttribute('src');
-  $('aud-img').removeAttribute('src');
   $('upload-placeholder').style.display = 'block';
   $('img-display').style.display = 'none';
   $('receipt-box').classList.add('empty');
+  if (typeof $('receipt-box').setAttribute === 'function') $('receipt-box').setAttribute('aria-busy','false');
   state.hasImage = false; state.imageData = ''; state.rawImageData = ''; state.scanMeta = null; showingOriginalReport = false;
+  syncFinanceReportImage();
   setReportPreview(false);
   addAudit('清除日结报表影像', '票据原件', '已上传', '已清除');
   updateSteps();
@@ -4756,13 +4903,13 @@ function nextVoidGroupCount(){var m=ensureVoidBatch(),remain=Math.max(0,Number(m
 function reflowVoidBatchCounts(){var m=ensureVoidBatch(),left=Number(m.expected||0);supportFiles('voidInvoice').forEach(function(f){var want=Math.max(1,Math.min(Number(m.groupSize||4),left>0?left:Number(f.receiptCount||m.groupSize||4)));f.receiptCount=want;if(left>0)left-=want;});}
 function pickVoidBatch(source){
   if(state.submitted){alert('交账单已提交，不能再修改作废发票。');return;}var m=ensureVoidBatch();if(m.noBusiness){alert('已确认“今日无作废发票”。如实际有，请先取消该状态。');return;}if(!m.expected){alert('请先填写“本次作废发票（张）”。');var e=$('void-batch-expected');if(e)e.focus();return;}
-  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';if(source==='camera')inp.setAttribute('capture','environment');inp.multiple=(source==='album');inp.style.display='none';inp.onchange=function(ev){handleVoidBatchFiles(ev.target.files,source==='album'?'图库':'拍照');try{inp.remove();}catch(_){}};document.body.appendChild(inp);inp.click();
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';if(source==='camera')inp.setAttribute('capture','environment');inp.multiple=(source==='album');inp.style.display='none';inp.onchange=function(ev){handleVoidBatchFiles(ev.target.files,source==='album'?'图库':'拍照');try{inp.remove();}catch(_){}};inp.oncancel=function(){try{inp.remove();}catch(_){}};document.body.appendChild(inp);inp.click();setTimeout(function(){try{if(inp.isConnected)inp.remove();}catch(_){}},5*60*1000);
 }
-function handleVoidBatchFiles(files,src){if(!files||!files.length)return;var list=supportFiles('voidInvoice'),m=ensureVoidBatch(),accepted=0,skipped=0;for(var i=0;i<files.length;i++){var file=files[i];if(!isVoidImage(file)){skipped++;continue;}var cnt=nextVoidGroupCount();var rec={data:'',name:file.name||('作废发票第'+(list.length+1)+'组'),size:(file.size/1024).toFixed(0)+' KB',status:'processing',receiptCount:cnt,auditReview:{status:'pending',reason:'',at:'',by:''}};list.push(rec);accepted++;addAudit(src+'上传作废发票批量照片','第 '+list.length+' 组','',cnt+' 张发票 · '+rec.size);compressToDataURL(file,2000,.82,(function(rec){return function(data){rec.data=data||'';rec.status=data?'ready':'failed';if(!data)floatToast('这组作废发票照片处理失败，请重拍。','照片处理失败','#fef2f2','#b91c1c','#fecaca');renderVoidBatch();renderSupportAttachments();renderAudSupportAttachments();renderFinanceAttachmentControls();queueSave();};})(rec));}renderVoidBatch();renderSupportAttachments();renderAudSupportAttachments();renderFinanceAttachmentControls();queueSave();if(accepted>1)floatToast('已加入 '+accepted+' 组作废发票照片'+(skipped?'，跳过 '+skipped+' 个非图片文件。':'。'),'批量照片已加入','#ecfdf5','#166534','#86efac');}
+function handleVoidBatchFiles(files,src){if(!files||!files.length)return;var list=supportFiles('voidInvoice'),m=ensureVoidBatch(),accepted=0,skipped=0;for(var i=0;i<files.length;i++){var file=files[i];if(!isVoidImage(file)){skipped++;continue;}var cnt=nextVoidGroupCount();var rec={data:'',name:file.name||('作废发票第'+(list.length+1)+'组'),size:(file.size/1024).toFixed(0)+' KB',status:'processing',receiptCount:cnt,auditReview:{status:'pending',reason:'',at:'',by:''}};list.push(rec);accepted++;addAudit(src+'上传作废发票批量照片','第 '+list.length+' 组','',cnt+' 张发票 · '+rec.size);compressToDataURL(file,1600,.76,(function(rec){return function(data,meta){rec.data=data||'';rec.thumb=(meta&&meta.thumb)||'';rec.status=data?'ready':'failed';if(!data)floatToast('这组作废发票照片处理失败，请重拍。','照片处理失败','#fef2f2','#b91c1c','#fecaca');renderVoidBatch();renderSupportAttachments();renderAudSupportAttachments();renderFinanceAttachmentControls();queueSave();};})(rec));}renderVoidBatch();renderSupportAttachments();renderAudSupportAttachments();renderFinanceAttachmentControls();queueSave();if(accepted>1)floatToast('已加入 '+accepted+' 组作废发票照片'+(skipped?'，跳过 '+skipped+' 个非图片文件。':'。'),'批量照片已加入','#ecfdf5','#166534','#86efac');}
 function setVoidGroupCount(i,v){if(state.submitted)return;var f=supportFiles('voidInvoice')[Number(i)],m=ensureVoidBatch();if(!f)return;f.receiptCount=Math.max(1,Math.min(Number(m.groupSize||4),Number(v||1)));renderVoidBatch();queueSave();}
 function removeVoidBatchGroup(i){if(state.submitted){alert('交账单已提交，不能删除。');return;}var list=supportFiles('voidInvoice'),f=list[Number(i)];if(!f)return;if(!confirm('删除第 '+(Number(i)+1)+' 组作废发票照片？'))return;list.splice(Number(i),1);reflowVoidBatchCounts();renderVoidBatch();renderSupportAttachments();renderAudSupportAttachments();queueSave();}
 function viewVoidBatchGroup(i){var list=readySupportFiles('voidInvoice'),f=supportFiles('voidInvoice')[Number(i)];if(!f||!f.data)return;var k=Math.max(0,list.indexOf(f));if(SEC&&SEC.role==='finance'&&(state.imageData||state.rawImageData)){compareSupportAttachment('voidInvoice',k);return;}if(SEC&&SEC.role==='cashier'&&state.submitted&&(state.imageData||state.rawImageData)){openCashierAttachmentCompare({kind:'support',group:'voidInvoice',fileIndex:k});return;}viewVoidCorner(list.map(function(x){return x.data;}),k,'作废发票批量照片 · 第 '+(Number(i)+1)+' 组','glass');}
-function renderVoidBatch(){var box=$('void-batch-groups');if(!box)return;var m=ensureVoidBatch(),list=supportFiles('voidInvoice'),shot=voidShotCount(),exp=Number(m.expected||0),remain=Math.max(0,exp-shot);var ei=$('void-batch-expected');if(ei&&document.activeElement!==ei)ei.value=exp||'';var s4=$('void-size-4'),s6=$('void-size-6');if(s4)s4.classList.toggle('on',m.groupSize===4);if(s6)s6.classList.toggle('on',m.groupSize===6);var nb=$('void-none');if(nb)nb.classList.toggle('on',!!m.noBusiness);if($('void-shot-count'))$('void-shot-count').innerText=shot;if($('void-expected-count'))$('void-expected-count').innerText=exp;var rem=$('void-remaining'),st=$('void-batch-state'),prog=$('void-progress');if(m.noBusiness){if(rem)rem.innerText='今日已确认无作废发票';if(st){st.innerText='无作废发票';st.className='void-batch-state ok';}}else if(exp>0&&shot===exp){if(rem)rem.innerText='✓ 数量一致';if(st){st.innerText='已拍齐';st.className='void-batch-state ok';}}else if(exp>0){if(rem)rem.innerText=shot>exp?('多拍 '+(shot-exp)+' 张，请调整本组张数'):('还差 '+remain+' 张');if(st){st.innerText=shot?'拍摄中':'待拍摄';st.className='void-batch-state warn';}}else{if(rem)rem.innerText='请先填写数量';if(st){st.innerText='未登记';st.className='void-batch-state';}}if(prog)prog.classList.toggle('ok',m.noBusiness||(exp>0&&shot===exp));if(!list.length){box.innerHTML='<div class="void-empty">'+(m.noBusiness?'今日已确认无作废发票。':'还没有批量照片。填数量后按 4 张一组拍即可。')+'</div>';return;}var html='',start=1;list.forEach(function(f,i){var cnt=Math.max(1,Number(f.receiptCount||1)),end=start+cnt-1,opts='';for(var n=1;n<=m.groupSize;n++)opts+='<option value="'+n+'"'+(n===cnt?' selected':'')+'>'+n+' 张</option>';html+='<div class="void-group">'+(f.data?'<img src="'+esc(f.data)+'" alt="作废发票第'+(i+1)+'组" onclick="viewVoidBatchGroup('+i+')">':'<div style="width:70px;height:70px;border-radius:8px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#64748b;">'+(f.status==='failed'?'处理失败':'处理中…')+'</div>')+'<div class="void-group-main"><div class="void-group-name">第 '+(i+1)+' 组 · 发票 '+start+'–'+end+'</div><div class="void-group-meta">'+esc(f.name||'批量照片')+' · '+esc(f.size||'')+'</div><div class="void-group-tools"><select '+(state.submitted?'disabled':'')+' onchange="setVoidGroupCount('+i+',this.value)">'+opts+'</select>'+(f.data?'<button type="button" onclick="viewVoidBatchGroup('+i+')">查看放大</button>':'')+(!state.submitted?'<button type="button" onclick="removeVoidBatchGroup('+i+')">删除</button>':'')+'</div></div></div>';start=end+1;});box.innerHTML=html;}
+function renderVoidBatch(){var box=$('void-batch-groups');if(!box)return;var m=ensureVoidBatch(),list=supportFiles('voidInvoice'),shot=voidShotCount(),exp=Number(m.expected||0),remain=Math.max(0,exp-shot);var ei=$('void-batch-expected');if(ei&&document.activeElement!==ei)ei.value=exp||'';var s4=$('void-size-4'),s6=$('void-size-6');if(s4)s4.classList.toggle('on',m.groupSize===4);if(s6)s6.classList.toggle('on',m.groupSize===6);var nb=$('void-none');if(nb)nb.classList.toggle('on',!!m.noBusiness);if($('void-shot-count'))$('void-shot-count').innerText=shot;if($('void-expected-count'))$('void-expected-count').innerText=exp;var rem=$('void-remaining'),st=$('void-batch-state'),prog=$('void-progress');if(m.noBusiness){if(rem)rem.innerText='今日已确认无作废发票';if(st){st.innerText='无作废发票';st.className='void-batch-state ok';}}else if(exp>0&&shot===exp){if(rem)rem.innerText='✓ 数量一致';if(st){st.innerText='已拍齐';st.className='void-batch-state ok';}}else if(exp>0){if(rem)rem.innerText=shot>exp?('多拍 '+(shot-exp)+' 张，请调整本组张数'):('还差 '+remain+' 张');if(st){st.innerText=shot?'拍摄中':'待拍摄';st.className='void-batch-state warn';}}else{if(rem)rem.innerText='请先填写数量';if(st){st.innerText='未登记';st.className='void-batch-state';}}if(prog)prog.classList.toggle('ok',m.noBusiness||(exp>0&&shot===exp));if(!list.length){box.innerHTML='<div class="void-empty">'+(m.noBusiness?'今日已确认无作废发票。':'还没有批量照片。填数量后按 4 张一组拍即可。')+'</div>';return;}var html='',start=1;list.forEach(function(f,i){var cnt=Math.max(1,Number(f.receiptCount||1)),end=start+cnt-1,opts='';for(var n=1;n<=m.groupSize;n++)opts+='<option value="'+n+'"'+(n===cnt?' selected':'')+'>'+n+' 张</option>';html+='<div class="void-group">'+(f.data?'<img src="'+esc(safeThumbData(f))+'" alt="作废发票第'+(i+1)+'组" onclick="viewVoidBatchGroup('+i+')">':'<div style="width:70px;height:70px;border-radius:8px;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#64748b;">'+(f.status==='failed'?'处理失败':'处理中…')+'</div>')+'<div class="void-group-main"><div class="void-group-name">第 '+(i+1)+' 组 · 发票 '+start+'–'+end+'</div><div class="void-group-meta">'+esc(f.name||'批量照片')+' · '+esc(f.size||'')+'</div><div class="void-group-tools"><select '+(state.submitted?'disabled':'')+' onchange="setVoidGroupCount('+i+',this.value)">'+opts+'</select>'+(f.data?'<button type="button" onclick="viewVoidBatchGroup('+i+')">查看放大</button>':'')+(!state.submitted?'<button type="button" onclick="removeVoidBatchGroup('+i+')">删除</button>':'')+'</div></div></div>';start=end+1;});box.innerHTML=html;}
 
 /* ================= 补充附件：作废发票原件 / 其他附件 ================= */
 var SUPPORT_LABEL = { voidInvoice: '作废发票原件', other: '其他附件' };
@@ -4808,9 +4955,9 @@ function handleSupportFiles(type, files, src) {
     var rec = { data:'', name:file.name || SUPPORT_LABEL[type], size:(file.size/1024).toFixed(0)+' KB', status:'processing', auditReview:{status:'pending',reason:'',at:'',by:''} };
     list.push(rec); accepted++;
     addAudit(src + '上传' + SUPPORT_LABEL[type], '第 ' + list.length + ' 张', '', rec.name + '（' + rec.size + '）');
-    compressToDataURL(file, 1800, 0.78, (function (rec, type) {
-      return function (data) {
-        rec.data = data || ''; rec.status = data ? 'ready' : 'failed';
+    compressToDataURL(file, 1500, 0.76, (function (rec, type) {
+      return function (data, meta) {
+        rec.data = data || ''; rec.thumb = (meta && meta.thumb) || ''; rec.status = data ? 'ready' : 'failed';
         if (!data) floatToast('照片「' + esc(rec.name) + '」处理失败，请换 JPG/PNG 或重新拍一张。', '附件处理失败', '#fef2f2', '#b91c1c', '#fecaca');
         renderSupportAttachments(); renderAudSupportAttachments(); renderFinanceAttachmentControls(); queueSave();
       };
@@ -4841,7 +4988,7 @@ function renderSupportAttachments() {
     for (var i=0;i<list.length;i++) {
       var f=list[i];
       html += '<div class="att-thumb-item">' +
-        (f.data ? '<img src="'+esc(f.data)+'" alt="'+esc(SUPPORT_LABEL[type])+' '+(i+1)+'" onclick="viewSupportAttachment(\''+type+'\','+i+')">' :
+        (f.data ? '<img src="'+esc(safeThumbData(f))+'" alt="'+esc(SUPPORT_LABEL[type])+' '+(i+1)+'" onclick="viewSupportAttachment(\''+type+'\','+i+')">' :
          '<div class="att-thumb-status '+(f.status==='failed'?'failed':'')+'" '+(f.status==='failed'?'onclick="pickSupportAttachment(\''+type+'\',\'album\')"':'')+'>'+(f.status==='failed'?'处理失败<br>点此重选':'处理中…')+'</div>') +
         '<button class="att-thumb-x" onclick="event.stopPropagation();removeSupportAttachment(\''+type+'\','+i+')" title="删除">×</button></div>';
     }
@@ -4965,7 +5112,7 @@ function renderAudSupportAttachments() {
     var statusCls=r.status==='ok'?' ok':(r.status==='problem'?' problem':'');
     var aArg=item.kind==='support' ? "'"+item.a+"'" : String(item.a);
     html += '<div class="att-audit-item'+cls+'">' +
-      '<div class="att-audit-thumb" onclick="viewAuditAttachment(\''+item.kind+'\','+aArg+','+item.b+','+item.viewIndex+')" title="点击与左侧日结报表对照"><img src="'+esc(item.file.data)+'" alt="附件原件"></div>' +
+      '<div class="att-audit-thumb" onclick="viewAuditAttachment(\''+item.kind+'\','+aArg+','+item.b+','+item.viewIndex+')" title="点击与左侧日结报表对照"><img src="'+esc(safeThumbData(item.file))+'" alt="附件原件"></div>' +
       '<div class="att-audit-main"><div class="att-audit-title"><span>'+esc(item.groupLabel)+'</span><span class="att-audit-status'+statusCls+'">'+statusTxt+'</span></div>' +
       '<div class="att-audit-meta">'+esc(item.title)+(item.meta?' · '+esc(item.meta):'')+(r.at?' · '+esc(r.at):'')+'</div></div>' +
       '<div class="att-audit-actions">' +
@@ -4982,7 +5129,7 @@ function renderAudSupportAttachments() {
 function renderFinanceAttachmentControls(){
   var cmpBtn=$('btn-compare-toggle'); if(!cmpBtn)return;
   var hasAny=auditAttachmentSequence().length>0;
-  cmpBtn.style.display=(hasAny&&state.imageData)?'inline-flex':'none';
+  cmpBtn.style.display=(hasAny&&(state.imageData||state.rawImageData))?'inline-flex':'none';
 }
 
 /* ================= 现金抵减项 ================= */
@@ -5093,9 +5240,10 @@ function handleDeductionFiles(idx, files, src) {
     fs.push(rec);
     accepted++;
     addAudit(src + '存抵减附件', '第 ' + (idx + 1) + ' 项 · 第 ' + fs.length + ' 张', '', rec.name + '（' + rec.size + '）');
-    compressToDataURL(file, 1800, 0.78, (function (rec) {
-      return function (data) {
+    compressToDataURL(file, 1500, 0.76, (function (rec) {
+      return function (data, meta) {
         rec.data = data || '';
+        rec.thumb = (meta && meta.thumb) || '';
         rec.status = data ? 'ready' : 'failed';
         if (!data) alert('照片「' + rec.name + '」处理失败（可能是当前浏览器不支持该图片格式）。\n请从相册选择 JPG/PNG，或重新拍一张。');
         syncDeductHead(state.cashDeductions[idx]);
@@ -5227,12 +5375,12 @@ function cashierAttachmentDescriptor(item){
     var d=(state.cashDeductions||[])[item.deductionIndex]; if(!d) return null;
     var fs=readyDeductFiles(d); if(!fs.length) return null;
     var k=Math.max(0,Math.min(item.fileIndex||0,fs.length-1)), f=fs[k];
-    return {data:f.data,label:'现金抵减附件',title:'抵减第 '+(item.deductionIndex+1)+' 项 · '+(DEDUCT_REASON_LABEL[d.reason]||d.reason||'未分类'),meta:fmtDeductEffect(parseCents(d.amount||0))+(f.name?' · '+f.name:''),item:{kind:'deduction',deductionIndex:item.deductionIndex,fileIndex:k}};
+    return {data:f.data,thumb:f.thumb||'',label:'现金抵减附件',title:'抵减第 '+(item.deductionIndex+1)+' 项 · '+(DEDUCT_REASON_LABEL[d.reason]||d.reason||'未分类'),meta:fmtDeductEffect(parseCents(d.amount||0))+(f.name?' · '+f.name:''),item:{kind:'deduction',deductionIndex:item.deductionIndex,fileIndex:k}};
   }
-  if(item.kind==='prepayment'){var pg=ensurePrepayBatch().groups||[],g=pg[item.fileIndex];if(!g||!g.data)return null;var start=1;for(var pi=0;pi<item.fileIndex;pi++)start+=Number(pg[pi].receiptCount||0);var cnt=Math.max(1,Number(g.receiptCount||0));return {data:g.data,label:'住院预交金批量照片',title:'预交金第 '+(item.fileIndex+1)+' 组 · 单据 '+start+'–'+(start+cnt-1),meta:cnt+' 张纸质单据'+(g.size?' · '+g.size:''),item:{kind:'prepayment',fileIndex:item.fileIndex}};}
+  if(item.kind==='prepayment'){var pg=ensurePrepayBatch().groups||[],g=pg[item.fileIndex];if(!g||!g.data)return null;var start=1;for(var pi=0;pi<item.fileIndex;pi++)start+=Number(pg[pi].receiptCount||0);var cnt=Math.max(1,Number(g.receiptCount||0));return {data:g.data,thumb:g.thumb||'',label:'住院预交金批量照片',title:'预交金第 '+(item.fileIndex+1)+' 组 · 单据 '+start+'–'+(start+cnt-1),meta:cnt+' 张纸质单据'+(g.size?' · '+g.size:''),item:{kind:'prepayment',fileIndex:item.fileIndex}};}
   var sf=readySupportFiles(item.group); if(!sf.length) return null;
   var sk=Math.max(0,Math.min(item.fileIndex||0,sf.length-1)), file=sf[sk];
-  return {data:file.data,label:SUPPORT_LABEL[item.group]||'附件',title:(SUPPORT_LABEL[item.group]||'附件')+' · 第 '+(sk+1)+' 张',meta:(file.name||'')+(file.size?' · '+file.size:''),item:{kind:'support',group:item.group,fileIndex:sk}};
+  return {data:file.data,thumb:file.thumb||'',label:SUPPORT_LABEL[item.group]||'附件',title:(SUPPORT_LABEL[item.group]||'附件')+' · 第 '+(sk+1)+' 张',meta:(file.name||'')+(file.size?' · '+file.size:''),item:{kind:'support',group:item.group,fileIndex:sk}};
 }
 function renderCashierSubmittedAttachments(){
   var wrap=$('cashier-submitted-review'), box=$('cashier-submitted-attachments'), cnt=$('cashier-submitted-count');
@@ -5241,7 +5389,7 @@ function renderCashierSubmittedAttachments(){
   var seq=auditAttachmentSequence(); wrap.classList.add('show'); if(cnt)cnt.innerText=seq.length+' 张';
   if(!seq.length){box.innerHTML='<div class="csr-empty">本单没有上传附件。日结报表仍可在左侧查看。</div>';return;}
   var html='';
-  seq.forEach(function(item,i){var d=cashierAttachmentDescriptor(item);if(!d)return;html+='<div class="csr-item" onclick="openCashierAttachmentCompareByIndex('+i+')"><div class="csr-thumb"><img src="'+esc(d.data)+'" alt="附件"></div><div class="csr-main"><div class="csr-name">'+esc(d.title)+'</div><div class="csr-meta">'+esc(d.meta||'已上传附件')+'</div></div><span class="csr-action">对照 ›</span></div>';});
+  seq.forEach(function(item,i){var d=cashierAttachmentDescriptor(item);if(!d)return;html+='<div class="csr-item" onclick="openCashierAttachmentCompareByIndex('+i+')"><div class="csr-thumb"><img src="'+esc(d.thumb||LOWMEM_THUMB_PLACEHOLDER)+'" alt="附件"></div><div class="csr-main"><div class="csr-name">'+esc(d.title)+'</div><div class="csr-meta">'+esc(d.meta||'已上传附件')+'</div></div><span class="csr-action">对照 ›</span></div>';});
   box.innerHTML=html||'<div class="csr-empty">暂无可查看附件。</div>';
 }
 function openCashierAttachmentCompareByIndex(i){var seq=auditAttachmentSequence();if(!seq.length)return;var n=Math.max(0,Math.min(Number(i)||0,seq.length-1));openCashierAttachmentCompare(seq[n]);}
@@ -5298,7 +5446,7 @@ document.addEventListener('keydown', function (e) {
 (function initAuditCompareSwipe(){
   function bind(){
     var box=$('finance-receipt-box');
-    if(!box)return;
+    if(!box || typeof box.querySelector!=='function')return;
     var canvas=box.querySelector('.img-canvas');
     if(!canvas||canvas.dataset.swipeBound==='1')return;
     canvas.dataset.swipeBound='1';
@@ -5415,7 +5563,7 @@ function renderCashDeductions() {
       // 附件区：有附件 → 首张缩略图（点开看大图）+ 绿色角标（多张显示 ✓N）；没附件 → 📷 空位（点击即拍）；
       //          首张仍在压缩/失败 → 显示「处理中 / 重拍」占位，绝不静默空白
       var attFirst = hasAtt && fs[0].data
-          ? '<img class="cd-thumb" src="' + esc(fs[0].data) + '" alt="抵减附件 ' + (i + 1) + '" onclick="viewDeductionImage(' + i + ',0)">' +
+          ? '<img class="cd-thumb" src="' + esc(safeThumbData(fs[0])) + '" alt="抵减附件 ' + (i + 1) + '" onclick="viewDeductionImage(' + i + ',0)">' +
             '<span class="cd-att-flag" title="附件已保存 ' + fs.length + ' 张">✓' + (fs.length > 1 ? fs.length : '') + '</span>'
         : hasAtt
           ? '<div class="cd-thumb-empty cd-thumb-busy" onclick="pickDeductionImage(' + i + ')" title="' + (fs[0].status === 'failed' ? '照片处理失败，点击重拍' : '照片压缩中…点击可重拍') + '">' +
@@ -5444,7 +5592,7 @@ function renderCashDeductions() {
         for (var k = 0; k < fs.length; k++) {
           html += '<div class="cd-att-item">' +
             (fs[k].data
-              ? '<img src="' + esc(fs[k].data) + '" alt="附件 ' + (k + 1) + '" onclick="viewDeductionImage(' + i + ',' + k + ')">'
+              ? '<img src="' + esc(safeThumbData(fs[k])) + '" alt="附件 ' + (k + 1) + '" onclick="viewDeductionImage(' + i + ',' + k + ')">'
               : '<div class="cd-thumb-busy" style="width:46px;height:46px;border-radius:var(--r-sm);border:1px dashed var(--c-danger-soft);display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;line-height:1.35;color:var(--c-danger);background:var(--c-danger-light);cursor:pointer;" onclick="pickDeductionImage(' + i + ')" title="' + (fs[k].status === 'failed' ? '照片处理失败，点击重拍' : '压缩中…') + '">' + (fs[k].status === 'failed' ? '失败<br>重拍' : '压缩中…') + '</div>') +
             '<button class="cd-att-x" onclick="removeDeductionImage(' + i + ',' + k + ')" title="删除这张"><svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:11px;height:11px;"><use href="#i-x"/></svg></button>' +
             '</div>';
@@ -5527,7 +5675,7 @@ function renderVoids() {
       }
       var slot, st, stateTxt;
       if (first) {
-        slot = '<img class="cd-thumb" src="' + esc(first.data) + '" alt="作废发票 ' + (i + 1) + '" onclick="viewVoidPhoto(' + i + ',0)" style="cursor:zoom-in;">';
+        slot = '<img class="cd-thumb" src="' + esc(safeThumbData(first)) + '" alt="作废发票 ' + (i + 1) + '" onclick="viewVoidPhoto(' + i + ',0)" style="cursor:zoom-in;">';
         st = 'ok'; stateTxt = '<span style="color:#047857;font-weight:600;">✓ 照片已登记</span>';
       } else if (failed) {
         slot = '<div class="cd-thumb-empty cd-thumb-busy" onclick="uploadVoidPhotos(' + i + ')" title="照片处理失败，点击重新上传">' +
@@ -5569,7 +5717,7 @@ function renderAudVoids() {
     var ps = voidPhotos(v), first = null;
     for (var k = 0; k < ps.length; k++) if (ps[k] && ps[k].data) { first = ps[k]; break; }
     var imgCell = first
-      ? '<img class="void-thumb" src="' + esc(first.data) + '" alt="作废发票 ' + (i + 1) + '" onclick="viewVoidPhoto(' + i + ',' + k + ');event.stopPropagation();">'
+      ? '<img class="void-thumb" src="' + esc(safeThumbData(first)) + '" alt="作废发票 ' + (i + 1) + '" onclick="viewVoidPhoto(' + i + ',' + k + ');event.stopPropagation();">'
       : '<div class="void-thumb-empty">…</div>';
     html += '<div class="void-aud-row' + (on ? ' checked' : '') + '" onclick="toggleVoidCheck(' + i + ')">' +
       imgCell +
@@ -5620,7 +5768,13 @@ function gotoStep(n) {
     var p = $('pane-' + i);
     if (p) p.className = 'pane' + ((i === cur || cur === 0) ? ' on' : '');
     var st = $('step-' + i);
-    if (st) st.className = 'step' + (state.guided && i === state.step ? ' on' : '');
+    if (st) {
+      st.className = 'step' + (state.guided && i === state.step ? ' on' : '');
+      if (typeof st.setAttribute === 'function' && typeof st.removeAttribute === 'function') {
+        if (state.guided && i === state.step) st.setAttribute('aria-current','step');
+        else st.removeAttribute('aria-current');
+      }
+    }
   }
   $('btn-prev').style.display = (state.guided && state.step > 1) ? '' : 'none';
   $('foot-hint').innerText = state.guided ? ('第 ' + state.step + ' 步 / 共 3 步') : '熟练模式：全部内容已展开';
@@ -5662,6 +5816,10 @@ function updateSteps() {
       if (state.guided && i === state.step) base += ' on';
       else if (stepDone(i)) base += ' done';
       st.className = base;
+      if (typeof st.setAttribute !== 'function' || typeof st.removeAttribute !== 'function' || typeof st.querySelector !== 'function') continue;
+      st.setAttribute('aria-label', i + '，' + (st.querySelector('.st-t') ? st.querySelector('.st-t').innerText : ('第 ' + i + ' 步')) + '，' + subs[i]);
+      if (state.guided && i === state.step) st.setAttribute('aria-current','step');
+      else st.removeAttribute('aria-current');
     }
   }
 }
@@ -5728,9 +5886,14 @@ function queueSave() {
         } else {
           markSaved(false, false);
           console.warn('暂存失败', err);
+          toastWarn('加密暂存写入失败。当前录入仍保留在页面内存中，请不要刷新；可稍后再次点“暂存”重试。');
         }
       }
-    }).catch(function () {});
+    }).catch(function (err) {
+      markSaved(false, false);
+      console.warn('加密暂存失败', err);
+      toastWarn('加密暂存失败。当前录入仍保留在页面内存中，请不要刷新，并再次点“暂存”重试。');
+    });
   });
   return saveChain;
 }
@@ -5760,7 +5923,7 @@ function buildSnapshot(lite) {
       var fs = deductFiles(d);
       return {
         id: d.id, amount: d.amount, reason: d.reason,
-        files: lite ? [] : fs.map(function (f) { var r=attachmentReview(f); return { data: f.data, name: f.name, size: f.size, auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by} }; }),
+        files: lite ? [] : fs.map(function (f) { var r=attachmentReview(f); return { data: f.data, thumb: f.thumb||'', name: f.name, size: f.size, auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by} }; }),
         data: lite ? '' : (fs.length ? fs[0].data : ''),
         name: lite ? '' : (fs.length ? fs[0].name : ''),
         size: lite ? '' : (fs.length ? fs[0].size : '')
@@ -5768,11 +5931,11 @@ function buildSnapshot(lite) {
     }),
     deductSeq: state.deductSeq || 0,
     supportAttachments: {
-      voidInvoice: lite ? [] : supportFiles('voidInvoice').map(function(f){ var r=attachmentReview(f); return {data:f.data||'',name:f.name||'',size:f.size||'',status:f.status||'ready',receiptCount:Number(f.receiptCount||1),auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}}; }),
-      other: lite ? [] : supportFiles('other').map(function(f){ var r=attachmentReview(f); return {data:f.data||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}}; })
+      voidInvoice: lite ? [] : supportFiles('voidInvoice').map(function(f){ var r=attachmentReview(f); return {data:f.data||'',thumb:f.thumb||'',name:f.name||'',size:f.size||'',status:f.status||'ready',receiptCount:Number(f.receiptCount||1),auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}}; }),
+      other: lite ? [] : supportFiles('other').map(function(f){ var r=attachmentReview(f); return {data:f.data||'',thumb:f.thumb||'',name:f.name||'',size:f.size||'',status:f.status||'ready',auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}}; })
     },
     voidInvoiceBatch:(function(){var m=ensureVoidBatch();return {expected:m.expected||0,groupSize:m.groupSize||4,noBusiness:!!m.noBusiness,seq:m.seq||0};})(),
-    prepaymentBatch:(function(){var p=ensurePrepayBatch();return {expected:p.expected||0,groupSize:p.groupSize||4,noBusiness:!!p.noBusiness,seq:p.seq||0,physicalReceived:!!p.physicalReceived,physicalReceivedCount:p.physicalReceivedCount||0,physicalReceivedAt:p.physicalReceivedAt||'',physicalReceivedBy:p.physicalReceivedBy||'',groups:(p.groups||[]).map(function(g){var r=attachmentReview(g);return {id:g.id||'',data:lite?'':(g.data||''),name:g.name||'',size:g.size||'',status:g.status||'ready',receiptCount:Number(g.receiptCount||0),auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};})};})()
+    prepaymentBatch:(function(){var p=ensurePrepayBatch();return {expected:p.expected||0,groupSize:p.groupSize||4,noBusiness:!!p.noBusiness,seq:p.seq||0,physicalReceived:!!p.physicalReceived,physicalReceivedCount:p.physicalReceivedCount||0,physicalReceivedAt:p.physicalReceivedAt||'',physicalReceivedBy:p.physicalReceivedBy||'',groups:(p.groups||[]).map(function(g){var r=attachmentReview(g);return {id:g.id||'',data:lite?'':(g.data||''),thumb:lite?'':(g.thumb||''),name:g.name||'',size:g.size||'',status:g.status||'ready',receiptCount:Number(g.receiptCount||0),auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by}};})};})()
   };
   for (var i = 0; i < FIELDS.length; i++) d[FIELDS[i]] = $(FIELDS[i]).value;
   return d;
@@ -5795,6 +5958,7 @@ function floatToast(msg, title, bg, fg, bd) {
   if (old) { try { old.remove(); } catch (_) {} }
   var d = document.createElement('div');
   d.id = 'quota-toast';
+  d.setAttribute('role','alert'); d.setAttribute('aria-live','assertive');
   d.style.cssText = 'position:fixed;left:50%;bottom:84px;transform:translateX(-50%);z-index:260;max-width:92vw;background:' + (bg || '#fffbeb') + ';color:' + (fg || '#92400e') + ';border:1px solid ' + (bd || '#fde68a') + ';padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.16);font-size:13px;line-height:1.65;animation:paneFadeIn var(--t-mid) ease;';
   d.innerHTML = (title ? '<b style="display:block;margin-bottom:4px;">' + title + '</b>' : '') + msg;
   document.body.appendChild(d);
@@ -5830,7 +5994,7 @@ function applySnapshot(d) {
     // 老快照只有 data（无 files）时，deductFiles 会自动把首张包装进 files
     var rec = {
       id: x.id, amount: x.amount || '', reason: x.reason || CASH_DEDUCT_REASONS[0],
-      files: (x.files || []).map(function (f) { return { data: f.data || '', name: f.name || '附件', size: f.size || '', auditReview:f.auditReview || {status:'pending',reason:'',at:'',by:''} }; }),
+      files: (x.files || []).map(function (f) { return { data: f.data || '', thumb: f.thumb || '', name: f.name || '附件', size: f.size || '', auditReview:f.auditReview || {status:'pending',reason:'',at:'',by:''} }; }),
       data: x.data || '', name: x.name || '', size: x.size || ''
     };
     syncDeductHead(rec);
@@ -5839,11 +6003,11 @@ function applySnapshot(d) {
   state.deductSeq = d.deductSeq || 0;
   var sa = d.supportAttachments || {};
   state.supportAttachments = {
-    voidInvoice: (sa.voidInvoice || []).map(function(f){return {data:f.data||'',name:f.name||'作废发票原件',size:f.size||'',status:f.data?'ready':(f.status||'failed'),receiptCount:Number(f.receiptCount||1),auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};}),
-    other: (sa.other || []).map(function(f){return {data:f.data||'',name:f.name||'其他附件',size:f.size||'',status:f.data?'ready':(f.status||'failed'),auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};})
+    voidInvoice: (sa.voidInvoice || []).map(function(f){return {data:f.data||'',thumb:f.thumb||'',name:f.name||'作废发票原件',size:f.size||'',status:f.data?'ready':(f.status||'failed'),receiptCount:Number(f.receiptCount||1),auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};}),
+    other: (sa.other || []).map(function(f){return {data:f.data||'',thumb:f.thumb||'',name:f.name||'其他附件',size:f.size||'',status:f.data?'ready':(f.status||'failed'),auditReview:f.auditReview||{status:'pending',reason:'',at:'',by:''}};})
   };
   var vm=d.voidInvoiceBatch||{}; state.voidInvoiceBatch={expected:Number(vm.expected||0),groupSize:Number(vm.groupSize||4)||4,noBusiness:!!vm.noBusiness,seq:Number(vm.seq||0)};
-  var pp=d.prepaymentBatch||{}; state.prepaymentBatch={expected:Number(pp.expected||0),groupSize:Number(pp.groupSize||4)||4,noBusiness:!!pp.noBusiness,seq:Number(pp.seq||0),physicalReceived:!!pp.physicalReceived,physicalReceivedCount:Number(pp.physicalReceivedCount||0),physicalReceivedAt:pp.physicalReceivedAt||'',physicalReceivedBy:pp.physicalReceivedBy||'',groups:(pp.groups||[]).map(function(g){return {id:g.id||'',data:g.data||'',name:g.name||'预交金批量照片',size:g.size||'',status:g.data?'ready':(g.status||'processing'),receiptCount:Number(g.receiptCount||0),auditReview:g.auditReview||{status:'pending',reason:'',at:'',by:''}};})};
+  var pp=d.prepaymentBatch||{}; state.prepaymentBatch={expected:Number(pp.expected||0),groupSize:Number(pp.groupSize||4)||4,noBusiness:!!pp.noBusiness,seq:Number(pp.seq||0),physicalReceived:!!pp.physicalReceived,physicalReceivedCount:Number(pp.physicalReceivedCount||0),physicalReceivedAt:pp.physicalReceivedAt||'',physicalReceivedBy:pp.physicalReceivedBy||'',groups:(pp.groups||[]).map(function(g){return {id:g.id||'',data:g.data||'',thumb:g.thumb||'',name:g.name||'预交金批量照片',size:g.size||'',status:g.data?'ready':(g.status||'processing'),receiptCount:Number(g.receiptCount||0),auditReview:g.auditReview||{status:'pending',reason:'',at:'',by:''}};})};
   if (d.imageData || d.rawImageData) {
     state.rawImageData = d.rawImageData || d.imageData || '';
     // 迁移已暂存的旧裁切版：旧版可能误裁报表边缘，恢复时始终回到完整原图。
@@ -5854,7 +6018,7 @@ function applySnapshot(d) {
       : (d.scanMeta || { status: 'ready', mode: d.rawImageData ? 'enhanced-original' : 'original-fallback' });
     state.hasImage = true;
     $('preview-img').src = state.imageData;
-    $('aud-img').src = state.imageData;
+    syncFinanceReportImage();
     $('upload-placeholder').style.display = 'none';
     $('img-display').style.display = 'flex';
     $('receipt-box').classList.remove('empty');
@@ -5873,6 +6037,7 @@ function applySnapshot(d) {
   hydratePrepayDraftMedia();
   saveActiveDailyDraft();
   renderCashierHome();
+  if (SEC.role === 'finance') renderFinanceHome();
   addAudit('恢复本机暂存', '会话', '', 'AES 解密成功，' + AUDIT.length + ' 条留痕');
 }
 function saveDraft(showAlert) {
@@ -5983,6 +6148,7 @@ function confirmSubmit() {
   $('voucher-block').style.display = 'none';
   // 显示锁定 banner
   $('lock-banner').classList.add('show');
+  updateSteps();
   renderFinance();
   renderAuditTable();
   lockCashier('已提交财务审核，等待复核。如需修改请先由财务端「驳回重交」。');
@@ -6002,6 +6168,7 @@ function showSubmitToast() {
   if (old) { try { old.remove(); } catch (_) { old.style.display = 'none'; } }
   var d = document.createElement('div');
   d.id = 'submit-toast';
+  d.setAttribute('role','status'); d.setAttribute('aria-live','polite');
   d.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:300;background:linear-gradient(135deg,#059669,#047857);color:#fff;padding:18px 28px;border-radius:14px;box-shadow:0 12px 32px rgba(5,150,105,.5);font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;animation:paneFadeIn var(--t-mid) ease;';
   d.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;"><polyline points="20 6 9 17 4 12"></polyline></svg><span>已提交财务审核 · 请等待财务复核</span>';
   // 注意：不能用 $('body')（页面无 id="body" 元素，真浏览器里 getElementById 返回 null 会抛错）
@@ -6097,10 +6264,8 @@ function updateCheckProgress() {
 
 function renderFinance() {
   updateAuditAmounts();
-  // 关键：把 state.imageData 同步到 aud-img（修复"日结表显示黑的"bug）
-  var ai = $('aud-img');
-  if (ai && state.imageData && ai.src !== state.imageData) ai.src = state.imageData;
-  if (ai && !state.imageData) { try { ai.removeAttribute('src'); } catch (_) {} ai.src = ''; }
+  // 每次进入审核详情都重新同步；扫描图损坏或缺失时自动回退完整原图。
+  syncFinanceReportImage();
 
   var total = actualTotalCents();
   var card = $('aud-verdict-card'), title = $('aud-verdict-title');
@@ -6156,7 +6321,7 @@ function renderAudDeductions() {
     var fs = readyDeductFiles(d);
     var thumb = '<div class="cd-att">' +
       (fs.length
-        ? '<img class="cd-thumb" src="' + esc(fs[0].data) + '" alt="抵减附件">' +
+        ? '<img class="cd-thumb" src="' + esc(safeThumbData(fs[0])) + '" alt="抵减附件">' +
           '<span class="cd-att-flag">✓' + (fs.length > 1 ? fs.length : '') + '</span>'
         : '<div class="cd-thumb-empty">…</div>') +
       '</div>';
@@ -6168,7 +6333,7 @@ function renderAudDeductions() {
     if (fs.length > 1) {
       html += '<div class="cd-att-strip" style="margin:0 0 8px;">';
       for (var k = 0; k < fs.length; k++) {
-        html += '<div class="cd-att-item"><img src="' + esc(fs[k].data) + '" alt="附件 ' + (k + 1) + '" onclick="viewDeductionImage(' + i + ',' + k + ')"></div>';
+        html += '<div class="cd-att-item"><img src="' + esc(safeThumbData(fs[k])) + '" alt="附件 ' + (k + 1) + '" onclick="viewDeductionImage(' + i + ',' + k + ')"></div>';
       }
       html += '</div>';
     }
@@ -6264,7 +6429,7 @@ function approveBill() {
         var fs = deductFiles(x);
         return {
           amount: parseCents(x.amount), reason: x.reason,
-          files: fs.map(function (f) { var r=attachmentReview(f); return { data: f.data, name: f.name, size: f.size, auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by} }; }),
+          files: fs.map(function (f) { var r=attachmentReview(f); return { data: f.data, thumb: f.thumb||'', name: f.name, size: f.size, auditReview:{status:r.status,reason:r.reason,at:r.at,by:r.by} }; }),
           attCount: fs.length,
           data: fs.length ? fs[0].data : '', name: fs.length ? fs[0].name : '', size: fs.length ? fs[0].size : ''
         };
@@ -6514,6 +6679,12 @@ function refreshAuditCockpit() {
 
 /* ================= 初始化 ================= */
 (function init() {
+  /* 单文件也按应用语义初始化：避免按钮被外层表单误提交，并让弹层/状态可被读屏识别。 */
+  Array.prototype.forEach.call(document.querySelectorAll('button'), function(btn){ if(btn && typeof btn.hasAttribute==='function' && !btn.hasAttribute('type'))btn.type='button'; });
+  ['finance-sample-modal','void-viewer','void-corner','report-view','reject-modal','submit-modal','drawer','lock-mask'].forEach(function(id){
+    var el=$(id); if(!el || typeof el.setAttribute!=='function')return; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true');
+  });
+  var cryptoFlag=$('crypto-flag'); if(cryptoFlag && typeof cryptoFlag.setAttribute==='function'){cryptoFlag.setAttribute('role','status');cryptoFlag.setAttribute('aria-live','polite');}
   SEC.cryptoOK = !!(window.crypto && window.crypto.subtle);
   SEC.secure = (window.isSecureContext === true);
   $('crypto-flag').innerHTML = SEC.cryptoOK
@@ -6586,9 +6757,9 @@ function refreshAuditCockpit() {
   $('job-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('pin-input').focus(); });
   $('pin-input').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
   window.addEventListener('beforeunload', function (e) {
-    if (state.hasImage && !SEC.key) {
+    if (SEC.unlocked && !SEC.key && sessionHasLiveData()) {
       e.preventDefault();
-      e.returnValue = '票据影像未加密暂存，离开将丢失。';
+      e.returnValue = '当前录入尚未加密暂存，离开将丢失。';
       return e.returnValue;
     }
   });
