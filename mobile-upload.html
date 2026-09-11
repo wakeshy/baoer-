@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f6aa6">
+<title>收账系统 · 手机一键发布</title>
+<style>
+:root{--p:#0f6aa6;--p2:#0b5b91;--ok:#087a55;--warn:#a16207;--bad:#b42318;--bg:#f4f7fb;--card:#fff;--line:#dce5ef;--text:#152033;--muted:#66758a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:14px 12px calc(30px + env(safe-area-inset-bottom))}
+.hero{background:linear-gradient(145deg,#0f6aa6,#0b5b91);color:#fff;border-radius:18px;padding:18px 16px;box-shadow:0 10px 26px rgba(15,106,166,.22)}
+.hero small{display:block;opacity:.8;font-size:11px}.hero h1{font-size:22px;margin:5px 0 6px}.hero p{margin:0;font-size:12px;line-height:1.6;opacity:.92}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px;box-shadow:0 4px 14px rgba(28,43,63,.05)}
+.step{display:flex;gap:10px;align-items:flex-start}.num{flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:#e9f4fb;color:var(--p);display:flex;align-items:center;justify-content:center;font-weight:900}
+.step-main{flex:1;min-width:0}.step-main b{font-size:14px}.hint{font-size:10.5px;color:var(--muted);line-height:1.55;margin-top:4px}
+input[type=password],input[type=text]{width:100%;height:48px;border:1px solid #c8d5e3;border-radius:11px;padding:0 12px;font-size:16px;outline:none;margin-top:9px;background:#fff}
+input:focus{border-color:#69a9d2;box-shadow:0 0 0 3px #e6f3fb}
+.filebox{margin-top:10px;border:1.5px dashed #9fc5dd;border-radius:13px;background:#f7fbfe;padding:13px;text-align:center}
+.filebox input{width:100%;font-size:13px}
+.meta{margin-top:9px;padding:9px 10px;border-radius:10px;background:#f7f9fc;font-size:11px;color:#526176;line-height:1.6;display:none}
+.btn{width:100%;min-height:50px;border:0;border-radius:12px;font-size:15px;font-weight:900;cursor:pointer;margin-top:12px}
+.primary{background:var(--p);color:#fff}.primary:active{background:var(--p2)}.primary:disabled{opacity:.45}
+.secondary{background:#edf5fa;color:var(--p);border:1px solid #bdd8e9}
+.status{display:none;margin-top:12px;padding:11px;border-radius:11px;font-size:11.5px;line-height:1.65;word-break:break-word}
+.status.show{display:block}.status.info{background:#eef7fd;color:#075985}.status.ok{background:#ecfdf3;color:#087a55}.status.bad{background:#fff1f0;color:#b42318}.status.warn{background:#fff8e8;color:#8a5b00}
+.progress{height:7px;background:#e9eef4;border-radius:999px;overflow:hidden;margin-top:8px;display:none}.bar{height:100%;width:0;background:var(--p);transition:width .25s}
+.links{display:none;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.links a{display:flex;min-height:44px;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;font-size:12px;font-weight:800}
+.open{background:#eaf5fb;color:var(--p);border:1px solid #bfdbe9}.repo{background:#f4f6f8;color:#344054;border:1px solid #d8dee6}
+.security{font-size:10px;color:#66758a;line-height:1.6;margin-top:10px}.security b{color:#b42318}
+label.rem{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:10.5px;color:#66758a}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;background:#f3f5f7;padding:2px 5px;border-radius:5px}
+@media(max-width:420px){.wrap{padding-left:10px;padding-right:10px}.hero{border-radius:15px}.card{border-radius:14px}.links{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <small>潍坊市中医院 · 日结交账原型</small>
+    <h1>手机一键发布</h1>
+    <p>以后不用进 GitHub 找文件、改名、覆盖。选最新版 HTML → 点一次“发布”，自动替换网站的 <b>index.html</b>。</p>
+  </section>
+
+  <section class="card">
+    <div class="step"><div class="num">1</div><div class="step-main">
+      <b>GitHub 发布密钥</b>
+      <div class="hint">第一次需要填 Fine-grained Token。权限只给 <code>wakeshy/baoer-</code>，Repository permissions → Contents 设为 Read and write。</div>
+      <input id="token" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_...">
+      <label class="rem"><input id="remember" type="checkbox">仅在我自己的手机上记住这个 Token</label>
+      <div class="security"><b>注意：</b>Token 相当于这个仓库的发布钥匙，不要截图、不要发给别人。勾选“记住”后只保存在当前浏览器本机。</div>
+    </div></div>
+  </section>
+
+  <section class="card">
+    <div class="step"><div class="num">2</div><div class="step-main">
+      <b>选择最新版 HTML</b>
+      <div class="hint">文件叫什么名字都行，不需要改成 index.html。工具会自动发布为网站首页。</div>
+      <div class="filebox"><input id="file" type="file" accept=".html,text/html"></div>
+      <div class="meta" id="meta"></div>
+    </div></div>
+  </section>
+
+  <section class="card">
+    <div class="step"><div class="num">3</div><div class="step-main">
+      <b>发布</b>
+      <div class="hint">会先读取 GitHub 当前 index.html 的 SHA，再完整替换。不会删除仓库里的其他文件。</div>
+      <button id="publish" class="btn primary" type="button" disabled>一键发布到 GitHub Pages</button>
+      <div class="progress" id="progress"><div class="bar" id="bar"></div></div>
+      <div id="status" class="status"></div>
+      <div class="links" id="links">
+        <a class="open" id="openPage" href="https://wakeshy.github.io/baoer-/" target="_blank" rel="noopener">打开正式页面</a>
+        <a class="repo" href="https://github.com/wakeshy/baoer-" target="_blank" rel="noopener">查看 GitHub</a>
+      </div>
+    </div></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var OWNER='wakeshy', REPO='baoer-', BRANCH='master', TARGET='index.html';
+  var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+TARGET;
+  var tokenEl=document.getElementById('token'), remember=document.getElementById('remember');
+  var fileEl=document.getElementById('file'), meta=document.getElementById('meta'), btn=document.getElementById('publish');
+  var status=document.getElementById('status'), progress=document.getElementById('progress'), bar=document.getElementById('bar'), links=document.getElementById('links');
+  var chosen=null;
+
+  try{
+    var saved=localStorage.getItem('wf_publish_token')||'';
+    if(saved){tokenEl.value=saved;remember.checked=true;}
+  }catch(e){}
+
+  function setStatus(kind,msg){
+    status.className='status show '+kind;
+    status.innerHTML=msg;
+  }
+  function setProgress(n){
+    progress.style.display='block';
+    bar.style.width=Math.max(0,Math.min(100,n))+'%';
+  }
+  function ready(){
+    btn.disabled=!(chosen && tokenEl.value.trim());
+  }
+  tokenEl.addEventListener('input',ready);
+  remember.addEventListener('change',function(){
+    if(!remember.checked){try{localStorage.removeItem('wf_publish_token');}catch(e){}}
+  });
+
+  fileEl.addEventListener('change',function(){
+    chosen=fileEl.files&&fileEl.files[0]?fileEl.files[0]:null;
+    links.style.display='none';
+    if(!chosen){meta.style.display='none';ready();return;}
+    var ok=/\.html?$/i.test(chosen.name)||chosen.type==='text/html';
+    meta.style.display='block';
+    meta.innerHTML='文件：<b>'+escapeHtml(chosen.name)+'</b><br>大小：'+formatSize(chosen.size)+(ok?'':'<br><span style="color:#b42318">这不像 HTML 文件，请重新选择。</span>');
+    if(!ok)chosen=null;
+    ready();
+  });
+
+  btn.addEventListener('click',async function(){
+    var token=tokenEl.value.trim();
+    if(!token||!chosen)return;
+    btn.disabled=true; links.style.display='none';
+    try{
+      if(remember.checked){try{localStorage.setItem('wf_publish_token',token);}catch(e){}}
+      else{try{localStorage.removeItem('wf_publish_token');}catch(e){}}
+
+      setProgress(10); setStatus('info','① 正在读取 GitHub 当前版本…');
+      var getRes=await fetch(API+'?ref='+encodeURIComponent(BRANCH),{
+        headers:headers(token)
+      });
+      if(!getRes.ok){
+        var gtxt=await safeText(getRes);
+        throw new Error('读取仓库失败（'+getRes.status+'）：'+friendlyGithubError(getRes.status,gtxt));
+      }
+      var current=await getRes.json();
+      if(!current.sha)throw new Error('没有取得当前 index.html 的 SHA。');
+
+      setProgress(28); setStatus('info','② 正在读取你选择的 HTML…');
+      var buf=await chosen.arrayBuffer();
+      var b64=arrayBufferToBase64(buf);
+
+      setProgress(55); setStatus('info','③ 正在上传并替换 index.html…');
+      var putRes=await fetch(API,{
+        method:'PUT',
+        headers:headers(token),
+        body:JSON.stringify({
+          message:'Mobile publish: '+chosen.name,
+          content:b64,
+          sha:current.sha,
+          branch:BRANCH
+        })
+      });
+      if(!putRes.ok){
+        var ptxt=await safeText(putRes);
+        throw new Error('发布失败（'+putRes.status+'）：'+friendlyGithubError(putRes.status,ptxt));
+      }
+      var out=await putRes.json();
+      setProgress(100);
+      var shortSha=out&&out.commit&&out.commit.sha?out.commit.sha.slice(0,8):'已提交';
+      setStatus('ok','✓ 发布成功！Commit：<b>'+shortSha+'</b><br>GitHub Pages 一般 1～3 分钟更新。下面“打开正式页面”会自动加时间参数，尽量避开手机缓存。');
+      var open=document.getElementById('openPage');
+      open.href='https://wakeshy.github.io/baoer-/?v='+Date.now();
+      links.style.display='grid';
+    }catch(err){
+      setProgress(0); progress.style.display='none';
+      setStatus('bad','发布没有完成：<br>'+escapeHtml(err&&err.message?err.message:String(err)));
+    }finally{
+      btn.disabled=false;
+    }
+  });
+
+  function headers(token){
+    return {
+      'Accept':'application/vnd.github+json',
+      'Authorization':'Bearer '+token,
+      'X-GitHub-Api-Version':'2022-11-28',
+      'Content-Type':'application/json'
+    };
+  }
+  function arrayBufferToBase64(buffer){
+    var bytes=new Uint8Array(buffer), chunk=0x8000, parts=[];
+    for(var i=0;i<bytes.length;i+=chunk){
+      var sub=bytes.subarray(i,Math.min(i+chunk,bytes.length));
+      var s='';
+      for(var j=0;j<sub.length;j++)s+=String.fromCharCode(sub[j]);
+      parts.push(s);
+    }
+    return btoa(parts.join(''));
+  }
+  function formatSize(n){
+    if(n<1024)return n+' B';
+    if(n<1024*1024)return (n/1024).toFixed(1)+' KB';
+    return (n/1024/1024).toFixed(2)+' MB';
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});
+  }
+  async function safeText(r){try{return await r.text();}catch(e){return '';}}
+  function friendlyGithubError(code,txt){
+    if(code===401)return 'Token 无效或已失效。';
+    if(code===403)return 'Token 没有 Contents 写入权限，或 GitHub 拒绝了本次请求。';
+    if(code===404)return '没有找到仓库/文件；也可能是 Token 没有访问这个仓库的权限。';
+    if(code===409)return 'GitHub 当前版本发生变化，请重新点一次发布。';
+    if(code===422)return 'GitHub 拒绝了文件更新，请检查 Token 权限和分支。';
+    try{var j=JSON.parse(txt);if(j&&j.message)return j.message;}catch(e){}
+    return txt?txt.slice(0,220):'未知错误';
+  }
+})();
+</script>
+</body>
+</html>
