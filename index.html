@@ -4528,6 +4528,29 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
 }
 </style>
 
+
+<style id="cash-only-visible-v051">
+.cash-only #card-emed,
+.cash-only #card-card,
+.cash-only #card-bank,
+.cash-only #card-ccb,
+.cash-only #bc-emed,
+.cash-only #bc-card,
+.cash-only #bc-bank,
+.cash-only #bc-ccb,
+.cash-only #bc-status-emed,
+.cash-only #bc-status-card,
+.cash-only #bc-status-bank,
+.cash-only #bc-status-ccb,
+.cash-only #aud-card-bank-total{
+  display:none!important;
+}
+.cash-only #cashier-view #pane-2 .board-grid{display:none!important;}
+.cash-only #cashier-view #pane-2 .cashier-simple-summary{
+  grid-template-columns:1fr 1fr 1fr!important;
+}
+</style>
+
 </head>
 <body class="ui-v04 cash-only" data-page-node-id="BbzJ9Hir8FJsowBDFaY9EJ">
 
@@ -4767,7 +4790,7 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
             <div class="csh-main">
               <span class="csh-kicker">第 2 步</span>
               <b>填写现金额</b>
-              <small>只填写日结报表上的“上缴现金”金额；其他支付方式不用录。</small>
+              <small>照着日结报表填写“上缴现金”金额即可。</small>
             </div>
             <div class="csh-actions">
               <button type="button" class="csh-btn report" onclick="openCashierReportViewer()">查看日结报表</button>
@@ -4778,50 +4801,7 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
             <div><span>实际上缴</span><b id="simple-total-amount">¥ 0.00</b></div>
             <div><span>报表</span><b id="simple-report-state">未上传</b></div>
           </div>
-          <div class="board-grid">
-            <div class="board-card" id="card-emed">
-              <div class="bc-ico"><svg class="icon-svg-lg" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></div>
-              <div class="bc-body">
-                <div class="bc-label">1 医保电子凭证</div>
-                <div class="bc-val" id="bc-emed">¥ 0.00</div>
-              </div>
-              <div class="bc-status" id="bc-status-emed"></div>
-            </div>
-            <div class="board-card" id="card-card">
-              <div class="bc-ico"><svg class="icon-svg-lg" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line></svg></div>
-              <div class="bc-body">
-                <div class="bc-label">2 医保卡</div>
-                <div class="bc-val" id="bc-card">¥ 0.00</div>
-              </div>
-              <div class="bc-status" id="bc-status-card"></div>
-            </div>
-            <div class="board-card" id="card-bank">
-              <div class="bc-ico"><svg class="icon-svg-lg" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line><line x1="6" y1="15" x2="10" y2="15"></line></svg></div>
-              <div class="bc-body">
-                <div class="bc-label">3 银行卡</div>
-                <div class="bc-val" id="bc-bank">¥ 0.00</div>
-              </div>
-              <div class="bc-status" id="bc-status-bank"></div>
-            </div>
-            <div class="board-card" id="card-ccb">
-              <div class="bc-ico"><svg class="icon-svg-lg" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"></rect><path d="M1 10h22"></path></svg></div>
-              <div class="bc-body">
-                <div class="bc-label">4 建行网银</div>
-                <div class="bc-val" id="bc-ccb">¥ 0.00</div>
-              </div>
-              <div class="bc-status" id="bc-status-ccb"></div>
-            </div>
-            <div class="board-card highlight" id="card-cash">
-              <div class="bc-ico"><svg class="icon-svg-lg" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
-              <div class="bc-body">
-                <div class="bc-label">5 上缴现金</div>
-                <div class="bc-val" id="bc-cash">¥ 0.00</div>
-              </div>
-              <div class="bc-status" id="bc-status-cash"></div>
-            </div>
-          </div>
-
-          <div class="sec-title cashier-simple-title" style="margin:0 0 6px;">上缴现金</div>
+<div class="sec-title cashier-simple-title" style="margin:0 0 6px;">上缴现金</div>
 
           <!-- 兼容旧数据：这 4 个字段不再需要收款员填写 -->
           <input type="hidden" id="c-emed" value="">
@@ -5232,7 +5212,6 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
           <thead data-page-node-id="G7RChWnbwxXYdEX5rlyWZA"><tr data-page-node-id="PLjSwaXBAiaDBjiJELnApg"><th style="width:34px;" data-page-node-id="QOCQh1AhqhUBur5M5gBHtH"></th><th data-page-node-id="j1fFyYn5Bb8ne6Jl2AzQ2v">收款渠道</th><th data-page-node-id="77tYcjESn4lM5EKoSKYruG">核算项目</th><th style="text-align:right;" data-page-node-id="F8NIt5jUqrzvUfJltf4epd">交账金额</th></tr></thead>
           <tbody id="aud-tbody" data-page-node-id="WsVMf8OPolqFmVqh7sWhGu"></tbody>
         </table>
-        <div id="aud-card-bank-total" class="cash-deduct-summary" style="margin-top:8px;">医保卡 + 银行卡合计：¥ 0.00</div>
 
         <div id="voucher-block" style="display:none;border:1px solid #a7f3d0;background:#ecfdf5;border-radius:10px;padding:12px;" data-page-node-id="rNgjqBZVUHzA51JQJmL7yx">
           <div style="margin-top:12px;color:#134e4a;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px;"><svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:15px;height:15px;"><use href="#i-bill"/></svg>记账凭证（已生成）</div>
@@ -10950,8 +10929,8 @@ function refreshAuditCockpit() {
 <script>
 (function(){
   try{
-    document.documentElement.setAttribute('data-ui-version','V0.5');
-    window.WF_UI_VERSION='V0.5-CASH-ONLY';
+    document.documentElement.setAttribute('data-ui-version','V0.5.1');
+    window.WF_UI_VERSION='V0.5.1-CASH-VISIBLE-ONLY';
   }catch(e){}
 })();
 </script>
