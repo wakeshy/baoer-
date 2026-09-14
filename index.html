@@ -3746,8 +3746,790 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
 }
 </style>
 
+
+<style id="ui-v04-component-system">
+/* ============================================================
+   V0.4 UI 组件化视觉层
+   只重做视觉 / 响应式 / 组件状态，不改变交账、审核、留痕逻辑
+   ============================================================ */
+.ui-v04{
+  --ui-bg:#f5f7fa;
+  --ui-surface:#ffffff;
+  --ui-surface-soft:#f8fafc;
+  --ui-text:#142033;
+  --ui-muted:#68778c;
+  --ui-faint:#97a3b3;
+  --ui-border:#e1e7ef;
+  --ui-border-strong:#cbd6e2;
+  --ui-primary:#0b6fa4;
+  --ui-primary-strong:#075985;
+  --ui-primary-soft:#eaf6fb;
+  --ui-success:#07845f;
+  --ui-success-soft:#ecfdf5;
+  --ui-warning:#a35f00;
+  --ui-warning-soft:#fff7e8;
+  --ui-danger:#b42318;
+  --ui-danger-soft:#fff1f0;
+  --ui-r-sm:10px;
+  --ui-r-md:14px;
+  --ui-r-lg:18px;
+  --ui-shadow-sm:0 1px 2px rgba(15,23,42,.035),0 5px 16px rgba(15,23,42,.045);
+  --ui-shadow-md:0 12px 34px rgba(15,23,42,.09);
+  background:var(--ui-bg);
+  color:var(--ui-text);
+}
+
+/* ---------- App shell / Header ---------- */
+.ui-v04 header{
+  background:rgba(255,255,255,.96);
+  border-bottom:1px solid var(--ui-border);
+  box-shadow:none;
+  backdrop-filter:saturate(150%) blur(12px);
+}
+.ui-v04 .hospital-logo{
+  border-radius:12px;
+  box-shadow:none;
+  background:var(--ui-primary);
+}
+.ui-v04 .hospital-title{font-weight:800;letter-spacing:-.01em;color:var(--ui-text);}
+.ui-v04 .header-meta{color:var(--ui-muted);}
+.ui-v04 .tag-his,.ui-v04 .tag-sec{
+  border-radius:7px!important;
+  box-shadow:none!important;
+  font-weight:700!important;
+}
+.ui-v04 .btn-action,.ui-v04 .btn-secondary{
+  border-radius:10px;
+  box-shadow:none;
+}
+
+/* ---------- 首页：减少装饰，强化任务 ---------- */
+.ui-v04 .cashier-home{
+  background:var(--ui-bg);
+  padding-top:22px;
+}
+.ui-v04 .ch-eyebrow{display:none;}
+.ui-v04 .ch-hero{align-items:flex-start;margin-bottom:18px;}
+.ui-v04 .ch-title{
+  font-size:27px;
+  letter-spacing:-.035em;
+  color:var(--ui-text);
+}
+.ui-v04 .ch-sub{
+  max-width:720px;
+  color:var(--ui-muted);
+  line-height:1.65;
+}
+.ui-v04 .ch-date{
+  background:var(--ui-surface);
+  border:1px solid var(--ui-border);
+  border-radius:12px;
+  padding:9px 12px;
+  text-align:left;
+}
+.ui-v04 .ch-date b{font-size:15px;}
+.ui-v04 .ch-card{
+  border:1px solid var(--ui-border);
+  border-radius:var(--ui-r-lg);
+  box-shadow:var(--ui-shadow-sm);
+}
+.ui-v04 .ch-biz-card{
+  position:relative;
+  overflow:hidden;
+  padding:18px!important;
+}
+.ui-v04 .ch-biz-card:before{
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;width:4px;
+  background:var(--ui-primary);
+}
+.ui-v04 .ch-biz-card.inpatient:before{background:#7257c8;}
+.ui-v04 .ch-biz-type{
+  border-radius:7px!important;
+  padding:4px 7px!important;
+  font-size:10px!important;
+  letter-spacing:0!important;
+}
+.ui-v04 .ch-biz-title{font-size:16px!important;letter-spacing:-.015em;}
+.ui-v04 .ch-biz-meta{color:var(--ui-muted)!important;line-height:1.55!important;}
+.ui-v04 .ch-biz-amount{color:var(--ui-muted)!important;}
+.ui-v04 .ch-biz-amount strong{font-size:27px!important;letter-spacing:-.035em;}
+.ui-v04 .ch-status{
+  border:1px solid transparent;
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:10px;
+}
+.ui-v04 .ch-status.idle{border-color:#e2e8f0;}
+.ui-v04 .ch-status.draft{border-color:#bae6fd;}
+.ui-v04 .ch-status.pending{border-color:#fde68a;}
+.ui-v04 .ch-status.reject{border-color:#fecaca;}
+.ui-v04 .ch-status.done{border-color:#a7f3d0;}
+.ui-v04 .ch-primary{
+  min-height:42px;
+  border-radius:10px;
+  background:var(--ui-primary);
+  box-shadow:none;
+}
+.ui-v04 .ch-primary:hover{transform:none;background:var(--ui-primary-strong);box-shadow:none;}
+.ui-v04 .ch-secondary-new{
+  border-radius:10px;
+  background:#fff;
+  border-color:#cfe2ed;
+}
+.ui-v04 .ch-day-summary .ch-card{box-shadow:none;}
+.ui-v04 .ch-progress-card,.ui-v04 .ch-side{background:#fff;}
+.ui-v04 .ch-progress-num{color:var(--ui-primary)!important;}
+.ui-v04 .ch-section-head h3{font-size:14px;}
+.ui-v04 .ch-history{overflow:hidden;}
+.ui-v04 .ch-row{min-height:58px;}
+.ui-v04 .ch-view{border-radius:9px;}
+
+/* ---------- 审核后纠错 = Warning Banner ---------- */
+.ui-v04 .correction-panel{
+  border-radius:var(--ui-r-md)!important;
+  border:1px solid #f4d8a6!important;
+  background:var(--ui-warning-soft)!important;
+  box-shadow:none!important;
+}
+.ui-v04 .correction-head h3{font-size:13px!important;color:#7c4a03!important;}
+
+/* ---------- Stepper ---------- */
+.ui-v04 .stepbar{
+  background:#fff;
+  border-bottom:1px solid var(--ui-border);
+  box-shadow:none;
+}
+.ui-v04 .stepbar .step{
+  position:relative;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+.ui-v04 .stepbar .step .st-no{
+  border:1px solid var(--ui-border-strong);
+  background:#fff;
+  color:var(--ui-muted);
+  box-shadow:none;
+}
+.ui-v04 .stepbar .step.on .st-no{
+  border-color:var(--ui-primary);
+  background:var(--ui-primary);
+  color:#fff;
+}
+.ui-v04 .stepbar .step.on .st-t{color:var(--ui-primary-strong);}
+.ui-v04 .stepbar .step .st-s{color:var(--ui-faint);}
+.ui-v04 .biz-form-badge{
+  border-radius:8px;
+  box-shadow:none;
+}
+
+/* ---------- 主工作区 ---------- */
+.ui-v04 #cashier-view .work-area{
+  background:var(--ui-bg);
+  gap:12px;
+}
+.ui-v04 #cashier-view .vp-right,
+.ui-v04 #cashier-view #receipt-box{
+  border-color:var(--ui-border)!important;
+  box-shadow:var(--ui-shadow-sm)!important;
+}
+.ui-v04 .report-module{
+  border-radius:var(--ui-r-md)!important;
+  border-color:var(--ui-border)!important;
+  box-shadow:var(--ui-shadow-sm)!important;
+}
+.ui-v04 .report-module-top{
+  background:#fff;
+  border-bottom-color:var(--ui-border);
+}
+.ui-v04 .report-module-icon{
+  border-radius:10px;
+  background:var(--ui-primary-soft);
+  border-color:#cbe8f5;
+  box-shadow:none;
+}
+.ui-v04 .report-module-status{
+  border-radius:999px;
+  box-shadow:none;
+}
+.ui-v04 .report-module #upload-placeholder{
+  border-radius:14px;
+  border-color:#b9d8e8;
+  background:#fbfdfe;
+  box-shadow:none;
+}
+.ui-v04 .report-module .report-upload-visual{
+  background:var(--ui-primary-soft);
+  border-color:#cbe8f5;
+  box-shadow:none;
+}
+
+/* ---------- Step 2：Amount Form ---------- */
+.ui-v04 #cashier-view .cashier-simple-head{
+  border:1px solid var(--ui-border)!important;
+  border-radius:var(--ui-r-md)!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+.ui-v04 #cashier-view .csh-kicker{
+  color:var(--ui-primary);
+  letter-spacing:0;
+  font-size:9px;
+}
+.ui-v04 #cashier-view .csh-main b{font-size:16px;}
+.ui-v04 #cashier-view .csh-main small{color:var(--ui-muted);}
+.ui-v04 #cashier-view .csh-btn{
+  border-radius:10px;
+  border-color:#c9dce7;
+  background:#fff;
+  color:var(--ui-primary-strong);
+}
+.ui-v04 #cashier-view .csh-btn.ocr{
+  background:var(--ui-primary);
+  border-color:var(--ui-primary);
+  color:#fff;
+}
+.ui-v04 #cashier-view .cashier-simple-summary{
+  border:1px solid var(--ui-border);
+  border-radius:12px;
+  overflow:hidden;
+  gap:0!important;
+  background:#fff;
+}
+.ui-v04 #cashier-view .cashier-simple-summary>div{
+  border:0!important;
+  border-right:1px solid var(--ui-border)!important;
+  border-radius:0!important;
+  background:#fff!important;
+}
+.ui-v04 #cashier-view .cashier-simple-summary>div:last-child{border-right:0!important;}
+.ui-v04 #cashier-view #pane-2 .money-row{
+  border-color:var(--ui-border)!important;
+  box-shadow:none!important;
+}
+.ui-v04 #cashier-view #pane-2 .money-row.focus{
+  position:relative;
+  z-index:2;
+  border-color:#77b9d8!important;
+  box-shadow:0 0 0 3px rgba(11,111,164,.08)!important;
+}
+.ui-v04 #cashier-view #pane-2 .money-row.filled{background:#fbfffd!important;}
+.ui-v04 #cashier-view #pane-2 .mr-name{color:var(--ui-text)!important;}
+.ui-v04 #cashier-view #pane-2 .mr-idx{
+  width:22px;height:22px;
+  border-radius:7px;
+  background:#eef4f7;
+  color:#607084;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.ui-v04 #cashier-view #pane-2 .money-input{
+  border:1px solid var(--ui-border-strong)!important;
+  border-radius:10px!important;
+  background:#fff!important;
+}
+.ui-v04 #cashier-view #pane-2 .money-input:focus-within{
+  border-color:#67afd2!important;
+  box-shadow:0 0 0 3px rgba(11,111,164,.08)!important;
+}
+.ui-v04 #cashier-view #pane-2 .money-input input{
+  border:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+.ui-v04 #cashier-view #card-bank-total{
+  background:#f5f8fa!important;
+  color:var(--ui-muted)!important;
+}
+
+/* ---------- Upload component family ---------- */
+.ui-v04 #cashier-view #attachment-hub,
+.ui-v04 #cashier-view #cash-deduct-section,
+.ui-v04 #cashier-view #prepay-batch-section{
+  border-color:var(--ui-border)!important;
+  border-radius:var(--ui-r-md)!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+.ui-v04 #cashier-view .attachment-hub-head,
+.ui-v04 #cashier-view .void-simple-head,
+.ui-v04 #cashier-view .prepay-head{
+  padding-bottom:9px;
+  margin-bottom:9px;
+  border-bottom:1px solid #edf1f5;
+}
+.ui-v04 #cashier-view .attachment-grid{gap:8px!important;}
+.ui-v04 #cashier-view .att-card,
+.ui-v04 #cashier-view .void-batch{
+  border-color:var(--ui-border)!important;
+  border-radius:12px!important;
+  background:#fff!important;
+}
+.ui-v04 #cashier-view .att-card:hover,
+.ui-v04 #cashier-view .void-batch:hover{
+  border-color:#b8cfdd!important;
+}
+.ui-v04 #cashier-view .att-card-ico{
+  border-radius:9px;
+  box-shadow:none;
+}
+.ui-v04 #cashier-view .att-btn,
+.ui-v04 #cashier-view .void-simple-actions button,
+.ui-v04 #cashier-view .prepay-actions button{
+  min-height:40px;
+  border-radius:10px!important;
+  box-shadow:none!important;
+}
+.ui-v04 #cashier-view .att-btn.primary,
+.ui-v04 #cashier-view .void-simple-actions .primary{
+  background:var(--ui-primary)!important;
+  border-color:var(--ui-primary)!important;
+}
+.ui-v04 #cashier-view #cash-deduct-section{
+  border-left:3px solid #e4a93c!important;
+}
+.ui-v04 #cashier-view #prepay-batch-section{
+  border-left:3px solid #7564c8!important;
+}
+.ui-v04 #cashier-view #attachment-hub{
+  border-left:3px solid #5aa4c7!important;
+}
+
+/* ---------- Step 3 / Checklist ---------- */
+.ui-v04 #pane-3 .checklist{
+  border:1px solid var(--ui-border);
+  border-radius:var(--ui-r-md);
+  overflow:hidden;
+  background:#fff;
+}
+.ui-v04 #pane-3 .check-item{
+  border-radius:0!important;
+  border:0!important;
+  border-bottom:1px solid #edf1f5!important;
+  box-shadow:none!important;
+  background:#fff!important;
+}
+.ui-v04 #pane-3 .check-item:last-child{border-bottom:0!important;}
+.ui-v04 .foot-bar{
+  background:rgba(255,255,255,.96)!important;
+  border-top:1px solid var(--ui-border)!important;
+  backdrop-filter:blur(12px);
+  box-shadow:0 -8px 24px rgba(15,23,42,.045)!important;
+}
+.ui-v04 .btn-foot{
+  border-radius:10px!important;
+  box-shadow:none!important;
+}
+.ui-v04 .btn-foot.primary{
+  background:var(--ui-primary)!important;
+  border-color:var(--ui-primary)!important;
+}
+
+/* ---------- OCR = Desktop modal / Mobile bottom sheet ---------- */
+.ui-v04 .simple-ocr-modal{
+  background:rgba(15,23,42,.38);
+  backdrop-filter:blur(5px);
+}
+.ui-v04 .simple-ocr-card{
+  border-radius:18px;
+  border:1px solid var(--ui-border);
+  box-shadow:var(--ui-shadow-md);
+  padding:16px;
+}
+.ui-v04 .simple-ocr-head span{
+  color:var(--ui-primary);
+  letter-spacing:0;
+}
+.ui-v04 .simple-ocr-progress{
+  border:1px solid #d6ebf5;
+  background:#f3fafd;
+  color:var(--ui-primary-strong);
+}
+.ui-v04 .ocr-mapping-tip{
+  border-color:var(--ui-border);
+  background:#fbfcfd;
+}
+.ui-v04 .simple-ocr-grid label{
+  border-color:var(--ui-border);
+  border-radius:11px;
+  background:#fff;
+}
+.ui-v04 .simple-ocr-grid input{
+  border-color:var(--ui-border-strong);
+  border-radius:9px;
+}
+.ui-v04 .simple-ocr-actions button{border-radius:10px;}
+.ui-v04 .simple-ocr-actions .primary{
+  background:var(--ui-primary);
+  border-color:var(--ui-primary);
+}
+
+/* ---------- Finance：保持对照工作台，不重新发明布局 ---------- */
+.ui-v04 #finance-view .audit-cockpit{
+  background:var(--ui-bg);
+  border-bottom-color:var(--ui-border);
+}
+.ui-v04 #finance-view .ac-item{
+  border-color:var(--ui-border);
+  border-radius:11px;
+  box-shadow:none;
+}
+.ui-v04 #finance-view #aud-deduct-sec,
+.ui-v04 #finance-view #aud-support-sec{
+  border-radius:var(--ui-r-md);
+}
+.ui-v04 .finance-archive-compare .fac-pane,
+.ui-v04 #finance-receipt-box{
+  border-color:var(--ui-border)!important;
+}
+
+/* ---------- Completion dialog family ---------- */
+.ui-v04 .audit-complete-card{
+  border-radius:20px!important;
+  border:1px solid var(--ui-border)!important;
+  box-shadow:0 28px 80px rgba(15,23,42,.20)!important;
+}
+.ui-v04 .acl-kicker{display:none!important;}
+.ui-v04 .acl-type{border-radius:8px!important;}
+.ui-v04 .acl-cell{border-color:var(--ui-border)!important;}
+.ui-v04 .acl-btn{border-radius:10px!important;}
+.ui-v04 .acl-btn.primary{
+  background:var(--ui-primary)!important;
+  border-color:var(--ui-primary)!important;
+}
+
+/* ---------- Mobile ---------- */
+@media(max-width:700px){
+  .ui-v04 header{
+    min-height:54px!important;
+    padding:8px 10px!important;
+  }
+  .ui-v04 .hospital-logo{
+    width:34px!important;height:34px!important;min-width:34px!important;
+    font-size:15px!important;border-radius:10px!important;
+  }
+  .ui-v04 .hospital-title{
+    font-size:12px!important;
+    max-width:58vw;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .ui-v04 .hospital-title .tag-his,
+  .ui-v04 .hospital-title .tag-sec{display:none!important;}
+  .ui-v04 .header-meta{
+    font-size:8.5px!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:62vw;
+  }
+  .ui-v04 .cashier-home{
+    padding:14px 10px 92px!important;
+  }
+  .ui-v04 .ch-hero{
+    display:block!important;
+    margin-bottom:12px!important;
+  }
+  .ui-v04 .ch-title{font-size:22px!important;}
+  .ui-v04 .ch-sub{
+    margin-top:5px!important;
+    font-size:10.5px!important;
+    line-height:1.5!important;
+  }
+  .ui-v04 .ch-date{
+    display:inline-flex!important;
+    gap:7px;
+    align-items:center;
+    padding:5px 8px!important;
+    margin-top:9px;
+    border-radius:8px!important;
+    font-size:9px!important;
+  }
+  .ui-v04 .ch-date b{
+    display:inline!important;
+    margin:0!important;
+    font-size:10px!important;
+  }
+  .ui-v04 .ch-business-grid{
+    gap:9px!important;
+  }
+  .ui-v04 .ch-biz-card{
+    border-radius:14px!important;
+    padding:13px!important;
+    box-shadow:none!important;
+  }
+  .ui-v04 .ch-biz-title{font-size:14px!important;}
+  .ui-v04 .ch-biz-meta{
+    font-size:9.5px!important;
+    margin-top:5px!important;
+  }
+  .ui-v04 .ch-biz-amount{margin-top:12px!important;}
+  .ui-v04 .ch-biz-amount strong{font-size:24px!important;}
+  .ui-v04 .ch-primary,
+  .ui-v04 .ch-secondary-new{
+    min-height:44px!important;
+  }
+
+  /* 手机 Stepper：只保留三步主线 */
+  .ui-v04 .stepbar{
+    position:sticky!important;
+    top:0!important;
+    z-index:40!important;
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:0!important;
+    padding:7px 8px 8px!important;
+    min-height:67px!important;
+  }
+  .ui-v04 .stepbar .step{
+    min-width:0!important;
+    min-height:50px!important;
+    padding:4px 2px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:flex-start!important;
+    align-items:center!important;
+    gap:4px!important;
+    text-align:center!important;
+  }
+  .ui-v04 .stepbar .step:after{
+    content:'';
+    position:absolute;
+    top:15px;
+    left:calc(50% + 16px);
+    width:calc(100% - 32px);
+    height:1px;
+    background:#d7e0e8;
+    z-index:0;
+  }
+  .ui-v04 .stepbar #step-3:after{display:none;}
+  .ui-v04 .stepbar .st-no{
+    position:relative;
+    z-index:1;
+    width:25px!important;height:25px!important;
+    min-width:25px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:10px!important;
+    border-radius:50%!important;
+  }
+  .ui-v04 .stepbar .step>span:last-child{
+    display:block!important;
+    min-width:0!important;
+    width:100%;
+  }
+  .ui-v04 .stepbar .st-t{
+    display:block!important;
+    font-size:9.5px!important;
+    line-height:1.2!important;
+    white-space:nowrap;
+  }
+  .ui-v04 .stepbar .st-s{
+    display:none!important;
+  }
+  .ui-v04 .stepbar .biz-form-badge,
+  .ui-v04 .stepbar .cashier-form-home-btn,
+  .ui-v04 .stepbar #mode-btn{
+    display:none!important;
+  }
+
+  .ui-v04 #cashier-view .work-area{
+    padding-left:8px!important;
+    padding-right:8px!important;
+    gap:8px!important;
+  }
+  .ui-v04 #cashier-view #receipt-box,
+  .ui-v04 #cashier-view .vp-right{
+    border-radius:13px!important;
+    box-shadow:none!important;
+  }
+  .ui-v04 #cashier-view .cashier-simple-head{
+    padding:10px!important;
+    border-radius:12px!important;
+  }
+  .ui-v04 #cashier-view .csh-main small{
+    font-size:9.5px!important;
+  }
+  .ui-v04 #cashier-view .cashier-simple-summary{
+    border-radius:11px;
+  }
+  .ui-v04 #cashier-view .cashier-simple-summary>div{
+    padding:7px 6px!important;
+  }
+  .ui-v04 #cashier-view #pane-2 .money-row{
+    grid-template-columns:minmax(0,1fr) 144px!important;
+  }
+  .ui-v04 #cashier-view #pane-2 .money-input input{
+    font-size:18px!important;
+  }
+
+  /* 上传组件统一为清晰、低装饰的两列/单列结构 */
+  .ui-v04 #cashier-view .attachment-grid{
+    grid-template-columns:1fr!important;
+  }
+  .ui-v04 #cashier-view .att-card,
+  .ui-v04 #cashier-view .void-batch{
+    padding:10px!important;
+  }
+  .ui-v04 #cashier-view .void-simple-actions{
+    grid-template-columns:1fr 1fr!important;
+  }
+  .ui-v04 #cashier-view .void-simple-actions .void-none{
+    grid-column:1/-1!important;
+  }
+
+  /* OCR 真正按 Bottom Sheet 呈现 */
+  .ui-v04 .simple-ocr-modal{
+    align-items:flex-end!important;
+    justify-content:center!important;
+    padding:0!important;
+  }
+  .ui-v04 .simple-ocr-card{
+    width:100%!important;
+    max-height:88dvh!important;
+    border-radius:20px 20px 0 0!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-bottom:0!important;
+    padding:14px 12px calc(14px + env(safe-area-inset-bottom,0px))!important;
+    animation:uiV04SheetIn .2s ease-out;
+  }
+  .ui-v04 .simple-ocr-card:before{
+    content:'';
+    display:block;
+    width:38px;height:4px;
+    border-radius:999px;
+    background:#d6dde6;
+    margin:-3px auto 10px;
+  }
+  .ui-v04 .simple-ocr-head b{font-size:17px!important;}
+  .ui-v04 .simple-ocr-grid{
+    grid-template-columns:1fr!important;
+    gap:6px!important;
+  }
+  .ui-v04 .simple-ocr-grid label:last-child{grid-column:auto!important;}
+  .ui-v04 .simple-ocr-grid label{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 130px!important;
+    align-items:center!important;
+    gap:8px!important;
+    padding:7px 8px!important;
+  }
+  .ui-v04 .simple-ocr-grid label>span{
+    margin:0!important;
+  }
+  .ui-v04 .simple-ocr-grid input{
+    height:40px!important;
+    text-align:right!important;
+  }
+  .ui-v04 .ocr-mapping-tip{
+    max-height:82px;
+    overflow:auto;
+  }
+  .ui-v04 .simple-ocr-actions{
+    position:sticky;
+    bottom:0;
+    background:#fff;
+    padding-top:8px;
+  }
+
+  .ui-v04 .foot-bar{
+    padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))!important;
+  }
+  .ui-v04 .foot-hint{display:none!important;}
+  .ui-v04 .btn-foot{
+    min-height:45px!important;
+  }
+
+  /* 最近记录更像标准 List Item，不做“表格挤压” */
+  .ui-v04 .ch-history{
+    border:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+  }
+  .ui-v04 .ch-row{
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:7px!important;
+    margin-bottom:7px;
+    padding:11px!important;
+    border:1px solid var(--ui-border)!important;
+    border-radius:12px!important;
+    background:#fff;
+  }
+  .ui-v04 .ch-row-meta{
+    grid-column:1/2;
+    white-space:normal!important;
+    font-size:9.5px!important;
+  }
+  .ui-v04 .ch-row-amount{
+    grid-column:2/3;
+    grid-row:1/2;
+    font-size:12px!important;
+  }
+  .ui-v04 .ch-row-state{
+    grid-column:1/2;
+    text-align:left!important;
+    font-size:9.5px!important;
+  }
+  .ui-v04 .ch-view{
+    grid-column:2/3;
+    min-height:34px;
+  }
+}
+@media(max-width:390px){
+  .ui-v04 #cashier-view #pane-2 .money-row{
+    grid-template-columns:minmax(0,1fr) 128px!important;
+  }
+  .ui-v04 #cashier-view .cashier-simple-summary span{font-size:8px!important;}
+  .ui-v04 #cashier-view .cashier-simple-summary b{font-size:10.5px!important;}
+}
+@keyframes uiV04SheetIn{
+  from{transform:translateY(22px);opacity:.6}
+  to{transform:translateY(0);opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .ui-v04 *{scroll-behavior:auto!important;transition:none!important;animation:none!important;}
+}
+</style>
+
+
+<style id="cash-only-v05">
+.cash-only #cashier-view #pane-2 .csh-actions{grid-template-columns:1fr!important;}
+.cash-only #cashier-view #pane-2 .cashier-simple-title{font-size:12px!important;color:#334155!important;margin-top:10px!important;}
+.cash-only #cashier-view #pane-2 .cash-only-row{
+  padding:15px 14px!important;
+  border:1px solid #cfe0e9!important;
+  border-radius:14px!important;
+  background:#fff!important;
+}
+.cash-only #cashier-view #pane-2 .cash-only-row .mr-name{font-size:15px!important;font-weight:900!important;}
+.cash-only #cashier-view #pane-2 .cash-only-row .mr-tip{display:block!important;font-size:10px!important;line-height:1.55!important;color:#718096!important;margin-top:4px!important;}
+.cash-only #cashier-view #pane-2 .cash-only-row .money-input{min-height:54px!important;}
+.cash-only #cashier-view #pane-2 .cash-only-row .money-input input{font-size:23px!important;font-weight:900!important;}
+.cash-only #aud-card-bank-total{display:none!important;}
+.cash-only .simple-ocr-modal{display:none!important;}
+@media(max-width:700px){
+  .cash-only #cashier-view #pane-2 .cash-only-row{
+    grid-template-columns:minmax(0,1fr) 154px!important;
+    padding:12px!important;
+  }
+  .cash-only #cashier-view #pane-2 .cash-only-row .money-input input{font-size:22px!important;}
+}
+@media(max-width:390px){
+  .cash-only #cashier-view #pane-2 .cash-only-row{
+    grid-template-columns:minmax(0,1fr) 138px!important;
+  }
+}
+</style>
+
 </head>
-<body data-page-node-id="BbzJ9Hir8FJsowBDFaY9EJ">
+<body class="ui-v04 cash-only" data-page-node-id="BbzJ9Hir8FJsowBDFaY9EJ">
 
 <div id="watermark" data-page-node-id="SxZUjZrM2dCrffm6O3WfMA"></div>
 
@@ -3851,15 +4633,15 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
   <div class="stepbar" data-page-node-id="cOeP2EEU1jAF0iETf2uXHI">
     <button class="step on" id="step-1" onclick="gotoStep(1)" data-page-node-id="6ENnNcyEMi4ZyEBU7UVdAP">
       <span class="st-no" data-page-node-id="YQYFj6G6RhAwutJOCnGd4D">1</span>
-      <span data-page-node-id="7j6KMSIFV2D5hHtbnBJeRQ"><span class="st-t" data-page-node-id="5aBBRK7m7R4HVC7pYhRetf">拍日结报表</span><span class="st-s" id="ss-1" data-page-node-id="Rhx8cTpBbmGyzDhpPGJBAG">还没传</span></span>
+      <span data-page-node-id="7j6KMSIFV2D5hHtbnBJeRQ"><span class="st-t" data-page-node-id="5aBBRK7m7R4HVC7pYhRetf">日结报表</span><span class="st-s" id="ss-1" data-page-node-id="Rhx8cTpBbmGyzDhpPGJBAG">还没传</span></span>
     </button>
     <button class="step" id="step-2" onclick="gotoStep(2)" data-page-node-id="cDI1cwEsPtuvd3Q3EvdnLo">
       <span class="st-no" data-page-node-id="fFsEL388Mruv8A1k9HByPI">2</span>
-      <span data-page-node-id="RTPEshcNU7IhCQT2FMRZtG"><span class="st-t" data-page-node-id="FVKfvvxMSq7Rii1ajGbbfU">金额与附件</span><span class="st-s" id="ss-2" data-page-node-id="d6DKPkXBTNQCEbxUu3BF2x">5 项待填</span></span>
+      <span data-page-node-id="RTPEshcNU7IhCQT2FMRZtG"><span class="st-t" data-page-node-id="FVKfvvxMSq7Rii1ajGbbfU">现金附件</span><span class="st-s" id="ss-2" data-page-node-id="d6DKPkXBTNQCEbxUu3BF2x">5 项待填</span></span>
     </button>
     <button class="step" id="step-3" onclick="gotoStep(3)" data-page-node-id="J7V7WbYReAb1cBpItDbB0r">
       <span class="st-no" data-page-node-id="DkkFQ5YbORxGClufiLJ2Yp">3</span>
-      <span data-page-node-id="WHZCxSsSHcgCrK8bUFEOFv"><span class="st-t" data-page-node-id="D6LaOKkFDsHqLGxwfJ0cux">提交财务</span><span class="st-s" id="ss-3" data-page-node-id="QM5ZSlYJZ7Wo0gdzwgBveB">未提交</span></span>
+      <span data-page-node-id="WHZCxSsSHcgCrK8bUFEOFv"><span class="st-t" data-page-node-id="D6LaOKkFDsHqLGxwfJ0cux">确认提交</span><span class="st-s" id="ss-3" data-page-node-id="QM5ZSlYJZ7Wo0gdzwgBveB">未提交</span></span>
     </button>
     <span class="biz-form-badge" id="biz-form-badge" title="门诊/住院是两张独立交账单">门诊交账</span>
     <button class="mode-switch cashier-form-home-btn" onclick="returnToDailySettlement()">← 返回每日交账</button>
@@ -3984,17 +4766,16 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
           <div class="cashier-simple-head">
             <div class="csh-main">
               <span class="csh-kicker">第 2 步</span>
-              <b>上缴金额</b>
-              <small>看着日结报表填 5 项；也可以先试“自动取数”，识别后再人工确认。</small>
+              <b>填写现金额</b>
+              <small>只填写日结报表上的“上缴现金”金额；其他支付方式不用录。</small>
             </div>
             <div class="csh-actions">
               <button type="button" class="csh-btn report" onclick="openCashierReportViewer()">查看日结报表</button>
-              <button type="button" class="csh-btn ocr" id="btn-local-ocr" onclick="startLocalReportOCR()">智能取数</button>
             </div>
           </div>
           <div class="cashier-simple-summary">
-            <div><span>已录入</span><b id="simple-filled-count">0 / 5</b></div>
-            <div><span>上缴合计</span><b id="simple-total-amount">¥ 0.00</b></div>
+            <div><span>现金</span><b id="simple-filled-count">待填写</b></div>
+            <div><span>实际上缴</span><b id="simple-total-amount">¥ 0.00</b></div>
             <div><span>报表</span><b id="simple-report-state">未上传</b></div>
           </div>
           <div class="board-grid">
@@ -4040,33 +4821,25 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
             </div>
           </div>
 
-          <div class="sec-title cashier-simple-title" style="margin:0 0 6px;">5 项金额</div>
+          <div class="sec-title cashier-simple-title" style="margin:0 0 6px;">上缴现金</div>
 
-          <div class="money-row" id="row-emed">
-            <div class="mr-left"><div class="mr-name"><span class="mr-idx">1</span>医保电子凭证</div><div class="mr-tip">报表上写作「医保码 / 医保电子凭证」，扫手机医保码结算的钱</div></div>
-            <div class="mr-right"><div class="money-input"><span class="cur">¥</span><input type="text" id="c-emed" placeholder="0.00" inputmode="decimal" data-money oninput="sanitizeMoney(this,false)" data-label="医保电子凭证"></div><span class="mr-ok" id="ok-emed">·</span></div>
-          </div>
-          <div class="money-row" id="row-card">
-            <div class="mr-left"><div class="mr-name"><span class="mr-idx">2</span>医保卡</div><div class="mr-tip">医保卡、社保卡插卡结算的钱</div></div>
-            <div class="mr-right"><div class="money-input"><span class="cur">¥</span><input type="text" id="c-card" placeholder="0.00" inputmode="decimal" data-money oninput="sanitizeMoney(this,false)" data-label="医保卡"></div><span class="mr-ok" id="ok-card">·</span></div>
-          </div>
-          <div class="money-row" id="row-bank">
-            <div class="mr-left"><div class="mr-name"><span class="mr-idx">3</span>银行卡</div><div class="mr-tip">银行卡插卡 / POS 刷卡结算的钱</div></div>
-            <div class="mr-right"><div class="money-input"><span class="cur">¥</span><input type="text" id="c-bank" placeholder="0.00" inputmode="decimal" data-money oninput="sanitizeMoney(this,false)" data-label="银行卡"></div><span class="mr-ok" id="ok-bank">·</span></div>
-          </div>
-          <div class="money-row" id="row-ccb">
-            <div class="mr-left"><div class="mr-name"><span class="mr-idx">4</span>建行网银</div><div class="mr-tip">报表上写作「建行 / CCB」，建行网银、手机银行转账的钱</div></div>
-            <div class="mr-right"><div class="money-input"><span class="cur">¥</span><input type="text" id="c-ccb" placeholder="0.00" inputmode="decimal" data-money oninput="sanitizeMoney(this,false)" data-label="建行网银"></div><span class="mr-ok" id="ok-ccb">·</span></div>
-          </div>
-          <div class="money-row" id="row-cash">
-            <div class="mr-left"><div class="mr-name"><span class="mr-idx">5</span>上缴现金</div><div class="mr-tip">报表上写的「上缴现金」数；如有抵减项，下面单独登记（要拍照）</div></div>
-            <div class="mr-right"><div class="money-input"><span class="cur">¥</span><input type="text" id="c-cash" placeholder="0.00" inputmode="decimal" data-money oninput="sanitizeMoney(this,false)" data-label="上缴现金"></div><span class="mr-ok" id="ok-cash">·</span></div>
-          </div>
-          <div id="card-bank-total" class="cash-deduct-summary" style="margin:0 0 10px;">医保卡 + 银行卡合计：¥ 0.00</div>
+          <!-- 兼容旧数据：这 4 个字段不再需要收款员填写 -->
+          <input type="hidden" id="c-emed" value="">
+          <input type="hidden" id="c-card" value="">
+          <input type="hidden" id="c-bank" value="">
+          <input type="hidden" id="c-ccb" value="">
 
-
-
-
+          <div class="money-row cash-only-row" id="row-cash">
+            <div class="mr-left">
+              <div class="mr-name">上缴现金额</div>
+              <div class="mr-tip">照着日结报表填写“上缴现金”；如有现金抵减，仍在下方单独登记并上传凭证。</div>
+            </div>
+            <div class="mr-right">
+              <div class="money-input"><span class="cur">¥</span><input type="text" id="c-cash" placeholder="0.00" inputmode="decimal" data-money oninput="sanitizeMoney(this,false)" data-label="上缴现金"></div>
+              <span class="mr-ok" id="ok-cash">·</span>
+            </div>
+          </div>
+          <div id="card-bank-total" style="display:none"></div>
 
           <!-- 住院专属：预交金单据批量回收（4/6 张一组拍） -->
           <div class="prepay-batch" id="prepay-batch-section">
@@ -4754,10 +5527,10 @@ function sanitizeMoney(el, allowNeg) {
   if (cleaned !== el.value) el.value = cleaned;
 }
 
-var FIELDS = ['c-emed', 'c-card', 'c-bank', 'c-ccb', 'c-cash'];
-var MON = ['emed', 'card', 'bank', 'ccb', 'cash'];
-var MON_LABEL = { emed: '医保电子凭证', card: '医保卡', bank: '银行卡', ccb: '建行网银', cash: '上缴现金' };
-var MON_ITEM = { emed: '扫手机医保码', card: '医保卡 / 社保卡刷卡', bank: '银行卡 / POS 刷卡', ccb: '建行网银转账', cash: '现金扎把上交' };
+var FIELDS = ['c-cash'];
+var MON = ['cash'];
+var MON_LABEL = { cash: '上缴现金' };
+var MON_ITEM = { cash: '填写日结报表上缴现金' };
 var STORE_KEY = 'wfzyy_settle_v3';
 var META_KEY = 'wfzyy_settle_v3_meta';
 var REMEMBER_LOGIN_KEY = 'wfzyy_remember_login_v1';
@@ -4885,7 +5658,7 @@ function draftHasData(d) {
 function draftDeductCents(d) { return (d&&d.cashDeductions||[]).reduce(function(t,x){return t+parseCents(x.amount);},0); }
 function draftTotalCents(d) {
   if(!d) return 0;
-  var total=parseCents(d['c-emed'])+parseCents(d['c-card'])+parseCents(d['c-bank'])+parseCents(d['c-ccb'])+parseCents(d['c-cash'])-draftDeductCents(d);
+  var total=parseCents(d['c-cash'])-draftDeductCents(d);
   return Math.max(0,total);
 }
 function captureCurrentDraft(lite) {
@@ -6411,7 +7184,7 @@ function openCashierReportViewer() {
 function refreshSimpleCashierSummary(){
   var filled=filledCount(), total=actualTotalCents();
   var fc=$('simple-filled-count'), ta=$('simple-total-amount'), rs=$('simple-report-state');
-  if(fc)fc.innerText=filled+' / '+MON.length;
+  if(fc)fc.innerText=filled?'已填写':'待填写';
   if(ta)ta.innerText=fmtMoney(total);
   if(rs){rs.innerText=(state.imageData||state.rawImageData||state.hasImage)?'已上传':'未上传';rs.className=(state.imageData||state.rawImageData||state.hasImage)?'ok':'';}
 }
@@ -8659,12 +9432,7 @@ function actualCashCents() {
   return Math.max(0, parseCents($('c-cash').value) - deductionSumCents());
 }
 function actualTotalCents() {
-  // emed + 医保卡 + 银行卡 + ccb + 抵减后 cash
-  var emed = parseCents($('c-emed').value);
-  var card = parseCents($('c-card').value);
-  var bank = parseCents($('c-bank').value);
-  var ccb = parseCents($('c-ccb').value);
-  return emed + card + bank + ccb + actualCashCents();
+  return actualCashCents();
 }
 /* 现金抵减金额合法性：金额可正可负（负数=冲销/红冲本班次误记），0 元无意义算无效 */
 function cashDeductAmtOk(v) {
@@ -8968,7 +9736,7 @@ function updateSteps() {
   var di = cashDeductionIssues();
   var subs = {
     1: state.hasImage ? '已传报表 ✓' : '还没传',
-    2: filledCount() === 0 ? MON.length + ' 项待填' : (di.ok ? ('已填 ' + filledCount() + '/' + MON.length + (di.count ? ' +抵减' + di.count : '') + ' ✓') : (filledCount() + '/' + MON.length + (di.count ? ' 抵减' + di.count + '项待补' : ''))),
+    2: filledCount() === 0 ? '现金待填写' : (di.ok ? ('现金已填' + (di.count ? ' +抵减' + di.count : '') + ' ✓') : ('现金已填' + (di.count ? ' · 抵减待补' : ''))),
     3: state.submitted ? (state.approved ? '已入账 ✓' : '待财务复核') : '未提交'
   };
   for (var i = 1; i <= 3; i++) {
@@ -8993,7 +9761,7 @@ function checklistItems() {
   var di = cashDeductionIssues();
   return [
     { t: '日结报表已拍照上传', ok: state.hasImage, fix: '去第 1 步', step: 1, block: true },
-    { t: MON.length + ' 项上缴金额填完（已填 ' + filledCount() + '/' + MON.length + '）', ok: filledCount() === MON.length, fix: '去第 2 步', step: 2, block: true },
+    { t: '上缴现金额已填写', ok: filledCount() === 1, fix: '去第 2 步', step: 2, block: true },
     { t: di.count === 0 ? '现金抵减项：无抵减' : ('现金抵减项已登记完整（共 ' + di.count + ' 项' + (di.ok ? ' ✓' : ' 待补') + '）'), ok: di.ok, fix: '去第 2 步', step: 2, block: true },
     { t: state.bizType==='inpatient' ? ('住院预交金单据：' + prepayIssues().text) : '门诊无需预交金单据回收', ok: prepayIssues().ok, fix: state.bizType==='inpatient'?'去第 2 步':'', step: 2, block: state.bizType==='inpatient' }
   ];
@@ -9281,28 +10049,18 @@ function submitToFinance() {
 
 /* 提交确认模态：打开 + 关闭 */
 function openSubmitModal() {
-  // 计算并填入汇总
   var total = actualTotalCents();
   var cashOnReport = parseCents($('c-cash').value);
   var deduct = deductionSumCents();
-  var emed = parseCents($('c-emed').value);
-  var card = parseCents($('c-card').value);
-  var bank = parseCents($('c-bank').value);
-  var ccb = parseCents($('c-ccb').value);
   var di = cashDeductionIssues();
-  var html = '<div class="sm-line"><span>医保电子凭证：</span><b>' + fmtMoney(emed) + '</b></div>' +
-    '<div class="sm-line"><span>医保卡：</span><b>' + fmtMoney(card) + '</b></div>' +
-    '<div class="sm-line"><span>银行卡：</span><b>' + fmtMoney(bank) + '</b></div>' +
-    '<div class="sm-line"><span>医保卡 + 银行卡合计：</span><b>' + fmtMoney(card + bank) + '</b></div>' +
-    '<div class="sm-line"><span>建行网银：</span><b>' + fmtMoney(ccb) + '</b></div>' +
-    '<div class="sm-line"><span>报表现金：</span><b>' + fmtMoney(cashOnReport) + '</b></div>';
+  var html = '<div class="sm-line"><span>报表上缴现金：</span><b>' + fmtMoney(cashOnReport) + '</b></div>';
   if (deduct !== 0) {
     html += '<div class="sm-line deduct"><span>现金抵减/冲销（' + di.count + ' 项）：</span><b>' + fmtDeductEffect(deduct) + '</b></div>';
   }
   var sc = supportCountAll();
   if (sc) html += '<div class="sm-line"><span>补充附件：</span><b>' + sc + ' 张（作废发票原件 ' + readySupportFiles('voidInvoice').length + ' / 其他 ' + readySupportFiles('other').length + '）</b></div>';
   if(state.bizType==='inpatient'){var pp=ensurePrepayBatch();html += '<div class="sm-line"><span>预交金单据：</span><b>' + (pp.noBusiness?'今日无单据':(prepayShotCount()+'/'+(pp.expected||0)+' 张 · '+readyPrepayGroups().length+' 组照片')) + '</b></div>';}
-  html += '<div class="sm-line total"><span>实际上缴合计：</span><b>' + fmtMoney(total) + '</b></div>';
+  html += '<div class="sm-line total"><span>实际上缴现金：</span><b>' + fmtMoney(total) + '</b></div>';
   $('sm-summary').innerHTML = html;
   $('submit-modal').className = 'open';
 }
@@ -10189,34 +10947,14 @@ function refreshAuditCockpit() {
 </div>
 
 
-<div class="simple-ocr-modal" id="simple-ocr-modal" role="dialog" aria-modal="true" aria-labelledby="simple-ocr-title">
-  <div class="simple-ocr-card">
-    <div class="simple-ocr-head">
-      <div><span>浏览器本地 OCR</span><b id="simple-ocr-title">从日结报表试取数</b><small>识别只做辅助，不会自动提交；请和报表原件核对。</small></div>
-      <button type="button" onclick="closeLocalOCR()">×</button>
-    </div>
-    <div class="simple-ocr-progress" id="simple-ocr-progress">准备识别…</div>
-    <div class="ocr-mapping-tip">
-      <b>按医院报表固定对应：</b>
-      <span>现金 → 上缴现金</span>
-      <span>医保卡（建行窗口） → 医保卡</span>
-      <span>医保电子凭证 → 医保电子凭证</span>
-      <span>“建行窗口”不会再当成“建行网银”</span>
-    </div>
-    <div class="simple-ocr-grid" id="simple-ocr-grid">
-      <label><span>医保电子凭证<em id="ocr-state-emed">待识别</em></span><input id="ocr-emed" inputmode="decimal" placeholder="未识别"></label>
-      <label><span>医保卡<em id="ocr-state-card">待识别</em></span><input id="ocr-card" inputmode="decimal" placeholder="未识别"></label>
-      <label><span>银行卡<em id="ocr-state-bank">待识别</em></span><input id="ocr-bank" inputmode="decimal" placeholder="未识别"></label>
-      <label><span>建行网银<em id="ocr-state-ccb">待识别</em></span><input id="ocr-ccb" inputmode="decimal" placeholder="未识别"></label>
-      <label><span>上缴现金<em id="ocr-state-cash">待识别</em></span><input id="ocr-cash" inputmode="decimal" placeholder="未识别"></label>
-    </div>
-    <div class="simple-ocr-note" id="simple-ocr-note">“自动取数”是辅助功能，识别结果必须人工核对。正式院内部署建议改成本地打包 OCR 或院内服务器 OCR。</div>
-    <div class="simple-ocr-actions">
-      <button type="button" onclick="closeLocalOCR()">取消</button>
-      <button type="button" class="primary" id="simple-ocr-apply" onclick="applyLocalOCRValues()">确认填入</button>
-    </div>
-  </div>
-</div>
+<script>
+(function(){
+  try{
+    document.documentElement.setAttribute('data-ui-version','V0.5');
+    window.WF_UI_VERSION='V0.5-CASH-ONLY';
+  }catch(e){}
+})();
+</script>
 
 </body>
 </html>
