@@ -4551,6 +4551,243 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
 }
 </style>
 
+
+<style id="v052-icon-system">
+/* V0.5.2 统一按钮与图标设计语言 */
+.cash-only{
+  --ibtn-primary:#0b6fa4;
+  --ibtn-primary-2:#075985;
+  --ibtn-primary-soft:#eaf6fb;
+  --ibtn-line:#dbe5ef;
+  --ibtn-text:#142033;
+  --ibtn-muted:#66758a;
+  --ibtn-success:#087a55;
+  --ibtn-success-soft:#ecfdf3;
+  --ibtn-danger:#b42318;
+  --ibtn-danger-soft:#fff1f0;
+  --ibtn-warning:#a16207;
+  --ibtn-warning-soft:#fff7e8;
+}
+.cash-only button,
+.cash-only .btn-action,
+.cash-only .btn-foot,
+.cash-only .att-btn,
+.cash-only .btn-cta-primary,
+.cash-only .btn-cta-secondary,
+.cash-only .csh-btn,
+.cash-only .mode-switch,
+.cash-only .prepay-shoot,
+.cash-only .prepay-album,
+.cash-only .prepay-none,
+.cash-only .void-none,
+.cash-only .ch-primary{
+  letter-spacing:.01em;
+}
+.cash-only .uni-btn{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  white-space:nowrap;
+}
+.cash-only .uni-btn .btn-label{
+  display:inline-block;
+  min-width:0;
+}
+.cash-only .uni-icon-wrap{
+  width:18px;height:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 18px;
+  border-radius:7px;
+}
+.cash-only .uni-icon{
+  width:16px;height:16px;
+  display:block;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.cash-only .uni-btn.icon-bubble .uni-icon-wrap{
+  background:rgba(255,255,255,.18);
+}
+.cash-only .btn-action.btn-secondary.uni-btn .uni-icon-wrap,
+.cash-only .btn-cta-secondary.uni-btn .uni-icon-wrap,
+.cash-only .att-btn.uni-btn .uni-icon-wrap,
+.cash-only .csh-btn.uni-btn .uni-icon-wrap,
+.cash-only .mode-switch.uni-btn .uni-icon-wrap,
+.cash-only .prepay-album.uni-btn .uni-icon-wrap,
+.cash-only .prepay-none.uni-btn .uni-icon-wrap,
+.cash-only .void-none.uni-btn .uni-icon-wrap,
+.cash-only .btn-foot.ghost.uni-btn .uni-icon-wrap,
+.cash-only .btn-foot.home-return.uni-btn .uni-icon-wrap{
+  background:#eff5f9;
+  color:var(--ibtn-primary);
+}
+.cash-only .btn-cta-primary.uni-btn .uni-icon-wrap,
+.cash-only .ch-primary.uni-btn .uni-icon-wrap,
+.cash-only .btn-foot.primary.uni-btn .uni-icon-wrap,
+.cash-only .btn-action.uni-positive .uni-icon-wrap,
+.cash-only .prepay-shoot.uni-btn .uni-icon-wrap{
+  background:rgba(255,255,255,.18);
+  color:inherit;
+}
+.cash-only .btn-action.uni-danger .uni-icon-wrap,
+.cash-only .btn-foot.uni-danger .uni-icon-wrap,
+.cash-only .att-btn.uni-danger .uni-icon-wrap,
+.cash-only .btn-action.btn-secondary.uni-danger .uni-icon-wrap{
+  background:#fde7e5;
+  color:var(--ibtn-danger);
+}
+.cash-only .btn-action.uni-success .uni-icon-wrap,
+.cash-only .btn-foot.uni-success .uni-icon-wrap,
+.cash-only .btn-action.btn-secondary.uni-success .uni-icon-wrap{
+  background:#dcfce7;
+  color:var(--ibtn-success);
+}
+.cash-only .btn-action.uni-neutral,
+.cash-only .finance-header-action.uni-btn,
+.cash-only .cashier-header-action.uni-btn{
+  border-color:#d6e1eb!important;
+}
+.cash-only .tool-btn,
+.cash-only .cc-nav,
+.cash-only .cc-close{
+  border-radius:10px!important;
+  border:1px solid var(--ibtn-line)!important;
+  background:#fff!important;
+  color:#4d6078!important;
+  box-shadow:none!important;
+}
+.cash-only .tool-btn svg,
+.cash-only .cc-nav svg,
+.cash-only .cc-close svg,
+.cash-only .btn-action svg,
+.cash-only .btn-foot svg,
+.cash-only .att-btn svg,
+.cash-only .btn-cta-primary svg,
+.cash-only .btn-cta-secondary svg,
+.cash-only .csh-btn svg,
+.cash-only .prepay-shoot svg,
+.cash-only .prepay-album svg,
+.cash-only .mode-switch svg,
+.cash-only .prepay-none svg,
+.cash-only .void-none svg{
+  stroke:currentColor!important;
+  fill:none!important;
+  stroke-width:1.9!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.cash-only .btn-cta-primary.uni-btn,
+.cash-only .ch-primary.uni-btn,
+.cash-only .prepay-shoot.uni-btn{
+  box-shadow:none!important;
+}
+.cash-only .prepay-shoot.uni-btn,
+.cash-only .btn-action.uni-positive,
+.cash-only .btn-foot.primary.uni-btn{
+  background:var(--ibtn-primary)!important;
+  color:#fff!important;
+  border-color:var(--ibtn-primary)!important;
+}
+.cash-only .btn-action.uni-danger,
+.cash-only .btn-foot.uni-danger{
+  background:var(--ibtn-danger-soft)!important;
+  color:var(--ibtn-danger)!important;
+  border-color:#f4c7c3!important;
+}
+.cash-only .btn-action.uni-success,
+.cash-only .btn-foot.uni-success{
+  background:var(--ibtn-success-soft)!important;
+  color:var(--ibtn-success)!important;
+  border-color:#b7ebd1!important;
+}
+.cash-only .btn-action.uni-warning{
+  background:var(--ibtn-warning-soft)!important;
+  color:var(--ibtn-warning)!important;
+  border-color:#f3d7a4!important;
+}
+.cash-only .btn-action.uni-neutral,
+.cash-only .btn-foot.ghost.uni-btn,
+.cash-only .btn-foot.home-return.uni-btn,
+.cash-only .mode-switch.uni-btn,
+.cash-only .prepay-none.uni-btn,
+.cash-only .void-none.uni-btn,
+.cash-only .csh-btn.uni-btn,
+.cash-only .att-btn.uni-btn,
+.cash-only .btn-cta-secondary.uni-btn,
+.cash-only .prepay-album.uni-btn{
+  background:#fff!important;
+  color:var(--ibtn-text)!important;
+  border:1px solid var(--ibtn-line)!important;
+}
+.cash-only .btn-cta-secondary.uni-btn,
+.cash-only .att-btn.uni-btn,
+.cash-only .csh-btn.uni-btn,
+.cash-only .mode-switch.uni-btn{
+  color:var(--ibtn-primary-2)!important;
+}
+.cash-only .btn-cta-secondary.uni-btn .btn-label,
+.cash-only .att-btn.uni-btn .btn-label,
+.cash-only .csh-btn.uni-btn .btn-label,
+.cash-only .mode-switch.uni-btn .btn-label{
+  font-weight:800;
+}
+.cash-only .ch-primary.uni-btn .btn-label,
+.cash-only .btn-cta-primary.uni-btn .btn-label,
+.cash-only .prepay-shoot.uni-btn .btn-label{
+  font-weight:900;
+}
+.cash-only .btn-foot.ghost.uni-btn,
+.cash-only .btn-foot.home-return.uni-btn{min-width:0;}
+.cash-only .btn-action.btn-sm.uni-btn .uni-icon-wrap,
+.cash-only .btn-foot.uni-btn .uni-icon-wrap{width:16px;height:16px;flex-basis:16px}
+.cash-only .btn-action.btn-sm.uni-btn .uni-icon,
+.cash-only .btn-foot.uni-btn .uni-icon{width:14px;height:14px;}
+.cash-only .btn-action .icon-svg-sm,
+.cash-only .btn-action .icon-svg,
+.cash-only .btn-foot .icon-svg-sm,
+.cash-only .att-btn .icon-svg-sm,
+.cash-only .btn-cta-primary .icon-svg,
+.cash-only .tool-btn .icon-svg-sm,
+.cash-only .tool-btn .icon-svg{
+  width:16px!important;height:16px!important;
+}
+.cash-only .header-more-trigger .btn-label{display:none;}
+.cash-only .header-more-trigger.uni-btn{
+  width:38px!important;min-width:38px!important;padding-left:0!important;padding-right:0!important;
+}
+.cash-only .header-more-trigger.uni-btn .uni-icon-wrap{
+  width:18px!important;height:18px!important;background:#eff5f9!important;color:var(--ibtn-primary)!important;
+}
+.cash-only .btn-action[data-icon-only="1"] .btn-label{display:none;}
+.cash-only .btn-action[data-icon-only="1"]{
+  width:38px!important;min-width:38px!important;padding-left:0!important;padding-right:0!important;
+}
+.cash-only .btn-action[data-icon-only="1"] .uni-icon-wrap{
+  margin:0!important;
+}
+.cash-only .prepay-head b,
+.cash-only .attachment-hub-head b,
+.cash-only .void-simple-head b,
+.cash-only .cashier-simple-head b{
+  letter-spacing:-.01em;
+}
+@media(max-width:700px){
+  .cash-only .uni-btn{gap:7px!important;}
+  .cash-only .uni-icon-wrap{width:17px;height:17px;flex-basis:17px;border-radius:6px;}
+  .cash-only .uni-icon{width:15px;height:15px;}
+  .cash-only .btn-action.btn-sm.uni-btn .uni-icon-wrap,
+  .cash-only .btn-foot.uni-btn .uni-icon-wrap{width:15px;height:15px;flex-basis:15px}
+  .cash-only .btn-action.btn-sm.uni-btn .uni-icon,
+  .cash-only .btn-foot.uni-btn .uni-icon{width:13px;height:13px;}
+}
+</style>
+
 </head>
 <body class="ui-v04 cash-only" data-page-node-id="BbzJ9Hir8FJsowBDFaY9EJ">
 
@@ -10929,9 +11166,151 @@ function refreshAuditCockpit() {
 <script>
 (function(){
   try{
-    document.documentElement.setAttribute('data-ui-version','V0.5.1');
-    window.WF_UI_VERSION='V0.5.1-CASH-VISIBLE-ONLY';
+    document.documentElement.setAttribute('data-ui-version','V0.5.2');
+    window.WF_UI_VERSION='V0.5.2-ICON-SYSTEM';
   }catch(e){}
+})();
+</script>
+
+
+<div id="v052-icon-sprite" style="display:none;" aria-hidden="true">
+<svg xmlns="http://www.w3.org/2000/svg">
+  <symbol id="uii-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="uii-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/><path d="M21 12H9"/></symbol>
+  <symbol id="uii-next" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/><path d="M3 12h12"/></symbol>
+  <symbol id="uii-camera" viewBox="0 0 24 24"><path d="M4 7h4l2-2h4l2 2h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></symbol>
+  <symbol id="uii-album" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 14l3-3 3 3 2-2 3 4"/><circle cx="8.5" cy="9" r="1.2"/></symbol>
+  <symbol id="uii-report" viewBox="0 0 24 24"><path d="M7 3h8l5 5v13a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M15 3v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></symbol>
+  <symbol id="uii-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-2-1.5L14 21l-2-1.5L10 21l-2-1.5L6 21z"/><path d="M9 8h6M9 12h6M9 16h4"/></symbol>
+  <symbol id="uii-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></symbol>
+  <symbol id="uii-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="uii-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="uii-audit" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.7-7 9-4-1.3-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="uii-compare" viewBox="0 0 24 24"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/><path d="M10 12h4"/></symbol>
+  <symbol id="uii-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.7"/></symbol>
+  <symbol id="uii-print" viewBox="0 0 24 24"><path d="M7 8V3h10v5"/><rect x="5" y="10" width="14" height="8" rx="2"/><path d="M7 15h10v6H7z"/></symbol>
+  <symbol id="uii-send" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></symbol>
+  <symbol id="uii-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></symbol>
+  <symbol id="uii-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 9v5"/><circle cx="12" cy="17" r="1"/></symbol>
+  <symbol id="uii-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M7 7l1 13h8l1-13"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="uii-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3 7.5-8 9-5-1.5-8-4.5-8-9V6z"/></symbol>
+  <symbol id="uii-rotate" viewBox="0 0 24 24"><path d="M4 11a8 8 0 1 1 2.3 5.7"/><path d="M4 16v-5h5"/></symbol>
+  <symbol id="uii-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 4v5h5"/></symbol>
+  <symbol id="uii-switch" viewBox="0 0 24 24"><path d="M7 7h11"/><path d="M15 4l3 3-3 3"/><path d="M17 17H6"/><path d="M9 14l-3 3 3 3"/></symbol>
+  <symbol id="uii-money" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M7 10h.01M17 14h.01"/></symbol>
+  <symbol id="uii-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+  <symbol id="uii-download" viewBox="0 0 24 24"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M4 19h16"/></symbol>
+  <symbol id="uii-open" viewBox="0 0 24 24"><path d="M14 5h5v5"/><path d="M10 14L19 5"/><path d="M19 14v5H5V5h5"/></symbol>
+</svg>
+</div>
+
+<script id="v052-button-icon-script">
+(function(){
+  function txt(el){
+    return String((el && el.textContent) || '').replace(/\s+/g,' ').replace(/\u00a0/g,' ').trim();
+  }
+  function cleanLabel(t){
+    t=String(t||'').replace(/\s+/g,' ').trim();
+    t=t.replace(/^[\+\uFF0B]\s*/,'');
+    t=t.replace(/^[←↩]\s*/,'');
+    t=t.replace(/^[📷🖼⏹✓✔✕×!]\s*/,'');
+    t=t.replace(/^‹\s*/,'').replace(/\s*›$/,'');
+    return t;
+  }
+  function hasClass(el,name){
+    return !!(el && el.className && String(el.className).indexOf(name)>=0);
+  }
+  function lower(s){ return String(s||'').toLowerCase(); }
+  function detectIcon(el,label){
+    var c=' '+(el.className||'')+' ';
+    var t=label;
+    if(/凭证流水/.test(t)) return 'receipt';
+    if(/汇总日报|打印日报|日结报表/.test(t)) return 'report';
+    if(/审核中心|财务审核端/.test(t)) return 'audit';
+    if(/操作留痕|留痕/.test(t)) return 'history';
+    if(/锁/.test(t)) return 'lock';
+    if(/安全/.test(t)) return 'shield';
+    if(/更多/.test(t)) return 'more';
+    if(/新建|添加/.test(t)) return 'plus';
+    if(/返回|上一步|上一张/.test(t)) return 'back';
+    if(/下一步|下一张/.test(t)) return 'next';
+    if(/拍照|连拍/.test(t)) return /连拍/.test(t) ? 'grid' : 'camera';
+    if(/图库/.test(t)) return 'album';
+    if(/管理抵减项|现金/.test(t)) return 'money';
+    if(/预交金/.test(t)) return 'grid';
+    if(/对照|切换影像|进入对照审核|打开当前真实待审单/.test(t)) return /打开当前/.test(t) ? 'open' : 'compare';
+    if(/查看|详情/.test(t)) return 'eye';
+    if(/打印/.test(t)) return 'print';
+    if(/提交/.test(t)) return 'send';
+    if(/审核通过|确认无误|无误|通过/.test(t)) return 'check';
+    if(/有问题|驳回|纠错|异常/.test(t)) return 'alert';
+    if(/删除|清除|销毁/.test(t)) return 'trash';
+    if(/旋转/.test(t)) return 'rotate';
+    if(/重置|还原/.test(t)) return 'reset';
+    if(/切换/.test(t)) return 'switch';
+    if(/导出/.test(t)) return 'download';
+    if(/关闭|退出/.test(t)) return 'back';
+    return 'report';
+  }
+  function detectTone(el,label){
+    var t=label;
+    var cls=' '+(el.className||'')+' ';
+    if(/删除|清除|销毁|驳回|有问题/.test(t)) return 'danger';
+    if(/审核通过|确认无误|无误|通过/.test(t)) return 'success';
+    if(/发现问题|纠错/.test(t)) return 'warning';
+    if(/btn-cta-primary| ch-primary | prepay-shoot | primary /.test(cls)) return 'positive';
+    return 'neutral';
+  }
+  function shouldSkip(el,label){
+    var cls=' '+(el.className||'')+' ';
+    if(/ step /.test(cls)) return true;
+    if(/ tool-btn | cc-nav | cc-close /.test(cls)) return true;
+    if(!label) return true;
+    if(label==='+' || label==='−' || label==='-' || label==='×' || label==='1:1' || label==='原图' || label==='图库' || label==='收起' || label==='关闭') return true;
+    return false;
+  }
+  function iconHtml(name){
+    return '<span class="uni-icon-wrap" aria-hidden="true"><svg class="uni-icon" viewBox="0 0 24 24"><use href="#uii-'+name+'"></use></svg></span>';
+  }
+  function applyOne(el){
+    if(!el || el.getAttribute('data-v052-iconized')==='1') return;
+    var raw=txt(el), label=cleanLabel(raw);
+    if(shouldSkip(el,label)){ el.setAttribute('data-v052-iconized','1'); return; }
+
+    var tone=detectTone(el,label), icon=detectIcon(el,label);
+    el.className = (el.className||'') + ' uni-btn uni-' + tone;
+
+    if(/更多/.test(label)){ el.setAttribute('data-icon-only','1'); }
+
+    el.innerHTML = iconHtml(icon) + '<span class="btn-label">'+label.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span>';
+    el.setAttribute('data-v052-iconized','1');
+    el.setAttribute('title', label);
+    if(tone==='positive' || tone==='danger' || tone==='success' || tone==='warning'){ el.className += ' icon-bubble'; }
+  }
+  function decorate(root){
+    var list = (root || document).querySelectorAll('button.btn-action, button.btn-foot, button.att-btn, button.btn-cta-primary, button.btn-cta-secondary, button.csh-btn, button.mode-switch, button.prepay-shoot, button.prepay-album, button.prepay-none, button.void-none, button.ch-primary');
+    for(var i=0;i<list.length;i++) applyOne(list[i]);
+  }
+  function init(){
+    decorate(document);
+    if(window.MutationObserver){
+      var mo=new MutationObserver(function(muts){
+        for(var i=0;i<muts.length;i++){
+          for(var j=0;j<muts[i].addedNodes.length;j++){
+            var n=muts[i].addedNodes[j];
+            if(!n || n.nodeType!==1) continue;
+            if(n.tagName && lower(n.tagName)==='button') applyOne(n);
+            else decorate(n);
+          }
+        }
+      });
+      mo.observe(document.body,{childList:true,subtree:true});
+    }
+    setTimeout(function(){ decorate(document); },400);
+    setTimeout(function(){ decorate(document); },1200);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
 </script>
 
