@@ -4788,6 +4788,442 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
 }
 </style>
 
+
+<style id="v06-material-simple">
+/* ========== V0.6 补充材料：统一为“标题 + 状态 + 直接动作” ========== */
+.cash-only .v06-material-hub{
+  margin-top:12px!important;
+  padding-top:12px!important;
+  border-top:1px solid #e6edf3!important;
+}
+.cash-only .v06-material-head{
+  align-items:center!important;
+  margin-bottom:9px!important;
+}
+.cash-only .v06-material-total{
+  font-size:11px;
+  color:#64748b;
+  white-space:nowrap;
+  padding:5px 8px;
+  border-radius:999px;
+  background:#f1f5f9;
+}
+.cash-only .v06-material-stack{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.cash-only .v06-material-card{
+  background:#fff;
+  border:1px solid #dfe7ef;
+  border-radius:13px;
+  padding:11px;
+  box-shadow:none;
+}
+.cash-only .v06-material-card.is-filled{
+  border-color:#b9dfcf;
+}
+.cash-only .v06-material-card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.cash-only .v06-material-title-wrap{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-width:0;
+}
+.cash-only .v06-material-icon{
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 34px;
+}
+.cash-only .v06-material-icon svg{
+  width:17px!important;height:17px!important;
+}
+.cash-only .v06-material-icon.cash{background:#fff7e8;color:#a16207;}
+.cash-only .v06-material-icon.void{background:#fff1eb;color:#c2410c;}
+.cash-only .v06-material-icon.other{background:#f1f5f9;color:#475569;}
+.cash-only .v06-material-title{
+  font-size:13px;
+  line-height:1.25;
+  font-weight:900;
+  color:#172033;
+}
+.cash-only .v06-material-desc{
+  margin-top:3px;
+  font-size:10px;
+  line-height:1.45;
+  color:#758396;
+}
+.cash-only .v06-state-text{
+  display:inline-block;
+  margin-left:5px;
+  font-size:9px;
+  font-weight:800;
+  color:#7b8796;
+  background:#f1f5f9;
+  border-radius:999px;
+  padding:2px 6px;
+  vertical-align:1px;
+}
+.cash-only .v06-status{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  min-height:24px;
+  padding:0 8px;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#64748b;
+  font-size:9.5px;
+  font-weight:900;
+}
+.cash-only .v06-status.ok{background:#ecfdf3;color:#087a55;}
+.cash-only .v06-status.warn{background:#fff7e8;color:#a16207;}
+.cash-only .v06-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:20px;
+  height:18px;
+  margin-left:4px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:#64748b;
+  font-size:9px;
+  vertical-align:1px;
+}
+.cash-only .v06-actions{
+  display:flex;
+  gap:7px;
+  margin-top:9px;
+  flex-wrap:wrap;
+}
+.cash-only .v06-actions.compact{
+  margin-top:0;
+  flex-wrap:nowrap;
+}
+.cash-only .v06-actions .att-btn{
+  min-height:36px!important;
+  padding:0 12px!important;
+}
+.cash-only .v06-actions.compact .att-btn{
+  min-height:34px!important;
+  padding:0 10px!important;
+}
+.cash-only .v06-none-btn{
+  margin-left:auto;
+}
+.cash-only .v06-none-btn.on{
+  background:#ecfdf3!important;
+  color:#087a55!important;
+  border-color:#b7ebd1!important;
+}
+.cash-only .v06-inline-state{
+  margin-top:7px;
+  font-size:10px;
+  color:#7b8796;
+}
+.cash-only .v06-thumb-strip{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+.cash-only .v06-void-thumb,
+.cash-only .v06-deduct-thumb{
+  width:58px;
+  height:58px;
+  border-radius:9px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid #d9e2eb;
+  background:#f8fafc;
+}
+.cash-only .v06-void-thumb img,
+.cash-only .v06-deduct-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.cash-only .v06-thumb-processing{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:4px;
+  box-sizing:border-box;
+  text-align:center;
+  color:#7b8796;
+  font-size:9px;
+  line-height:1.25;
+}
+.cash-only .v06-thumb-processing.failed{
+  color:#b42318;
+  background:#fff1f0;
+}
+.cash-only .v06-thumb-remove{
+  position:absolute;
+  top:3px;
+  right:3px;
+  width:21px;
+  height:21px;
+  border:0;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  background:rgba(15,23,42,.76);
+  color:#fff;
+}
+.cash-only .v06-thumb-remove svg{
+  width:11px!important;height:11px!important;
+  stroke:currentColor!important;
+}
+
+/* 现金抵减：取消单独“附件卡 + 连拍”，一项内直接完成三件事 */
+.cash-only .v06-deduct-list{
+  margin-top:9px;
+}
+.cash-only .v06-empty-line{
+  padding:10px 0 2px;
+  font-size:10.5px;
+  color:#8793a3;
+}
+.cash-only .v06-deduct-item{
+  border-top:1px solid #edf1f5;
+  padding:10px 0 2px;
+}
+.cash-only .v06-deduct-item:first-child{
+  border-top:0;
+}
+.cash-only .v06-deduct-item-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:8px;
+}
+.cash-only .v06-deduct-item-head>div{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.cash-only .v06-deduct-item-head b{
+  font-size:12px;
+  color:#243248;
+}
+.cash-only .v06-mini-status{
+  display:inline-flex;
+  min-height:20px;
+  align-items:center;
+  padding:0 6px;
+  border-radius:999px;
+  font-size:8.5px;
+  font-weight:900;
+}
+.cash-only .v06-mini-status.warn{background:#fff7e8;color:#a16207;}
+.cash-only .v06-mini-status.ok{background:#ecfdf3;color:#087a55;}
+.cash-only .v06-item-delete{
+  width:31px;height:31px;
+  border:1px solid #f0d3d0;
+  border-radius:9px;
+  background:#fff8f7;
+  color:#b42318;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;
+}
+.cash-only .v06-item-delete svg{
+  width:14px!important;height:14px!important;stroke:currentColor!important;
+}
+.cash-only .v06-deduct-fields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.cash-only .v06-field{
+  display:block;
+  min-width:0;
+}
+.cash-only .v06-field>span{
+  display:block;
+  margin-bottom:4px;
+  font-size:9.5px;
+  color:#6f7c8e;
+}
+.cash-only .v06-money-box{
+  display:flex;
+  align-items:center;
+  height:40px;
+  border:1px solid #cfd9e4;
+  border-radius:9px;
+  background:#fff;
+  overflow:hidden;
+}
+.cash-only .v06-money-box:focus-within{
+  border-color:#67afd2;
+  box-shadow:0 0 0 3px rgba(11,111,164,.08);
+}
+.cash-only .v06-money-box i{
+  font-style:normal;
+  color:#7a8797;
+  padding-left:10px;
+  font-size:12px;
+}
+.cash-only .v06-money-box input{
+  width:100%;
+  min-width:0;
+  height:100%;
+  border:0!important;
+  outline:0;
+  background:transparent;
+  padding:0 9px;
+  font-size:17px;
+  font-weight:900;
+  color:#172033;
+}
+.cash-only .v06-field select{
+  width:100%;
+  height:40px;
+  border:1px solid #cfd9e4;
+  border-radius:9px;
+  background:#fff;
+  padding:0 9px;
+  font-size:12px;
+  color:#243248;
+}
+.cash-only .v06-deduct-proof{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:8px;
+  padding:8px 9px;
+  border-radius:10px;
+  background:#f8fafc;
+}
+.cash-only .v06-proof-copy{
+  min-width:0;
+}
+.cash-only .v06-proof-copy b{
+  display:block;
+  font-size:10.5px;
+  color:#334155;
+}
+.cash-only .v06-proof-copy small{
+  display:block;
+  margin-top:2px;
+  font-size:9px;
+  color:#8490a0;
+  line-height:1.35;
+}
+.cash-only .v06-deduct-thumbs{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:7px;
+}
+.cash-only .v06-deduct-summary{
+  margin-top:8px!important;
+  padding:8px 9px!important;
+  border-radius:9px!important;
+  font-size:10px!important;
+}
+
+/* 旧结构/连拍残留彻底隐藏 */
+.cash-only #btn-ded-burst,
+.cash-only #ded-burst-bar,
+.cash-only #att-card-deduct{
+  display:none!important;
+}
+
+/* 其他附件缩略图压缩到同一种语言 */
+.cash-only #att-thumbs-other .att-thumb-item{
+  width:58px!important;
+  height:58px!important;
+  border-radius:9px!important;
+  overflow:hidden!important;
+}
+.cash-only #att-thumbs-other .att-thumb-item img{
+  width:100%!important;height:100%!important;object-fit:cover!important;
+}
+.cash-only #att-thumbs-other .att-thumb-x{
+  width:21px!important;height:21px!important;
+  top:3px!important;right:3px!important;
+  background:rgba(15,23,42,.76)!important;
+  color:#fff!important;
+  border:0!important;
+}
+
+@media(max-width:700px){
+  .cash-only .v06-material-hub{
+    margin-top:9px!important;
+    padding-top:9px!important;
+  }
+  .cash-only .v06-material-card{
+    padding:10px;
+    border-radius:12px;
+  }
+  .cash-only .v06-material-icon{
+    width:32px;height:32px;flex-basis:32px;
+  }
+  .cash-only .v06-material-title{font-size:12.5px;}
+  .cash-only .v06-material-desc{font-size:9.5px;}
+  .cash-only .v06-add-deduct{
+    min-height:34px!important;
+    padding:0 10px!important;
+  }
+  .cash-only .v06-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .cash-only .v06-actions .att-btn{
+    width:100%!important;
+  }
+  .cash-only .v06-none-btn{
+    grid-column:1/-1;
+    margin-left:0;
+  }
+  .cash-only .v06-actions.compact{
+    display:flex;
+    grid-template-columns:none;
+  }
+  .cash-only .v06-actions.compact .att-btn{
+    width:auto!important;
+  }
+  .cash-only .v06-deduct-fields{
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+  .cash-only .v06-deduct-proof{
+    align-items:flex-start;
+  }
+}
+@media(max-width:390px){
+  .cash-only .v06-deduct-fields{
+    grid-template-columns:1fr;
+  }
+  .cash-only .v06-deduct-proof{
+    display:block;
+  }
+  .cash-only .v06-actions.compact{
+    margin-top:7px;
+  }
+}
+</style>
+
 </head>
 <body class="ui-v04 cash-only" data-page-node-id="BbzJ9Hir8FJsowBDFaY9EJ">
 
@@ -5094,81 +5530,90 @@ button:disabled, button[aria-disabled="true"] { opacity: .58; filter: saturate(.
             <div class="prepay-guide"><span>💡</span><div><b>推荐摆法：</b>准备一张深色垫板，按 2×2 平铺 4 张单据，四周留边、手机正对拍摄。这样 46 张单据大约只拍 12 次；某一组拍糊了只重拍这一组。</div></div>
           </div>
 
-          <!-- 附件材料中心：不再单独登记作废发票，只上传原件留证 -->
-          <div class="attachment-hub" id="attachment-hub">
-            <div class="attachment-hub-head">
+          
+<!-- V0.6 补充材料：现金抵减 / 作废发票 / 其他附件统一交互 -->
+          <div class="attachment-hub v06-material-hub" id="attachment-hub">
+            <div class="attachment-hub-head v06-material-head">
               <div>
-                <div class="attachment-hub-title"><svg class="icon-svg" viewBox="0 0 24 24"><use href="#i-upload"/></svg>附件材料</div>
-                <div class="attachment-hub-sub">有附件就拍，没有就不传。作废发票只需要留照片，不填号码、不填金额。</div>
+                <div class="attachment-hub-title">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><use href="#i-upload"/></svg>
+                  补充材料
+                </div>
+                <div class="attachment-hub-sub">有就处理，没有就跳过。现金抵减需填写金额、原因并留一张凭证。</div>
               </div>
-              <div class="attachment-hub-sub" id="support-summary">补充附件 0 张</div>
+              <div class="v06-material-total" id="support-summary">附件共 0 张</div>
             </div>
-            <div class="attachment-grid">
-              <div class="att-card" id="att-card-deduct">
-                <div class="att-card-top">
-                  <div class="att-card-ico"><svg class="icon-svg" viewBox="0 0 24 24"><use href="#i-money"/></svg></div>
-                  <div class="att-card-main">
-                    <div class="att-card-title">现金抵减附件 <span class="att-badge" id="att-count-deduct">0</span></div>
-                    <div class="att-card-desc">跟随下面的现金抵减项保存，金额与凭证一一对应。</div>
-                  </div>
-                </div>
-                <div class="att-actions"><button class="att-btn" onclick="jumpToDeduction()">管理抵减项</button></div>
-              </div>
 
-              <div class="void-batch void-simple" id="att-card-voidInvoice">
-                <div class="void-simple-head">
-                  <div>
-                    <div class="void-batch-title">🧾 作废发票</div>
-                    <div class="void-batch-sub">有作废发票就拍照留存；没有就点“本次无作废发票”。</div>
+            <div class="v06-material-stack">
+              <!-- 现金抵减 -->
+              <section class="v06-material-card v06-deduct-card" id="cash-deduct-section">
+                <div class="v06-material-card-head">
+                  <div class="v06-material-title-wrap">
+                    <span class="v06-material-icon cash">
+                      <svg class="icon-svg" viewBox="0 0 24 24"><use href="#i-money"/></svg>
+                    </span>
+                    <div>
+                      <div class="v06-material-title">现金抵减 <span class="v06-state-text" id="deduct-count">无抵减</span></div>
+                      <div class="v06-material-desc">有抵减时再添加，每项单独填写金额、原因和凭证。</div>
+                    </div>
                   </div>
-                  <span class="void-batch-state" id="void-batch-state">未上传</span>
+                  <button class="btn-cta-secondary btn-sm v06-add-deduct" type="button" onclick="addCashDeduction()">添加抵减</button>
                 </div>
-                <div class="void-simple-actions">
-                  <button class="primary" type="button" onclick="pickVoidBatch('camera')">📷 拍照</button>
-                  <button type="button" onclick="pickVoidBatch('album')">🖼 图库</button>
-                  <button type="button" class="void-none" id="void-none" onclick="toggleVoidNoBusiness()">本次无作废发票</button>
+                <span id="att-count-deduct" style="display:none">0</span>
+                <div id="cash-deduct-list" class="cash-deduct-list v06-deduct-list"></div>
+                <div id="cash-deduct-summary" class="cash-deduct-summary v06-deduct-summary"></div>
+              </section>
+
+              <!-- 作废发票 -->
+              <section class="v06-material-card v06-void-card" id="att-card-voidInvoice">
+                <div class="v06-material-card-head">
+                  <div class="v06-material-title-wrap">
+                    <span class="v06-material-icon void">
+                      <svg class="icon-svg" viewBox="0 0 24 24"><use href="#i-bill"/></svg>
+                    </span>
+                    <div>
+                      <div class="v06-material-title">作废发票</div>
+                      <div class="v06-material-desc">有就拍照留存；没有就确认“本次无作废发票”。</div>
+                    </div>
+                  </div>
+                  <span class="v06-status" id="void-batch-state">未处理</span>
                 </div>
-                <div class="void-simple-count" id="void-progress">
-                  <span id="void-remaining">还没有上传照片</span>
+                <div class="v06-actions">
+                  <button class="att-btn primary" type="button" onclick="pickVoidBatch('camera')">拍照</button>
+                  <button class="att-btn" type="button" onclick="pickVoidBatch('album')">图库</button>
+                  <button class="att-btn v06-none-btn" type="button" id="void-none" onclick="toggleVoidNoBusiness()">本次无作废发票</button>
                 </div>
-                <div class="void-groups void-simple-list" id="void-batch-groups"></div>
+                <div class="v06-inline-state" id="void-progress"><span id="void-remaining">未上传照片</span></div>
+                <div class="v06-thumb-strip" id="void-batch-groups"></div>
                 <span id="void-shot-count" style="display:none">0</span>
                 <span id="void-expected-count" style="display:none">0</span>
                 <span id="att-count-voidInvoice" style="display:none">0</span>
                 <div id="att-thumbs-voidInvoice" style="display:none"></div>
-              </div>
+              </section>
 
-              <div class="att-card att-other" id="att-card-other">
-                <div class="att-card-top">
-                  <div class="att-card-ico"><svg class="icon-svg" viewBox="0 0 24 24"><use href="#i-doc"/></svg></div>
-                  <div class="att-card-main">
-                    <div class="att-card-title">其他附件 <span class="att-badge" id="att-count-other">0</span></div>
-                    <div class="att-card-desc">临时说明、签字凭证等补充材料，按需上传即可。</div>
+              <!-- 其他附件 -->
+              <section class="v06-material-card v06-other-card" id="att-card-other">
+                <div class="v06-material-card-head">
+                  <div class="v06-material-title-wrap">
+                    <span class="v06-material-icon other">
+                      <svg class="icon-svg" viewBox="0 0 24 24"><use href="#i-doc"/></svg>
+                    </span>
+                    <div>
+                      <div class="v06-material-title">其他附件 <span class="v06-count" id="att-count-other">0</span></div>
+                      <div class="v06-material-desc">签字凭证、情况说明等，确有需要时再上传。</div>
+                    </div>
                   </div>
                 </div>
-                <div class="att-actions">
-                  <button class="att-btn primary" onclick="pickSupportAttachment('other','camera')"><svg class="icon-svg-sm" viewBox="0 0 24 24"><use href="#i-cam"/></svg>拍照</button>
-                  <button class="att-btn" onclick="pickSupportAttachment('other','album')"><svg class="icon-svg-sm" viewBox="0 0 24 24"><use href="#i-album"/></svg>图库</button>
+                <div class="v06-actions">
+                  <button class="att-btn primary" type="button" onclick="pickSupportAttachment('other','camera')">拍照</button>
+                  <button class="att-btn" type="button" onclick="pickSupportAttachment('other','album')">图库</button>
                 </div>
-                <div class="att-thumbs" id="att-thumbs-other" style="display:none;"></div>
-              </div>
+                <div class="att-thumbs v06-thumb-strip" id="att-thumbs-other" style="display:none;"></div>
+              </section>
             </div>
           </div>
 
-          <!-- 现金抵减项 -->
-          <div class="sec-card" id="cash-deduct-section" style="background:var(--c-warm-cream);border-color:#fde68a;margin-bottom:8px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-              <div class="sec-title" style="margin:0;color:var(--c-warm-dark);"><svg class="icon-svg" viewBox="0 0 24 24" style="stroke:var(--c-warm);"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>现金抵减明细 <span class="sec-sub" id="deduct-count">（无抵减）</span></div>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button class="btn-cta-secondary btn-sm" onclick="addCashDeduction()">+ 添加抵减项</button>
-                <button class="btn-action btn-sm" onclick="toggleDedBurst()" id="btn-ded-burst"><svg class="icon-svg-sm" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>连拍附件</button>
-              </div>
-            </div>
-            <div id="ded-burst-bar" style="display:none;"></div>
-            <div id="cash-deduct-list" class="cash-deduct-list"></div>
-            <div id="cash-deduct-summary" class="cash-deduct-summary"></div>
           </div>
-        </div>
 
 
         <!-- 第 3 步：提交 -->
@@ -8584,64 +9029,15 @@ document.addEventListener('keydown', function (e) {
 });
 /* 整叠合照 已删除（精简作废发票模块：拍照 + 点图预览） */
 /* 抵减附件 连拍模式：30s 空闲自动结束，每次拍/选会触发拍照选择器追加到当前选中项；若无选中项则弹出提示并先建空项 */
-var DED_BURST = { on: false, lastAt: 0, timer: null, idleMs: 30000, lastAdded: 0 };
+var DED_BURST = { on:false, lastAt:0, timer:null, idleMs:0, lastAdded:0 };
+/* V0.6：现金抵减“连拍附件”已取消。保留空函数仅用于兼容旧页面/旧历史调用。 */
+function toggleDedBurst(){ return false; }
+function startDedBurst(){ DED_BURST.on=false; return false; }
+function stopDedBurst(){ DED_BURST.on=false; return false; }
+function armDedBurstTimer(){ return false; }
+function renderDedBurstBar(){ return false; }
+function tickDedBurstTimer(){ return false; }
 
-/* 抵减附件 连拍模式 */
-function toggleDedBurst() {
-  if (state.submitted) { alert('交账单已提交，不能改抵减项。'); return; }
-  if (DED_BURST.on) stopDedBurst(false);
-  else startDedBurst();
-}
-function startDedBurst() {
-  if (!state.cashDeductions.length) {
-    addCashDeduction();   // 没抵减项就先建一个空项
-  }
-  DED_BURST.on = true;
-  DED_BURST.lastAt = Date.now();
-  DED_BURST.lastAdded = 0;
-  renderDedBurstBar();
-  addAudit('启动抵减附件连拍', '会话', '', '30s 内无动作自动结束；拍/选都会追加到当前选中项');
-  pickDeductionImage(state.cashDeductions.length - 1);   // 默认追加到最新一项
-  armDedBurstTimer();
-}
-function stopDedBurst(silent) {
-  if (!DED_BURST.on && !silent) return;
-  DED_BURST.on = false;
-  if (DED_BURST.timer) { clearTimeout(DED_BURST.timer); DED_BURST.timer = null; }
-  renderDedBurstBar();
-  if (!silent && DED_BURST.lastAdded > 0) {
-    addAudit('结束抵减附件连拍', '会话', '', '本次连拍共追加 ' + DED_BURST.lastAdded + ' 张附件');
-  } else if (!silent) {
-    addAudit('结束抵减附件连拍', '会话', '', '本次未新增附件');
-  }
-}
-function armDedBurstTimer() {
-  if (DED_BURST.timer) clearTimeout(DED_BURST.timer);
-  DED_BURST.lastAt = Date.now();
-  DED_BURST.timer = setTimeout(function () { stopDedBurst(false); }, DED_BURST.idleMs);
-}
-function renderDedBurstBar() {
-  var bar = $('ded-burst-bar'); if (!bar) return;
-  var btn = $('btn-ded-burst');
-  if (!DED_BURST.on) { bar.style.display = 'none'; bar.innerHTML = ''; if (btn) btn.innerHTML = '<svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:14px;height:14px;"><use href="#i-cam"/></svg> 连拍附件'; return; }
-  armDedBurstTimer();
-  bar.style.display = '';
-  bar.className = 'cash-deductions-burst-bar';
-  bar.innerHTML =
-    '<span class="vb-info">📷 <b>抵减附件连拍中</b>：每次拍照/选图自动续命 30 秒，不拍就自动结束；会追加到当前抵减项。</span>' +
-    '<span class="vb-count">本轮 +<b>' + DED_BURST.lastAdded + '</b> 张</span>' +
-    '<span class="vb-timer" id="ded-burst-timer">30s</span>' +
-    '<button class="btn-action btn-sm" style="background:#dc2626;" onclick="stopDedBurst(false)">⏹ 结束连拍</button>';
-  if (btn) btn.innerText = '⏹ 结束连拍';
-  tickDedBurstTimer();
-}
-function tickDedBurstTimer() {
-  var bar = $('ded-burst-bar'); if (!bar || !DED_BURST.on) return;
-  var left = Math.max(0, DED_BURST.idleMs - (Date.now() - DED_BURST.lastAt));
-  var s = Math.ceil(left / 1000);
-  var t = $('ded-burst-timer'); if (t) t.innerText = s + 's';
-  if (left > 0) setTimeout(tickDedBurstTimer, 500);
-}
 /* 整叠合照 已删除：renderVoidStack / updateStackTotal / removeVoidStack / viewVoidStack / generateStackVoids / handleVoidStackSelect 全部移除 */
 
 /* ================= 收款员自核（自己对着照片核一遍） ================= */
@@ -8798,33 +9194,42 @@ function renderVoidBatch(){
   var box=$('void-batch-groups'); if(!box)return;
   var m=ensureVoidBatch(),list=supportFiles('voidInvoice'),ready=readySupportFiles('voidInvoice');
   var nb=$('void-none'),st=$('void-batch-state'),rem=$('void-remaining'),shot=$('void-shot-count'),exp=$('void-expected-count');
+
   if(nb){
     nb.classList.toggle('on',!!m.noBusiness);
-    nb.innerText=m.noBusiness?'✓ 本次无作废发票':'本次无作废发票';
+    var nbText=m.noBusiness?'已确认无作废发票':'本次无作废发票';
+    var nbLabel=nb.querySelector?nb.querySelector('.btn-label'):null;
+    if(nbLabel) nbLabel.innerText=nbText; else nb.innerText=nbText;
   }
+
   if(shot)shot.innerText=ready.length;
   if(exp)exp.innerText=0;
+
   if(m.noBusiness){
-    if(st){st.innerText='无需上传';st.className='void-batch-state ok';}
+    if(st){st.innerText='本次无';st.className='v06-status ok';}
     if(rem)rem.innerText='已确认：本次无作废发票';
   }else if(ready.length){
-    if(st){st.innerText='已上传 '+ready.length+' 张';st.className='void-batch-state ok';}
-    if(rem)rem.innerText='已上传 '+ready.length+' 张照片；有更多就继续拍。';
+    if(st){st.innerText=ready.length+' 张';st.className='v06-status ok';}
+    if(rem)rem.innerText='已上传 '+ready.length+' 张，可继续补拍';
   }else if(list.length){
-    if(st){st.innerText='处理中';st.className='void-batch-state warn';}
+    if(st){st.innerText='处理中';st.className='v06-status warn';}
     if(rem)rem.innerText='照片正在处理…';
   }else{
-    if(st){st.innerText='未上传';st.className='void-batch-state';}
-    if(rem)rem.innerText='有作废发票就拍照；没有就点“本次无作废发票”。';
+    if(st){st.innerText='未处理';st.className='v06-status';}
+    if(rem)rem.innerText='有就拍照，没有就确认本次无';
   }
+
   if(!list.length){box.innerHTML='';return;}
+
   box.innerHTML=list.map(function(f,i){
-    var thumb=f.data?('<img src="'+esc(safeThumbData(f))+'" alt="作废发票照片 '+(i+1)+'" onclick="viewVoidBatchGroup('+i+')">')
-      :('<div class="void-simple-loading">'+(f.status==='failed'?'处理失败':'处理中…')+'</div>');
-    return '<div class="void-simple-item">'+thumb+
-      '<div class="void-simple-item-main"><b>照片 '+(i+1)+'</b><small>'+esc(f.name||'作废发票照片')+(f.size?(' · '+esc(f.size)):'')+'</small></div>'+
-      '<div class="void-simple-item-actions">'+(f.data?'<button type="button" onclick="viewVoidBatchGroup('+i+')">查看</button>':'')+
-      (!state.submitted?'<button type="button" class="danger" onclick="removeVoidBatchGroup('+i+')">删除</button>':'')+'</div></div>';
+    return '<div class="v06-void-thumb">' +
+      (f.data
+        ? '<img src="'+esc(safeThumbData(f))+'" alt="作废发票 '+(i+1)+'" onclick="viewVoidBatchGroup('+i+')">'
+        : '<div class="v06-thumb-processing '+(f.status==='failed'?'failed':'')+'">'+(f.status==='failed'?'失败':'处理中')+'</div>') +
+      (!state.submitted
+        ? '<button class="v06-thumb-remove" type="button" onclick="event.stopPropagation();removeVoidBatchGroup('+i+')" title="删除这张"><svg class="icon-svg-sm" viewBox="0 0 24 24"><use href="#i-x"/></svg></button>'
+        : '') +
+    '</div>';
   }).join('');
 }
 
@@ -8914,9 +9319,9 @@ function renderSupportAttachments() {
     }
     box.innerHTML=html;
   }
-  var d=readyDeductAttachmentCount(), dc=$('att-count-deduct'), dcard=$('att-card-deduct');
+  var d=readyDeductAttachmentCount(), dc=$('att-count-deduct'), dcard=$('cash-deduct-section');
   if (dc) dc.innerText=d; if (dcard) dcard.classList.toggle('is-filled', d>0);
-  var sm=$('support-summary'); if (sm) sm.innerText='附件影像 '+supportCountAll()+' 组/张';
+  var sm=$('support-summary'); if (sm) sm.innerText='附件共 '+(supportCountAll()+d)+' 张';
   refreshSettlementOverview();
   if (state.submitted) renderCashierSubmittedAttachments();
 }
@@ -9187,10 +9592,6 @@ function handleDeductionFiles(idx, files, src) {
         queueSave();
       };
     })(rec));
-  }
-  if (DED_BURST.on) {
-    DED_BURST.lastAdded += accepted;
-    renderDedBurstBar();  // 连拍模式：续命 + 刷条
   }
   syncDeductHead(d);
   renderCashDeductions();
@@ -9676,66 +10077,73 @@ function renderCashDeductions() {
   var sumEl = $('cash-deduct-summary');
   var cntEl = $('deduct-count');
   if (!list || !sumEl) return;
+
   var n = state.cashDeductions.length;
-  if (cntEl) cntEl.innerText = n ? '（已登记 ' + n + ' 项）' : '（无抵减）';
+  if (cntEl) cntEl.innerText = n ? ('已添加 ' + n + ' 项') : '无抵减';
+
   if (!n) {
-    list.innerHTML = '<div class="cd-empty">没有抵减项时这里空着，报表上缴现金就是实际数。</div>';
+    list.innerHTML = '<div class="v06-empty-line">本次没有现金抵减，不需要做任何操作。</div>';
   } else {
-    var di = cashDeductionIssues();
     var html = '';
     for (var i = 0; i < n; i++) {
       var d = state.cashDeductions[i];
       var amtOk = cashDeductAmtOk(d.amount);
       var fs = deductFiles(d);
       var readyFs = readyDeductFiles(d);
-      var cls = !amtOk ? 'cash-deduct-row err' : (!readyFs.length ? 'cash-deduct-row warn' : 'cash-deduct-row ok');
+      var itemCls = !amtOk ? ' needs-amount' : (!readyFs.length ? ' needs-file' : ' complete');
+      var statusTxt = !amtOk ? '金额待填' : (!readyFs.length ? '凭证待传' : '已完整');
+      var statusCls = !amtOk ? 'warn' : (!readyFs.length ? 'warn' : 'ok');
+
       var opts = CASH_DEDUCT_REASONS.map(function (r) {
         return '<option value="' + r + '"' + (d.reason === r ? ' selected' : '') + '>' + (DEDUCT_REASON_LABEL[r] || r) + '</option>';
       }).join('');
-      var hasAtt = fs.length > 0;
-      // 附件区：有附件 → 首张缩略图（点开看大图）+ 绿色角标（多张显示 ✓N）；没附件 → 📷 空位（点击即拍）；
-      //          首张仍在压缩/失败 → 显示「处理中 / 重拍」占位，绝不静默空白
-      var attFirst = hasAtt && fs[0].data
-          ? '<img class="cd-thumb" src="' + esc(safeThumbData(fs[0])) + '" alt="抵减附件 ' + (i + 1) + '" onclick="viewDeductionImage(' + i + ',0)">' +
-            '<span class="cd-att-flag" title="附件已保存 ' + fs.length + ' 张">✓' + (fs.length > 1 ? fs.length : '') + '</span>'
-        : hasAtt
-          ? '<div class="cd-thumb-empty cd-thumb-busy" onclick="pickDeductionImage(' + i + ')" title="' + (fs[0].status === 'failed' ? '照片处理失败，点击重拍' : '照片压缩中…点击可重拍') + '">' +
-            (fs[0].status === 'failed' ? '<span>失败<br>重拍</span>' : '<span>压缩中…</span>') + '</div>'
-          : '<div class="cd-thumb-empty" onclick="pickDeductionImage(' + i + ')" title="点击拍照存附件"><svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:28px;height:28px;margin-top:1px;"><use href="#i-cam"/></svg></div>';
-      var att = '<div class="cd-att">' + attFirst + '</div>';
-      // 操作按钮（去重：没附件时主入口就是上方大 📷 空位，这里只放相册 🖼；
-      //              有附件时 📷=再拍一张追加，🖼=相册多选追加）
-      var shoot = '<div class="cd-row-shoot">' +
-        (hasAtt ? '<button class="cd-shoot" onclick="pickDeductionImage(' + i + ')" title="再拍一张追加到本项（当前 ' + fs.length + ' 张）"><svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:14px;height:14px;"><use href="#i-cam"/></svg></button>' : '') +
-        '<button class="cd-shoot" onclick="pickDeductionAlbum(' + i + ')" title="从相册/图库选择，可多选并追加"><svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:14px;height:14px;"><use href="#i-album"/></svg></button>' +
-        '</div>';
-      html += '<div class="' + cls + '">' +
-        '<span style="color:#475569;font-size:12px;min-width:38px;">#' + (i + 1) + '</span>' +
-        '<span style="color:#475569;font-size:12px;">¥</span>' +
-        '<input class="cd-amount-input' + (amtOk ? '' : ' err') + '" type="text" inputmode="decimal" placeholder="0.00" value="' + esc(d.amount) + '" ' +
-          'oninput="sanitizeMoney(this);updateCashDeductionLive(' + i + ',\'amount\',this.value)" ' +
-          'onblur="updateCashDeduction(' + i + ',\'amount\',this.value)">' +
-        '<select class="cd-reason-select" onchange="updateCashDeduction(' + i + ',\'reason\',this.value)">' + opts + '</select>' +
-        att + shoot +
-        '<button class="cd-del" onclick="removeCashDeduction(' + i + ')" title="删除此项"><svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:14px;height:14px;"><use href="#i-trash"/></svg></button>' +
-        '</div>';
-      // 多张附件时，下面列一排小缩略图（点开看 / 长按删）
-      if (fs.length > 1) {
-        html += '<div class="cd-att-strip">';
+
+      var thumbs = '';
+      if (fs.length) {
+        thumbs += '<div class="v06-deduct-thumbs">';
         for (var k = 0; k < fs.length; k++) {
-          html += '<div class="cd-att-item">' +
-            (fs[k].data
-              ? '<img src="' + esc(safeThumbData(fs[k])) + '" alt="附件 ' + (k + 1) + '" onclick="viewDeductionImage(' + i + ',' + k + ')">'
-              : '<div class="cd-thumb-busy" style="width:46px;height:46px;border-radius:var(--r-sm);border:1px dashed var(--c-danger-soft);display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;line-height:1.35;color:var(--c-danger);background:var(--c-danger-light);cursor:pointer;" onclick="pickDeductionImage(' + i + ')" title="' + (fs[k].status === 'failed' ? '照片处理失败，点击重拍' : '压缩中…') + '">' + (fs[k].status === 'failed' ? '失败<br>重拍' : '压缩中…') + '</div>') +
-            '<button class="cd-att-x" onclick="removeDeductionImage(' + i + ',' + k + ')" title="删除这张"><svg class="icon-svg-sm" viewBox="0 0 24 24" style="width:11px;height:11px;"><use href="#i-x"/></svg></button>' +
-            '</div>';
+          var f = fs[k];
+          thumbs += '<div class="v06-deduct-thumb">' +
+            (f.data
+              ? '<img src="' + esc(safeThumbData(f)) + '" alt="抵减凭证 ' + (k + 1) + '" onclick="viewDeductionImage(' + i + ',' + k + ')">'
+              : '<div class="v06-thumb-processing ' + (f.status === 'failed' ? 'failed' : '') + '">' + (f.status === 'failed' ? '失败' : '处理中') + '</div>') +
+            (!state.submitted ? '<button class="v06-thumb-remove" type="button" onclick="event.stopPropagation();removeDeductionImage(' + i + ',' + k + ')" title="删除这张附件"><svg class="icon-svg-sm" viewBox="0 0 24 24"><use href="#i-x"/></svg></button>' : '') +
+          '</div>';
         }
-        html += '</div>';
+        thumbs += '</div>';
       }
+
+      html += '<div class="v06-deduct-item' + itemCls + '">' +
+        '<div class="v06-deduct-item-head">' +
+          '<div><b>抵减 ' + (i + 1) + '</b><span class="v06-mini-status ' + statusCls + '">' + statusTxt + '</span></div>' +
+          (!state.submitted ? '<button class="v06-item-delete" type="button" onclick="removeCashDeduction(' + i + ')" title="删除此抵减项"><svg class="icon-svg-sm" viewBox="0 0 24 24"><use href="#i-trash"/></svg></button>' : '') +
+        '</div>' +
+
+        '<div class="v06-deduct-fields">' +
+          '<label class="v06-field">' +
+            '<span>抵减金额</span>' +
+            '<div class="v06-money-box"><i>¥</i><input class="cd-amount-input' + (amtOk ? '' : ' err') + '" type="text" inputmode="decimal" placeholder="0.00" value="' + esc(d.amount) + '" ' +
+              'oninput="sanitizeMoney(this);updateCashDeductionLive(' + i + ',\'amount\',this.value)" ' +
+              'onblur="updateCashDeduction(' + i + ',\'amount\',this.value)"></div>' +
+          '</label>' +
+          '<label class="v06-field">' +
+            '<span>抵减原因</span>' +
+            '<select class="cd-reason-select" onchange="updateCashDeduction(' + i + ',\'reason\',this.value)">' + opts + '</select>' +
+          '</label>' +
+        '</div>' +
+
+        '<div class="v06-deduct-proof">' +
+          '<div class="v06-proof-copy"><b>凭证照片</b><small>' + (readyFs.length ? ('已上传 ' + readyFs.length + ' 张') : '请拍一张能看清内容的凭证') + '</small></div>' +
+          (!state.submitted
+            ? '<div class="v06-actions compact"><button class="att-btn primary" type="button" onclick="pickDeductionImage(' + i + ')">拍照</button><button class="att-btn" type="button" onclick="pickDeductionAlbum(' + i + ')">图库</button></div>'
+            : '') +
+        '</div>' +
+        thumbs +
+      '</div>';
     }
     list.innerHTML = html;
   }
-  // 汇总（抽成独立函数：只刷文本不重建输入行，供实时输入与整表渲染复用）
+
   updateDeductSummary();
 }
 /* 仅刷新现金抵减「汇总区」文本。可安全地在 oninput 实时路径高频调用——
@@ -11166,8 +11574,8 @@ function refreshAuditCockpit() {
 <script>
 (function(){
   try{
-    document.documentElement.setAttribute('data-ui-version','V0.5.2');
-    window.WF_UI_VERSION='V0.5.2-ICON-SYSTEM';
+    document.documentElement.setAttribute('data-ui-version','V0.6');
+    window.WF_UI_VERSION='V0.6-MATERIAL-SIMPLE';
   }catch(e){}
 })();
 </script>
