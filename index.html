@@ -14844,5 +14844,208 @@ function v181RetryMediaRestore(){v181ResetMediaRestore();if(state&&state.approve
 })();
 </script>
 
+
+
+<!-- V1.13.1 审核导航与反馈增强：未完成提示可直接定位处理 -->
+<style id="v1131-review-navigation-style">
+@keyframes v1131TargetPulse{
+  0%{box-shadow:0 0 0 0 rgba(15,118,110,.36);border-color:#0f766e;transform:translateZ(0)}
+  45%{box-shadow:0 0 0 7px rgba(15,118,110,.12);border-color:#0f766e}
+  100%{box-shadow:0 0 0 0 rgba(15,118,110,0)}
+}
+.v1131-target-pulse{animation:v1131TargetPulse .9s ease 0s 2!important;scroll-margin:96px!important;position:relative;z-index:2}
+#v19-finance-guard .v1131-jump-row{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border:1px solid #e5e7eb;border-radius:9px;background:#fff;padding:8px 10px;margin:5px 0;
+  color:#475569;text-align:left;font:inherit;cursor:pointer;transition:.16s ease;
+}
+#v19-finance-guard .v1131-jump-row:hover{border-color:#99c8bc;background:#f4fbf8;transform:translateY(-1px)}
+#v19-finance-guard .v1131-jump-row:focus-visible{outline:3px solid rgba(15,118,110,.18);outline-offset:2px}
+#v19-finance-guard .v1131-jump-row .v1131-cta{white-space:nowrap;color:#0f766e;font-size:9.5px;font-weight:900}
+#finance-detail-area .frb-task.v1131-actionable{cursor:pointer;transition:.16s ease;padding-bottom:24px!important}
+#finance-detail-area .frb-task.v1131-actionable:hover{border-color:#9ecfc3!important;box-shadow:0 4px 12px rgba(15,118,110,.08)}
+#finance-detail-area .frb-task .v1131-card-jump{position:absolute;left:8px;bottom:6px;font-size:8.5px;font-weight:900;color:#0f766e}
+#finance-detail-area .frb-task.problem .v1131-card-jump{color:#b42318}
+#finance-detail-area .frb-task.pending .v1131-card-jump{color:#8a5a12}
+#aud-foot-hint.v1131-actionable{cursor:pointer;border-radius:8px;padding:7px 9px!important;background:#fffaf0;border:1px solid #ead9b7;transition:.16s ease}
+#aud-foot-hint.v1131-actionable:hover{border-color:#d7b974;background:#fff8e8}
+#v19-cashier-reject-panel .v19-crp-item.v1131-actionable{cursor:pointer;transition:.16s ease;position:relative;padding-right:86px}
+#v19-cashier-reject-panel .v19-crp-item.v1131-actionable:hover{border-color:#e5b35d;background:#fffaf0}
+#v19-cashier-reject-panel .v19-crp-item .v1131-issue-jump{position:absolute;right:10px;bottom:9px;font-size:9px;font-weight:900;color:#a16207}
+#checklist .cl-item.fail.v1131-actionable{cursor:pointer;transition:.16s ease}
+#checklist .cl-item.fail.v1131-actionable:hover{background:#fff8ed!important;border-color:#e5b35d!important}
+#checklist .cl-item.fail.v1131-actionable .cl-t::after{content:'  · 点击定位';font-size:9px;color:#a16207;font-weight:800}
+@media(max-width:760px){
+  #v19-finance-guard .v1131-jump-row{align-items:flex-start}
+  #finance-detail-area .frb-task.v1131-actionable{padding-bottom:26px!important}
+}
+</style>
+<script id="v1131-review-navigation-script">
+(function(){
+  function toast(msg){
+    try{if(typeof floatToast==='function')floatToast(msg,'已定位','#ecfdf5','#065f46','#a7f3d0');}catch(_){}
+  }
+  function pulse(el,label){
+    if(!el)return;
+    try{el.classList.remove('v1131-target-pulse');void el.offsetWidth;el.classList.add('v1131-target-pulse');}catch(_){}
+    try{el.scrollIntoView({behavior:'smooth',block:'center',inline:'nearest'});}catch(_){try{el.scrollIntoView();}catch(__){}}
+    if(label)toast(label);
+    setTimeout(function(){try{el.classList.remove('v1131-target-pulse');}catch(_){}},2100);
+  }
+  function firstUncheckedMoneyRow(){return document.querySelector('#aud-tbody tr.chk-row:not(.checked)')||document.querySelector('.audit-table');}
+  function openAttachmentWithStatus(status){
+    try{
+      var seq=(typeof auditAttachmentSequence==='function')?auditAttachmentSequence():[];
+      for(var i=0;i<seq.length;i++){
+        var d=(typeof auditCompareDescriptor==='function')?auditCompareDescriptor(seq[i]):null;
+        if(!d||!d.file)continue;
+        var r=attachmentReview(d.file);
+        if(r&&r.status===status){openAuditCompareItem(seq[i]);setTimeout(function(){pulse(document.getElementById('aud-pane-right'),'已定位到需要处理的附件');},80);return true;}
+      }
+    }catch(_){}
+    return false;
+  }
+  function blockerKey(text){
+    text=String(text||'');
+    if(/尚未提交/.test(text))return 'submit';
+    if(/日结报表/.test(text))return 'report';
+    if(/金额还有/.test(text))return 'money';
+    if(/影像未完整读取/.test(text))return 'attachment-missing';
+    if(/附件还有/.test(text))return 'attachment-pending';
+    if(/附件有/.test(text))return 'attachment-problem';
+    if(/现金调整/.test(text))return 'deduction';
+    if(/住院预交金/.test(text))return 'prepay';
+    if(/退回问题/.test(text))return 'resubmit';
+    return 'top';
+  }
+  window.v1131GoFinanceTarget=function(key){
+    if(key==='money'){pulse(firstUncheckedMoneyRow(),'已定位到待核对金额');return;}
+    if(key==='attachment-pending'){
+      if(openAttachmentWithStatus('pending'))return;
+      try{openNextPendingAttachment(true);}catch(_){}
+      setTimeout(function(){pulse(document.getElementById('aud-pane-right')||document.getElementById('aud-support-sec'),'已定位到附件审核');},80);return;
+    }
+    if(key==='attachment-problem'){
+      if(openAttachmentWithStatus('problem'))return;
+      pulse(document.getElementById('aud-support-sec')||document.getElementById('finance-receipt-box'),'已定位到问题附件');return;
+    }
+    if(key==='attachment-missing'){
+      try{if(typeof hydrateActiveDraftMedia==='function')hydrateActiveDraftMedia();if(typeof ensureUnifiedFinanceCompare==='function')ensureUnifiedFinanceCompare();}catch(_){}
+      pulse(document.getElementById('finance-receipt-box')||document.getElementById('aud-pane-right'),'已定位到附件影像区');return;
+    }
+    if(key==='deduction'){pulse(document.getElementById('aud-deduct-sec'),'已定位到现金调整核对');return;}
+    if(key==='prepay'){
+      var p=document.getElementById('aud-prepay-sec');pulse(p,'已定位到住院预交金');
+      setTimeout(function(){var b=document.getElementById('aud-prepay-physical-btn');if(b&&!b.disabled)pulse(b,'这里需要确认纸质单据已收齐');},350);return;
+    }
+    if(key==='report'){pulse(document.getElementById('aud-pane-left')||document.getElementById('finance-receipt-box'),'已定位到日结报表');return;}
+    if(key==='resubmit'){pulse(document.getElementById('frb-resubmit')||document.getElementById('finance-change-panel'),'已定位到退回重交问题');return;}
+    if(key==='submit'){pulse(document.getElementById('finance-review-identity')||document.getElementById('finance-detail-area'),'当前单据尚未提交');return;}
+    pulse(document.getElementById('finance-reviewer-board')||document.getElementById('finance-detail-area'),'已定位到审核任务');
+  };
+  window.v1131GoFinanceBlocker=function(key){window.v1131GoFinanceTarget(key);};
+
+  function financeTaskKey(name){
+    name=String(name||'').trim();
+    if(name==='日结报表')return 'report';
+    if(name==='金额核对')return 'money';
+    if(name==='现金调整')return 'deduction';
+    if(name==='附件审核'){
+      try{var a=attachmentAuditSummary(),d=declaredAuditAttachmentCount();if(d>a.total)return 'attachment-missing';if(a.problem>0)return 'attachment-problem';}catch(_){}
+      return 'attachment-pending';
+    }
+    if(name==='住院预交金')return 'prepay';
+    return 'top';
+  }
+  function wireFinanceTaskCards(){
+    var cards=document.querySelectorAll('#frb-grid .frb-task');
+    Array.prototype.forEach.call(cards,function(card){
+      if(card.classList.contains('done'))return;
+      var n=card.querySelector('.frb-name');if(!n)return;
+      var key=financeTaskKey(n.textContent);
+      card.classList.add('v1131-actionable');card.setAttribute('role','button');card.setAttribute('tabindex','0');card.setAttribute('aria-label',n.textContent+'，点击定位处理');
+      if(!card.querySelector('.v1131-card-jump')){var s=document.createElement('span');s.className='v1131-card-jump';s.textContent='点击定位处理 →';card.appendChild(s);}
+      card.onclick=function(e){if(e.target&&e.target.closest&&e.target.closest('button'))return;v1131GoFinanceTarget(key);};
+      card.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();v1131GoFinanceTarget(key);}};
+    });
+  }
+  function wireFinanceGuard(){
+    var guard=document.getElementById('v19-finance-guard');if(!guard||state.approved)return;
+    var blockers=(typeof v19ApprovalBlockers==='function')?v19ApprovalBlockers():[];
+    if(!blockers.length)return;
+    var box=guard.querySelector('.v19-fg-items');if(box){
+      box.innerHTML=blockers.map(function(x){var k=blockerKey(x);return '<button type="button" class="v1131-jump-row" onclick="v1131GoFinanceBlocker(\''+k+'\')"><span>'+esc(x)+'</span><span class="v1131-cta">去处理 →</span></button>';}).join('');
+    }
+    var hint=document.getElementById('aud-foot-hint');if(hint){
+      var key=blockerKey(blockers[0]);hint.classList.add('v1131-actionable');hint.title='点击定位第一项未完成任务';hint.onclick=function(){v1131GoFinanceTarget(key);};
+      hint.innerHTML='<b style="color:#a16207">尚不能通过：</b>'+esc(blockers[0])+' <span style="color:#0f766e;font-weight:900">· 点击定位 →</span>';
+    }
+  }
+
+  function issueTarget(issue){
+    if(!issue)return null;
+    if(issue.type==='money')return document.getElementById('c-'+issue.target)||document.getElementById('row-'+issue.target);
+    if(issue.type==='report')return document.getElementById('receipt-box');
+    if(issue.type==='deduction')return document.getElementById('cash-deduct-section');
+    if(issue.type==='prepay')return document.getElementById('prepay-batch-section')||document.getElementById('prepay-section');
+    if(issue.type==='attachment'){
+      if(issue.ref&&issue.ref.kind==='support'&&issue.ref.a==='voidInvoice')return document.getElementById('att-card-voidInvoice');
+      if(issue.ref&&issue.ref.kind==='support'&&issue.ref.a==='other')return document.getElementById('att-card-other');
+      if(issue.ref&&issue.ref.kind==='deduction')return document.getElementById('cash-deduct-section');
+      if(issue.ref&&issue.ref.kind==='prepayment')return document.getElementById('prepay-batch-section')||document.getElementById('prepay-section');
+    }
+    return document.getElementById('pane-2');
+  }
+  var oldGoIssue=window.v19GoRejectIssue;
+  if(typeof oldGoIssue==='function')window.v19GoRejectIssue=function(id){
+    var issue=(state.rejectIssues||[]).filter(function(x){return x.id===id;})[0];
+    try{if(issue&&typeof gotoStep==='function')gotoStep(issue.type==='report'?1:2);}catch(_){}
+    var r=oldGoIssue.apply(this,arguments);
+    setTimeout(function(){try{var i=(state.rejectIssues||[]).filter(function(x){return x.id===id;})[0];pulse(issueTarget(i),'已定位到“'+(i&&i.label?i.label:'待修改项目')+'”');}catch(_){}},180);
+    return r;
+  };
+  function wireCashierRejectIssues(){
+    var panel=document.getElementById('v19-cashier-reject-panel');if(!panel)return;
+    var issues=state.rejectIssues||[],cards=panel.querySelectorAll('.v19-crp-item');
+    Array.prototype.forEach.call(cards,function(card,idx){var i=issues[idx];if(!i||v19IssueResolved(i))return;card.classList.add('v1131-actionable');card.setAttribute('role','button');card.setAttribute('tabindex','0');
+      if(!card.querySelector('.v1131-issue-jump')){var s=document.createElement('span');s.className='v1131-issue-jump';s.textContent='点这里去修改 →';card.appendChild(s);}
+      card.onclick=function(e){if(e.target&&e.target.closest&&e.target.closest('button'))return;v19GoRejectIssue(i.id);};
+      card.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();v19GoRejectIssue(i.id);}};
+    });
+  }
+  function cashierChecklistTarget(text){
+    text=String(text||'');
+    if(/日结报表/.test(text))return {step:1,id:'receipt-box'};
+    if(/上缴现金/.test(text))return {step:2,id:'c-cash'};
+    if(/现金调整/.test(text))return {step:2,id:'cash-deduct-section'};
+    if(/作废发票/.test(text))return {step:2,id:'att-card-voidInvoice'};
+    if(/预交金/.test(text))return {step:2,id:'prepay-batch-section'};
+    return {step:2,id:'pane-2'};
+  }
+  function wireCashierChecklist(){
+    var rows=document.querySelectorAll('#checklist .cl-item.fail');
+    Array.prototype.forEach.call(rows,function(row){
+      if(row.dataset.v1131Wired==='1')return;row.dataset.v1131Wired='1';row.classList.add('v1131-actionable');
+      var t=row.querySelector('.cl-t'),target=cashierChecklistTarget(t?t.textContent:'');
+      row.onclick=function(e){if(e.target&&e.target.closest&&e.target.closest('.cl-fix'))return;gotoStep(target.step);setTimeout(function(){pulse(document.getElementById(target.id)||document.getElementById('pane-'+target.step),'已定位到需要补充的项目');},120);};
+    });
+  }
+
+  if(typeof window.renderFinanceReviewerBoard==='function'){
+    var oldBoard=window.renderFinanceReviewerBoard;window.renderFinanceReviewerBoard=function(){var r=oldBoard.apply(this,arguments);setTimeout(wireFinanceTaskCards,0);return r;};
+  }
+  if(typeof window.renderV19FinanceGuard==='function'){
+    var oldGuard=window.renderV19FinanceGuard;window.renderV19FinanceGuard=function(){var r=oldGuard.apply(this,arguments);setTimeout(function(){wireFinanceGuard();wireFinanceTaskCards();},0);return r;};
+  }
+  if(typeof window.renderV19CashierRejectPanel==='function'){
+    var oldReject=window.renderV19CashierRejectPanel;window.renderV19CashierRejectPanel=function(){var r=oldReject.apply(this,arguments);setTimeout(wireCashierRejectIssues,0);return r;};
+  }
+  if(typeof window.renderChecklist==='function'){
+    var oldChecklist=window.renderChecklist;window.renderChecklist=function(){var r=oldChecklist.apply(this,arguments);setTimeout(wireCashierChecklist,0);return r;};
+  }
+  setTimeout(function(){try{wireFinanceTaskCards();wireFinanceGuard();wireCashierRejectIssues();wireCashierChecklist();}catch(_){}},40);
+})();
+</script>
+
 </body>
 </html>
